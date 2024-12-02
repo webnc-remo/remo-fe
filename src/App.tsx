@@ -13,6 +13,6 @@ const App: React.FC = () => {
       </ConfigProvider>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

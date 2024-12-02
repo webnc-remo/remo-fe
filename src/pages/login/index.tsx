@@ -2,15 +2,12 @@ import { Icons } from '../../components/Icons';
 import { getOauthGoogleUrl } from '../../utils/utils';
 
 export const Login = () => {
-
   return (
     <div className="flex flex-col h-screen">
       <div className="content flex items-center justify-center flex-grow bg-main_bg bg-cover bg-center">
         <div>
           <div className="shadow-md flex justify-center p-10 mb:p-8 bg-gradient-to-r from-[#FCF5CA] to-[#FBFAF4] rounded-3xl flex-col items-center gap-6 mb:gap-4 w-[604px] mb:w-[300px]">
-            <div className="font-bold text-3xl mb:text-2xl">
-              Login
-            </div>
+            <div className="font-bold text-3xl mb:text-2xl">Login</div>
             <div className="w-full flex items-center justify-center">
               <a
                 href={getOauthGoogleUrl()}
