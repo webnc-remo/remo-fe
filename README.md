@@ -1,1 +1,3 @@
-# remo-fe
+# Remo
+
+## How to run
