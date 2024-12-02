@@ -1,11 +1,18 @@
-import React from "react";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import { Login } from './pages/login';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div>
-      <h1>App Component</h1>
-    </div>
+    <BrowserRouter>
+      <ConfigProvider>
+        <Routes>
+          <Route path="/" element={<div>Home</div>} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </ConfigProvider>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
