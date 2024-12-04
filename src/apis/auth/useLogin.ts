@@ -38,7 +38,9 @@ export const useLogin = () => {
       return false;
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || 'Login failed. Please try again!';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (error as any).response?.data?.message ||
+        'Login failed. Please try again!';
       message.error(errorMessage);
       return false;
     } finally {

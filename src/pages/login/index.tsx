@@ -18,7 +18,11 @@ export const Login: React.FC = () => {
         navigate('/');
       }
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     }
   };
 
@@ -28,7 +32,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     if (accessToken && refreshToken) {
-      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       navigate('/');
     }
