@@ -6,6 +6,7 @@ const publicRuntimeConfig = {
     .VITE_GOOGLE_AUTHORIZED_REDIRECT_URI,
   TOKEN_KEY: 'token',
   REFRESH_TOKEN_KEY: 'refreshToken',
+  USER_KEY: 'user',
   VITE_WEB_URL: import.meta.env.VITE_WEB_URL,
 };
 
@@ -17,5 +18,6 @@ export const {
   TOKEN_KEY,
   REFRESH_TOKEN_KEY,
   VITE_WEB_URL,
+  USER_KEY,
 } = publicRuntimeConfig;
 export default publicRuntimeConfig;

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAuthStore } from '../../stores/authStore';
 import { axiosInstance } from '../index';
 import { registerUrl } from '..';
+import { User } from '../../interface/user.interface';
 
 interface RegisterParams {
   email: string;
@@ -12,11 +13,13 @@ interface RegisterParams {
 interface RegisterResponse {
   accessToken: string;
   refreshToken: string;
+  user: User;
 }
 
 export const useRegister = () => {
   const [loading, setLoading] = useState(false);
   const setTokens = useAuthStore((state) => state.setTokens);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const register = async (params: RegisterParams) => {
     try {
@@ -26,10 +29,11 @@ export const useRegister = () => {
         params
       );
 
-      const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken, user } = response.data;
 
       if (accessToken && refreshToken) {
         setTokens(accessToken, refreshToken);
+        setUser(user);
         message.success('Registration successful!');
         return true;
       }

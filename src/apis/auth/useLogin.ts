@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { loginUrl } from '..';
 import { useAuthStore } from '../../stores/authStore';
 import { axiosInstance } from '../index';
-
+import { User } from '../../interface/user.interface';
 interface LoginParams {
   email: string;
   password: string;
@@ -12,11 +12,13 @@ interface LoginParams {
 interface LoginResponse {
   accessToken: string;
   refreshToken: string;
+  user: User;
 }
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const setTokens = useAuthStore((state) => state.setTokens);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const login = async (params: LoginParams) => {
     try {
@@ -25,11 +27,12 @@ export const useLogin = () => {
         loginUrl,
         params
       );
-      const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken, user } = response.data;
 
       if (accessToken && refreshToken) {
         setTokens(accessToken, refreshToken);
-        message.success('Registration successful!');
+        setUser(user);
+        message.success('Login successful!');
         return true;
       }
       return false;

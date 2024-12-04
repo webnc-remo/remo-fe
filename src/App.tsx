@@ -2,15 +2,25 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import { Login } from './pages/login';
 import { Register } from './pages/register';
+import { Home } from './pages/home';
+import { PrivateRoute } from './components/PrivateRoute';
+import { NotFound } from './pages/notfound';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ConfigProvider>
         <Routes>
-          <Route path="/" element={<div>Home</div>} />
+          {/* public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          {/* private routes */}
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<div>Profile</div>} />
+          </Route>
+          {/* not found */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </ConfigProvider>
     </BrowserRouter>
