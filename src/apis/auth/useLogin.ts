@@ -1,47 +1,44 @@
 import { message } from 'antd';
 import { useState } from 'react';
+import { loginUrl } from '..';
 import { useAuthStore } from '../../stores/authStore';
 import { axiosInstance } from '../index';
-import { registerUrl } from '..';
 import { User } from '../../interface/user.interface';
-
-interface RegisterParams {
+interface LoginParams {
   email: string;
   password: string;
 }
 
-interface RegisterResponse {
+interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   user: User;
 }
 
-export const useRegister = () => {
+export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const setTokens = useAuthStore((state) => state.setTokens);
   const setUser = useAuthStore((state) => state.setUser);
 
-  const register = async (params: RegisterParams) => {
+  const login = async (params: LoginParams) => {
     try {
       setLoading(true);
-      const response = await axiosInstance.post<RegisterResponse>(
-        registerUrl,
+      const response = await axiosInstance.post<LoginResponse>(
+        loginUrl,
         params
       );
-
       const { accessToken, refreshToken, user } = response.data;
 
       if (accessToken && refreshToken) {
         setTokens(accessToken, refreshToken);
         setUser(user);
-        message.success('Registration successful!');
+        message.success('Login successful!');
         return true;
       }
       return false;
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message ||
-        'Registration failed. Please try again!';
+        error.response?.data?.message || 'Login failed. Please try again!';
       message.error(errorMessage);
       return false;
     } finally {
@@ -49,5 +46,5 @@ export const useRegister = () => {
     }
   };
 
-  return { register, loading };
+  return { login, loading };
 };

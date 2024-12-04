@@ -1,5 +1,5 @@
 import { Button, Form, Input } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRegister } from '../../apis/auth/useRegister';
 
 interface RegisterForm {
@@ -81,9 +81,9 @@ export const Register: React.FC = () => {
 
             <div className="text-center">
               <span>Already have an account? </span>
-              <Button type="link" onClick={() => navigate('/login')}>
+              <Link className="text-blue-500" to="/login">
                 Login
-              </Button>
+              </Link>
             </div>
           </Form>
         </div>
