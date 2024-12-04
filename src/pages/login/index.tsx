@@ -66,12 +66,7 @@ export const Login: React.FC = () => {
               <Input.Password placeholder="Enter your password" />
             </Form.Item>
             <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={loading}
-                block
-              >
+              <Button type="primary" htmlType="submit" loading={loading} block>
                 Login
               </Button>
             </Form.Item>
@@ -88,9 +83,7 @@ export const Login: React.FC = () => {
               className="w-full flex items-center justify-center bg-white rounded-full shadow-md py-4 border-transparent border text-sm font-medium text-neutral-7 transition-all hover:text-tertiary-5 hover:border-tertiary-5 focus:border-transparent focus:text-neutral-7"
             >
               <Icons.GoogleIcon />
-              <span className="">
-                Continue with Google
-              </span>
+              <span className="">Continue with Google</span>
             </a>
           </div>
         </div>
