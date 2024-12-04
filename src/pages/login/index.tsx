@@ -1,5 +1,5 @@
 import { Button, Form, Input } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icons } from '../../components/Icons';
 import { getOauthGoogleUrl } from '../../utils/utils';
 import { useLogin } from '../../apis/auth/useLogin';
@@ -21,6 +21,18 @@ export const Login: React.FC = () => {
       setError(err.message);
     }
   };
+
+  const UrlParams = new URLSearchParams(location.search);
+  const accessToken = UrlParams.get('access_token');
+  const refreshToken = UrlParams.get('refresh_token');
+
+  useEffect(() => {
+    if (accessToken && refreshToken) {
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      navigate('/');
+    }
+  }, [accessToken, refreshToken, navigate]);
 
   return (
     <div className="flex flex-col h-screen">
