@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLogout } from '../apis/auth/useLogout';
-import { Avatar, Dropdown, Space, Spin } from 'antd';
+import { Avatar, Dropdown, Space, Spin, Input } from 'antd';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { useGetUserProfile } from '../apis/user/useGetUserProfile'; // Import hook lấy user profile
+import { useGetUserProfile } from '../apis/user/useGetUserProfile';
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
   const navigate = useNavigate();
   const { logout, loading: logoutLoading } = useLogout();
   const { getUserProfile } = useGetUserProfile();
   const [email, setEmail] = useState<string | null>(null);
   const [avatar, setAvatar] = useState<string | null>(null);
+  const [searchValue, setSearchValue] = useState<string>('');
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -22,7 +23,7 @@ const Header: React.FC = () => {
     };
 
     fetchUserProfile();
-  }, [getUserProfile]);
+  }, []);
 
   const handleLogout = async () => {
     const result = await logout();
@@ -31,10 +32,34 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleSearch = (value: string) => {
+    if (value) {
+      navigate(`/search?query=${encodeURIComponent(value)}`);
+    }
+  };
+
   return (
-    <header className="flex justify-between items-center p-4 bg-gradient-to-r from-[#FCF5CA] to-[#FBFAF4] shadow-md">
-      <div className="text-2xl font-bold">Logo</div>
-      <div className="flex items-center space-x-4">
+    <header className="flex flex-col md:flex-row justify-between items-center p-4 bg-gradient-to-r from-[#FCF5CA] to-[#FBFAF4] shadow-md">
+      <button
+        onClick={() => navigate('/')}
+        className="text-2xl font-bold text-center"
+      >
+        Movie App
+      </button>
+
+      <div className="flex-grow"></div>
+
+      <div className="flex items-center space-x-4 w-full md:w-auto">
+        <Input.Search
+          placeholder="Search..."
+          allowClear
+          enterButton
+          size="large"
+          value={searchValue}
+          onSearch={handleSearch}
+          onChange={(e) => setSearchValue(e.target.value)}
+          style={{ maxWidth: '400px', flex: 1 }}
+        />
         <Dropdown
           menu={{
             items: [
@@ -73,5 +98,3 @@ const Header: React.FC = () => {
     </header>
   );
 };
-
-export default Header;
