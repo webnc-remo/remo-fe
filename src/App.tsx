@@ -3,8 +3,10 @@ import { ConfigProvider } from 'antd';
 import { Login } from './pages/login';
 import { Register } from './pages/register';
 import { Home } from './pages/home';
+import MovieSearchPage from './pages/search';
 import { PrivateRoute } from './components/PrivateRoute';
 import { NotFound } from './pages/notfound';
+import { Layout } from './components/layout';
 
 const App: React.FC = () => {
   return (
@@ -16,8 +18,11 @@ const App: React.FC = () => {
           <Route path="/register" element={<Register />} />
           {/* private routes */}
           <Route path="/" element={<PrivateRoute />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<div>Profile</div>} />
+            <Route element={<Layout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/profile" element={<div>Profile</div>} />
+              <Route path="/search" element={<MovieSearchPage />} />
+            </Route>
           </Route>
           {/* not found */}
           <Route path="*" element={<NotFound />} />
