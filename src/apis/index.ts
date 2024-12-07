@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-import { REFRESH_TOKEN_KEY, TOKEN_KEY, VITE_URL_API } from '../config';
+import {
+  REFRESH_TOKEN_KEY,
+  TOKEN_KEY,
+  VITE_URL_API,
+  TMDB_URL_API,
+  TMDB_ACCESS_TOKEN,
+} from '../config';
 
 /* Auth URL */
 export const registerUrl = `${VITE_URL_API}/auth/register`;
@@ -10,6 +16,9 @@ export const refreshTokenUrl = `${VITE_URL_API}/auth/refresh-token`;
 
 /* User URL */
 export const getUserUrl = `${VITE_URL_API}/user/profile`;
+
+/* Movie URL */
+export const searchMovieUrl = `${TMDB_URL_API}/search/movie`;
 
 export const axiosInstance = axios.create({
   baseURL: VITE_URL_API,
@@ -28,7 +37,9 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    return Promise.reject(
+      new Error(error.message || 'An unknown error occurred')
+    );
   }
 );
 
@@ -70,6 +81,40 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(
+      new Error(error.message || 'An unknown error occurred')
+    );
+  }
+);
+
+export const axiosInstanceTMDB = axios.create({
+  baseURL: TMDB_URL_API,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+axiosInstanceTMDB.interceptors.request.use(
+  (config) => {
+    const tmdbAccessToken = TMDB_ACCESS_TOKEN;
+    if (tmdbAccessToken) {
+      config.headers.Authorization = `Bearer ${tmdbAccessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(
+      new Error(error.message || 'An unknown error occurred')
+    );
+  }
+);
+
+axiosInstanceTMDB.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    return Promise.reject(
+      new Error(error.message || 'An unknown error occurred')
+    );
   }
 );
