@@ -25,7 +25,9 @@ const Header: React.FC = () => {
               {
                 key: '1',
                 icon: <UserOutlined />,
-                label: <span onClick={() => navigate('/profile')}>Edit Profile</span>,
+                label: (
+                  <span onClick={() => navigate('/profile')}>Edit Profile</span>
+                ),
               },
               {
                 key: '2',
@@ -37,7 +39,10 @@ const Header: React.FC = () => {
           }}
           trigger={['click']}
         >
-          <button onClick={(e) => e.preventDefault()} className="flex items-center">
+          <button
+            onClick={(e) => e.preventDefault()}
+            className="flex items-center"
+          >
             <Space>
               <Avatar icon={<UserOutlined />} />
             </Space>
