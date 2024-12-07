@@ -4,6 +4,7 @@ import { loginUrl } from '..';
 import { useAuthStore } from '../../stores/authStore';
 import { axiosInstance } from '../index';
 import { User } from '../../interface/user.interface';
+
 interface LoginParams {
   email: string;
   password: string;
@@ -18,7 +19,6 @@ interface LoginResponse {
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const setTokens = useAuthStore((state) => state.setTokens);
-  const setUser = useAuthStore((state) => state.setUser);
 
   const login = async (params: LoginParams) => {
     try {
@@ -27,11 +27,10 @@ export const useLogin = () => {
         loginUrl,
         params
       );
-      const { accessToken, refreshToken, user } = response.data;
+      const { accessToken, refreshToken } = response.data;
 
       if (accessToken && refreshToken) {
         setTokens(accessToken, refreshToken);
-        setUser(user);
         message.success('Login successful!');
         return true;
       }

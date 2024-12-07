@@ -1,42 +1,44 @@
 import { Button, Form, Input } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Icons } from '../../components/Icons';
 import { getOauthGoogleUrl } from '../../utils/utils';
 import { useLogin } from '../../apis/auth/useLogin';
+import { useAuthStore } from '../../stores/authStore';
 import { Link, useNavigate } from 'react-router-dom';
+
 export const Login: React.FC = () => {
   const [form] = Form.useForm();
   const [error, setError] = useState('');
   const { login, loading } = useLogin();
   const navigate = useNavigate();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleLogin = async (values: { email: string; password: string }) => {
     const { email, password } = values;
     try {
-      const success = await login({ email, password });
-      if (success) {
-        navigate('/');
-      }
+      await login({ email, password });
+      navigate('/');
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('An unknown error occurred');
-      }
+      setError(err.message);
     }
   };
 
-  const UrlParams = new URLSearchParams(location.search);
-  const accessToken = UrlParams.get('access_token');
-  const refreshToken = UrlParams.get('refresh_token');
-
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const accessToken = params.get('accessToken');
+    const refreshToken = params.get('refreshToken');
+
     if (accessToken && refreshToken) {
-      localStorage.setItem('token', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
+      useAuthStore.getState().setTokens(accessToken, refreshToken);
       navigate('/');
     }
-  }, [accessToken, refreshToken, navigate]);
+  }, [navigate]);
 
   return (
     <div className="flex flex-col h-screen">
@@ -67,10 +69,15 @@ export const Login: React.FC = () => {
                 { required: true, message: 'Please input your password!' },
               ]}
             >
-              <Input.Password placeholder="Enter your password" />
+              <Input.Password placeholder="Enter your password" className="w-full" style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" loading={loading} block>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                block
+              >
                 Login
               </Button>
             </Form.Item>
@@ -87,7 +94,9 @@ export const Login: React.FC = () => {
               className="w-full flex items-center justify-center bg-white rounded-full shadow-md py-4 border-transparent border text-sm font-medium text-neutral-7 transition-all hover:text-tertiary-5 hover:border-tertiary-5 focus:border-transparent focus:text-neutral-7"
             >
               <Icons.GoogleIcon />
-              <span className="">Continue with Google</span>
+              <span className="">
+                Continue with Google
+              </span>
             </a>
           </div>
         </div>
