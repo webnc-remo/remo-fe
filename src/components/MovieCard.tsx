@@ -54,13 +54,15 @@ export const MovieCard: React.FC<{ movie: Movie }> = ({ movie }) => {
         description={
           <Space direction="vertical" size={4}>
             <Text>
-              {new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+              {new Date(movie.release_date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
             </Text>
 
             <Space size="small">
-              <Text>
-                Rating: {movie.vote_average.toFixed(1)}
-              </Text>
+              <Text>Rating: {movie.vote_average.toFixed(1)}</Text>
             </Space>
           </Space>
         }

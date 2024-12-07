@@ -29,13 +29,22 @@ export const Home: React.FC = () => {
         />
       </div>
 
-      {loading && <Spin size="large" style={{ display: 'block', margin: '0 auto' }} />}
+      {loading && (
+        <Spin size="large" style={{ display: 'block', margin: '0 auto' }} />
+      )}
 
       <div style={{ marginBottom: '20px' }}></div>
-      <Row gutter={[3, 3]} style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+      <Row
+        gutter={[3, 3]}
+        style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}
+      >
         {movies.map((movie) => (
           <Col
-            xs={12} sm={8} md={6} lg={4} xl={3}
+            xs={12}
+            sm={8}
+            md={6}
+            lg={4}
+            xl={3}
             key={movie.id}
             style={{ display: 'flex', justifyContent: 'flex-start' }}
           >
@@ -43,6 +52,6 @@ export const Home: React.FC = () => {
           </Col>
         ))}
       </Row>
-    </div >
+    </div>
   );
 };
