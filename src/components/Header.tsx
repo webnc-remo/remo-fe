@@ -55,7 +55,10 @@ const Header: React.FC = () => {
           }}
           trigger={['click']}
         >
-          <button onClick={(e) => e.preventDefault()} className="flex items-center space-x-4">
+          <button
+            onClick={(e) => e.preventDefault()}
+            className="flex items-center space-x-4"
+          >
             {email && <span>{email}</span>}
             <Space>
               {avatar ? (

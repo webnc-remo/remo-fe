@@ -19,7 +19,10 @@ export const Register: React.FC = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleRegister = async (values: { email: string; password: string }) => {
+  const handleRegister = async (values: {
+    email: string;
+    password: string;
+  }) => {
     const { email, password } = values;
     try {
       await register({ email, password });
@@ -72,7 +75,9 @@ export const Register: React.FC = () => {
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(new Error('The two passwords do not match!'));
+                    return Promise.reject(
+                      new Error('The two passwords do not match!')
+                    );
                   },
                 }),
               ]}
