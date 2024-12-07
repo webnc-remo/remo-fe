@@ -12,6 +12,7 @@ export const Login: React.FC = () => {
   const { login, loading } = useLogin();
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const setTokens = useAuthStore((state) => state.setTokens);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -24,21 +25,22 @@ export const Login: React.FC = () => {
     try {
       await login({ email, password });
       navigate('/');
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       setError(err.message);
     }
   };
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get('accessToken');
-    const refreshToken = params.get('refreshToken');
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
 
     if (accessToken && refreshToken) {
-      useAuthStore.getState().setTokens(accessToken, refreshToken);
+      setTokens(accessToken, refreshToken);
       navigate('/');
     }
-  }, [navigate]);
+  }, [navigate, setTokens]);
 
   return (
     <div className="flex flex-col h-screen">

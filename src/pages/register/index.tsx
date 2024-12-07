@@ -19,15 +19,13 @@ export const Register: React.FC = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleRegister = async (values: {
-    email: string;
-    password: string;
-  }) => {
+  const handleRegister = async (values: { email: string; password: string }) => {
     const { email, password } = values;
     try {
       await register({ email, password });
       navigate('/');
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       setError(err.message);
     }
   };
@@ -62,6 +60,24 @@ export const Register: React.FC = () => {
               ]}
             >
               <Input.Password placeholder="Enter your password" />
+            </Form.Item>
+            <Form.Item
+              name="confirm"
+              label="Confirm Password"
+              dependencies={['password']}
+              rules={[
+                { required: true, message: 'Please confirm your password!' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('The two passwords do not match!'));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password placeholder="Confirm your password" />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={loading} block>
