@@ -19,6 +19,8 @@ export const getUserUrl = `${VITE_URL_API}/user/profile`;
 
 /* Movie URL */
 export const searchMovieUrl = `${TMDB_URL_API}/search/movie`;
+export const getTrendingMovieUrl = (timeWindow: string) =>
+  `${TMDB_URL_API}/trending/movie/${timeWindow}`;
 
 export const axiosInstance = axios.create({
   baseURL: VITE_URL_API,
