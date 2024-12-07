@@ -11,7 +11,7 @@ export const MovieSearch: React.FC<{ initialQuery?: string }> = ({
   const { movies, loading } = useSearchMovie(initialQuery ?? '');
 
   return (
-    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+    <div style={{ padding: '20px', margin: '0 auto' }}>
       <Title level={2} style={{ textAlign: 'center', marginBottom: '20px' }}>
         Movie Search Results for "{initialQuery}"
       </Title>
@@ -27,9 +27,20 @@ export const MovieSearch: React.FC<{ initialQuery?: string }> = ({
         </div>
       )}
 
-      <Row gutter={[16, 16]} style={{ justifyContent: 'center' }}>
+      <Row
+        gutter={[3, 3]}
+        style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}
+      >
         {movies.map((movie) => (
-          <Col xs={12} sm={8} md={6} lg={6} xl={6} key={movie.id}>
+          <Col
+            xs={12}
+            sm={8}
+            md={6}
+            lg={4}
+            xl={3}
+            key={movie.id}
+            style={{ display: 'flex', justifyContent: 'flex-start' }}
+          >
             <MovieCard movie={movie} />
           </Col>
         ))}
