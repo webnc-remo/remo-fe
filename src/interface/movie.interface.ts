@@ -1,3 +1,8 @@
+export interface Genre {
+  id: number;
+  name: string;
+}
+
 export interface Movie {
   id: number;
   title: string;
@@ -13,4 +18,6 @@ export interface Movie {
   backdrop_path: string | null;
   original_language: string;
   video: boolean;
+  genres?: Genre[];
+  tagline?: string;
 }
