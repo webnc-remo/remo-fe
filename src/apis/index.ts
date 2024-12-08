@@ -19,9 +19,17 @@ export const getUserUrl = `${VITE_URL_API}/user/profile`;
 
 /* Movie URL */
 export const searchMovieUrl = `${TMDB_URL_API}/search/movie`;
+export const getMovieDetailUrl = (movieId: string) =>
+  `${TMDB_URL_API}/movie/${movieId}`;
 export const getTrendingMovieUrl = (timeWindow: string) =>
   `${TMDB_URL_API}/trending/movie/${timeWindow}`;
+export const getMovieCardImageUrl = (path: string) =>
+  `https://media.themoviedb.org/t/p/w220_and_h330_face/${path}`;
+export const getMovieDetailImageUrl = (path: string) =>
+  `https://media.themoviedb.org/t/p/w600_and_h900_bestv2/${path}`;
+export const noImageUrl = 'https://via.placeholder.com/500x750?text=No+Image';
 
+/* Axios Instance Remo */
 export const axiosInstance = axios.create({
   baseURL: VITE_URL_API,
   timeout: 10000,
@@ -96,6 +104,8 @@ export const axiosInstanceTMDB = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+/* Axios Instance TMDB */
 
 axiosInstanceTMDB.interceptors.request.use(
   (config) => {
