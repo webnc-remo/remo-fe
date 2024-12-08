@@ -46,4 +46,4 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no root@146.190.84.85 'bash -s' < ./deploy.sh
+          ssh -o StrictHostKeyChecking=no root@146.190.84.85 'cd remo-deployment && bash -s' < ./deploy.sh
