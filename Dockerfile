@@ -1,5 +1,5 @@
 # Use Node.js base image
-FROM node:20 AS base
+FROM node:18 AS base
 
 WORKDIR /app
 
@@ -26,9 +26,6 @@ RUN npm run build
 # Serve the static files
 FROM base AS runner
 
-# Install serve globally
-RUN npm install -g serve
-
 # Ensure node can access dist folder
 COPY --from=builder /app/dist /app/dist
 RUN chown -R node:node /app/dist
@@ -37,4 +34,5 @@ USER node
 
 EXPOSE 3001
 
-CMD ["serve", "-s", "dist", "-l", "3001"]
+# Use npx to run serve without installing it globally
+CMD ["npx", "serve", "-s", "dist", "-l", "3001"]
