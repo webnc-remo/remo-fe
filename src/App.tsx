@@ -14,16 +14,16 @@ const App: React.FC = () => {
     <BrowserRouter>
       <ConfigProvider>
         <Routes>
-          {/* public routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          {/* private routes */}
-          <Route path="/" element={<PrivateRoute />}>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Home />} />
+          <Route element={<Layout />}>
+            {/* public routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/search" element={<MovieSearchPage />} />
+            <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+            {/* private routes */}
+            <Route path="/" element={<PrivateRoute />}>
               <Route path="/profile" element={<div>Profile</div>} />
-              <Route path="/search" element={<MovieSearchPage />} />
-              <Route path="/movie/:movieId" element={<MovieDetailPage />} />
             </Route>
           </Route>
           {/* not found */}
