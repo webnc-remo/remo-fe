@@ -72,7 +72,9 @@ export const Header: React.FC = () => {
                   key: '1',
                   icon: <UserOutlined />,
                   label: (
-                    <span onClick={() => navigate('/profile')}>Edit Profile</span>
+                    <span onClick={() => navigate('/profile')}>
+                      Edit Profile
+                    </span>
                   ),
                 },
                 {
@@ -101,10 +103,18 @@ export const Header: React.FC = () => {
           </Dropdown>
         ) : (
           <div className="flex space-x-2">
-            <Button type="primary" onClick={() => navigate('/login')} size="large">
+            <Button
+              type="primary"
+              onClick={() => navigate('/login')}
+              size="large"
+            >
               Login
             </Button>
-            <Button type="dashed" onClick={() => navigate('/register')} size="large">
+            <Button
+              type="dashed"
+              onClick={() => navigate('/register')}
+              size="large"
+            >
               Register
             </Button>
           </div>
