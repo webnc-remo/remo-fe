@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLogout } from '../apis/auth/useLogout';
 import { Avatar, Dropdown, Space, Spin, Input, Button } from 'antd';
@@ -9,25 +9,10 @@ import { useAuthStore } from '../stores/authStore';
 export const Header: React.FC = () => {
   const navigate = useNavigate();
   const { logout, loading: logoutLoading } = useLogout();
-  const { getUserProfile } = useGetUserProfile();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const [email, setEmail] = useState<string | null>(null);
-  const [avatar, setAvatar] = useState<string | null>(null);
+  const { profile, loading: profileLoading } = useGetUserProfile();
+
   const [searchValue, setSearchValue] = useState<string>('');
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (isAuthenticated) {
-        const profile = await getUserProfile();
-        if (profile) {
-          setEmail(profile.email);
-          setAvatar(profile.avatar);
-        }
-      }
-    };
-
-    fetchUserProfile();
-  }, [isAuthenticated]);
 
   const handleLogout = async () => {
     const result = await logout();
@@ -91,14 +76,22 @@ export const Header: React.FC = () => {
               onClick={(e) => e.preventDefault()}
               className="flex items-center space-x-4"
             >
-              {email && <span className="hidden md:block">{email}</span>}
-              <Space>
-                {avatar ? (
-                  <Avatar src={avatar} alt="Avatar" />
-                ) : (
-                  <Avatar icon={<UserOutlined />} />
-                )}
-              </Space>
+              {profileLoading ? (
+                <Spin size="small" />
+              ) : (
+                <>
+                  {profile?.email && (
+                    <span className="hidden md:block">{profile?.email}</span>
+                  )}
+                  <Space>
+                    {profile?.avatar ? (
+                      <Avatar src={profile?.avatar} alt="Avatar" />
+                    ) : (
+                      <Avatar icon={<UserOutlined />} />
+                    )}
+                  </Space>
+                </>
+              )}
             </button>
           </Dropdown>
         ) : (
