@@ -80,7 +80,9 @@ export const Header: React.FC = () => {
                 <Spin size="small" />
               ) : (
                 <>
-                  {profile?.email && <span className="hidden md:block">{profile?.email}</span>}
+                  {profile?.email && (
+                    <span className="hidden md:block">{profile?.email}</span>
+                  )}
                   <Space>
                     {profile?.avatar ? (
                       <Avatar src={profile?.avatar} alt="Avatar" />
