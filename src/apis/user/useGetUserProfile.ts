@@ -1,31 +1,45 @@
 import { message } from 'antd';
 import { axiosInstance } from '../index';
 import { getUserUrl } from '..';
+import { useEffect, useState } from 'react';
+import { useAuthStore } from '../../stores/authStore';
 
 interface UserProfileResponse {
   id: string;
   email: string;
-  fullName: string;
   avatar: string;
 }
 
 export const useGetUserProfile = () => {
-  const getUserProfile = async () => {
-    try {
-      const response = await axiosInstance.get<UserProfileResponse>(getUserUrl);
+  const [loading, setLoading] = useState(false);
+  const [profile, setProfile] = useState<UserProfileResponse | null>(null);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-      const { email, avatar } = response.data;
+  useEffect(() => {
+    const getUserProfile = async () => {
+      if (!isAuthenticated) {
+        return null;
+      }
 
-      return { email, avatar };
-    } catch (error) {
-      const errorMessage =
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (error as any).response?.data?.message ||
-        'Failed to get user profile. Please try again!';
-      message.error(errorMessage);
-      return null;
-    }
-  };
+      setLoading(true);
+      try {
+        const response = await axiosInstance.get(getUserUrl);
+        if (response.data) {
+          setProfile(response.data);
+        }
+      } catch (error) {
+        message.error(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (error as any).response?.data?.message ||
+            'Failed to get user profile. Please try again!'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return { getUserProfile };
+    getUserProfile();
+  }, [isAuthenticated]);
+
+  return { profile, loading };
 };

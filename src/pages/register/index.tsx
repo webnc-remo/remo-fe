@@ -92,7 +92,7 @@ export const Register: React.FC = () => {
             <div className="text-center">
               <span>Already have an account? </span>
               <Link className="text-blue-500" to="/login">
-                Sign In
+                Login
               </Link>
             </div>
           </Form>

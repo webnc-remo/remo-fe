@@ -8,6 +8,7 @@ import MovieDetailPage from './pages/movie';
 import { PrivateRoute } from './components/PrivateRoute';
 import { NotFound } from './pages/notfound';
 import { Layout } from './components/layout';
+import { Profile } from './pages/profile/Profile';
 
 const App: React.FC = () => {
   return (
@@ -23,7 +24,7 @@ const App: React.FC = () => {
             <Route path="/movie/:movieId" element={<MovieDetailPage />} />
             {/* private routes */}
             <Route path="/" element={<PrivateRoute />}>
-              <Route path="/profile" element={<div>Profile</div>} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
           </Route>
           {/* not found */}
