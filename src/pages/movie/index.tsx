@@ -24,7 +24,6 @@ const MovieDetailPage = () => {
         />
       ) : (
         <Row
-          gutter={[24, 24]}
           style={{
             padding: '2vw',
             backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7)), url(${movie?.backdrop_path ? getMovieDetailImageUrl(movie?.backdrop_path) : noImageUrl})`,

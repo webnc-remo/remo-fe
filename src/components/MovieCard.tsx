@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Space } from 'antd';
+import { Card, Typography, Progress } from 'antd';
 import { Movie } from '../interface/movie.interface';
 import { Link } from 'react-router-dom';
 import { getMovieCardImageUrl, noImageUrl } from '../apis';
@@ -16,24 +16,37 @@ export const MovieCard: React.FC<{ movie: Movie }> = ({ movie }) => {
       <Card
         hoverable
         cover={
-          <img
-            alt={movie.title}
-            src={imageUrl}
-            style={{
-              width: '100%',
-              height: '330px',
-              objectFit: 'cover',
-              borderRadius: '10px 10px 0 0',
-            }}
-          />
+          <div style={{ position: 'relative' }}>
+            <img
+              alt={movie.title}
+              src={imageUrl}
+            />
+            <Progress
+              size={35}
+              style={{
+                  fontWeight: 'bold',
+                  backgroundColor: '#1B4D4F',
+                  borderRadius: '50%',
+                  padding: '2px',
+                  position: 'absolute',
+                  bottom: '-15px',
+                  left: '8px',
+                }}
+                strokeWidth={8}
+                strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
+                type="circle"
+                percent={
+                  movie?.vote_average ? Math.floor(movie?.vote_average * 10) : 0
+                }
+            />
+          </div>
         }
         style={{
-          width: '75%',
           maxWidth: '360px',
           marginBottom: '10px',
           borderRadius: '10px',
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-          transition: 'transform 0.3s ease-in-out',
+          transition: 'transform 0.5s ease-in-out',
         }}
         onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
         onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
@@ -44,29 +57,26 @@ export const MovieCard: React.FC<{ movie: Movie }> = ({ movie }) => {
               style={{
                 fontSize: '18px',
                 fontWeight: 'bold',
-                marginBottom: '8px',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 maxWidth: '250px',
+                padding: '0',
+                margin: '5px 0 0 0',
               }}
+              title={movie.title}
             >
               {movie.title}
             </Title>
           }
           description={
-            <Space direction="vertical" size={4}>
-              <Text>
+            <Text>
                 {new Date(movie.release_date).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'short',
                   day: 'numeric',
                 })}
-              </Text>
-              <Space size="small">
-                <Text>Rating: {movie.vote_average.toFixed(1)}</Text>
-              </Space>
-            </Space>
+            </Text>
           }
         />
       </Card>

@@ -16,7 +16,7 @@ export const Home: React.FC = () => {
 
   return (
     <div className="home-container">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4" style={{ position: 'relative' }}>
         <Title level={2} className="trending-title" style={{ marginBottom: 0 }}>
           Trending
         </Title>
@@ -25,28 +25,26 @@ export const Home: React.FC = () => {
           onChange={handleToggle}
           checkedChildren="This Week"
           unCheckedChildren="Today"
-          className="toggle-switch"
         />
+        {loading && (
+          <Spin size="large" style={{ display: 'block', margin: '0 auto', position: 'absolute', right: '50%' }} />
+        )}
       </div>
 
-      {loading && (
-        <Spin size="large" style={{ display: 'block', margin: '0 auto' }} />
-      )}
 
       <div style={{ marginBottom: '20px' }}></div>
       <Row
-        gutter={[3, 3]}
-        style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}
+        gutter={[16, 16]}
+        style={{ flexWrap: 'wrap', justifyContent: 'flex-start', margin: '0 auto' }}
       >
         {movies.map((movie) => (
           <Col
             xs={12}
             sm={8}
             md={6}
-            lg={4}
-            xl={3}
+            lg={8}
+            xl={4}
             key={movie.id}
-            style={{ display: 'flex', justifyContent: 'flex-start' }}
           >
             <MovieCard movie={movie} />
           </Col>

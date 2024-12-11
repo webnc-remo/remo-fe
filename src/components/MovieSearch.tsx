@@ -1,14 +1,21 @@
 import React from 'react';
-import { Row, Col, Spin, Typography } from 'antd';
+import { Row, Col, Spin, Typography, Pagination } from 'antd';
 import { MovieCard } from './MovieCard';
 import { useSearchMovie } from '../apis/movie/useSearchMovie';
-
+import { useNavigate } from 'react-router-dom';
 const { Title } = Typography;
 
-export const MovieSearch: React.FC<{ initialQuery?: string }> = ({
+export const MovieSearch: React.FC<{ initialQuery?: string, initialPage?: number }> = ({
   initialQuery,
+  initialPage,
 }) => {
-  const { movies, loading } = useSearchMovie(initialQuery ?? '');
+  const { movies, loading, totalPages, currentPage, setCurrentPage } = useSearchMovie(initialQuery ?? '', initialPage ?? 1);
+  const navigate = useNavigate();
+
+  const handlePageChange = (page: number) => {
+    navigate(`/search?query=${encodeURIComponent(initialQuery ?? '')}&page=${page}`);
+    setCurrentPage(page);
+  };
 
   return (
     <div style={{ padding: '20px', margin: '0 auto' }}>
@@ -28,23 +35,35 @@ export const MovieSearch: React.FC<{ initialQuery?: string }> = ({
       )}
 
       <Row
-        gutter={[3, 3]}
-        style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}
+        gutter={[16, 16]}
+        style={{ flexWrap: 'wrap', justifyContent: 'flex-start', margin: '0 auto' }}
       >
         {movies.map((movie) => (
           <Col
             xs={12}
             sm={8}
             md={6}
-            lg={4}
-            xl={3}
+            lg={8}
+            xl={4}
             key={movie.id}
-            style={{ display: 'flex', justifyContent: 'flex-start' }}
           >
             <MovieCard movie={movie} />
           </Col>
         ))}
       </Row>
+      {!loading && (
+        <Pagination
+          current={currentPage}
+          total={totalPages * 20}
+          onChange={handlePageChange}
+          defaultPageSize={20}
+          defaultCurrent={initialPage}
+          style={{ marginTop: '20px', textAlign: 'center', display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center', 
+          }}
+        />
+      )}
     </div>
   );
 };

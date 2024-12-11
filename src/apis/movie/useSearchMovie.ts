@@ -4,9 +4,11 @@ import { Movie } from '../../interface/movie.interface';
 import { searchMovieUrl } from '..';
 import { axiosInstanceTMDB } from '../index';
 
-export const useSearchMovie = (query: string) => {
+export const useSearchMovie = (query: string, initialPage: number) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     const searchMovies = async () => {
@@ -17,11 +19,13 @@ export const useSearchMovie = (query: string) => {
         const response = await axiosInstanceTMDB.get(searchMovieUrl, {
           params: {
             query,
+            page: currentPage,
           },
         });
 
         if (response.data.results) {
           setMovies(response.data.results);
+          setTotalPages(response.data.total_pages);
         }
       } catch (error) {
         const errorMessage =
@@ -35,7 +39,7 @@ export const useSearchMovie = (query: string) => {
     };
 
     searchMovies();
-  }, [query]);
+  }, [query, currentPage]);
 
-  return { movies, loading };
+  return { movies, loading, totalPages, currentPage, setCurrentPage };
 };

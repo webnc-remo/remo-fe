@@ -82,3 +82,26 @@ td:last-child {
 .menu ul {
   padding-left: 16px;
 }
+
+.responsive-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 1600px) {
+  .responsive-container {
+    max-width: 70% !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-container {
+    max-width: 1180px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-container {
+    max-width: 960px;
+  }
+}
