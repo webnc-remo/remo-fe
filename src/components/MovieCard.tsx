@@ -17,27 +17,24 @@ export const MovieCard: React.FC<{ movie: Movie }> = ({ movie }) => {
         hoverable
         cover={
           <div style={{ position: 'relative' }}>
-            <img
-              alt={movie.title}
-              src={imageUrl}
-            />
+            <img alt={movie.title} src={imageUrl} />
             <Progress
               size={35}
               style={{
-                  fontWeight: 'bold',
-                  backgroundColor: '#1B4D4F',
-                  borderRadius: '50%',
-                  padding: '2px',
-                  position: 'absolute',
-                  bottom: '-15px',
-                  left: '8px',
-                }}
-                strokeWidth={8}
-                strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
-                type="circle"
-                percent={
-                  movie?.vote_average ? Math.floor(movie?.vote_average * 10) : 0
-                }
+                fontWeight: 'bold',
+                backgroundColor: '#1B4D4F',
+                borderRadius: '50%',
+                padding: '2px',
+                position: 'absolute',
+                bottom: '-15px',
+                left: '8px',
+              }}
+              strokeWidth={8}
+              strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
+              type="circle"
+              percent={
+                movie?.vote_average ? Math.floor(movie?.vote_average * 10) : 0
+              }
             />
           </div>
         }
@@ -71,11 +68,11 @@ export const MovieCard: React.FC<{ movie: Movie }> = ({ movie }) => {
           }
           description={
             <Text>
-                {new Date(movie.release_date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
+              {new Date(movie.release_date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
             </Text>
           }
         />

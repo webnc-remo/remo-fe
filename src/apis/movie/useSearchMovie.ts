@@ -1,37 +1,60 @@
+import { useState, useEffect, useRef } from 'react';
 import { message } from 'antd';
-import { useState, useEffect } from 'react';
+import { axiosInstance, searchMovieUrl, SearchParam } from '..';
 import { Movie } from '../../interface/movie.interface';
-import { searchMovieUrl } from '..';
-import { axiosInstanceTMDB } from '../index';
 
-export const useSearchMovie = (query: string, initialPage: number) => {
+interface MoviesResponse {
+  items: Movie[];
+  meta: {
+    page: number;
+    take: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+  };
+}
+
+export const useSearchMovie = (query: SearchParam) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(initialPage);
-  const [totalPages, setTotalPages] = useState(0);
+  const [meta, setMeta] = useState({
+    page: query.page,
+    take: query.take,
+    itemCount: 0,
+    pageCount: 0,
+    hasPreviousPage: false,
+    hasNextPage: false,
+  });
+
+  const prevQueryRef = useRef<SearchParam | null>(null);
 
   useEffect(() => {
+    if (
+      prevQueryRef.current &&
+      JSON.stringify(prevQueryRef.current) === JSON.stringify(query)
+    ) {
+      return;
+    }
+
+    prevQueryRef.current = query;
+
     const searchMovies = async () => {
-      if (!query) return;
-
       setLoading(true);
-      try {
-        const response = await axiosInstanceTMDB.get(searchMovieUrl, {
-          params: {
-            query,
-            page: currentPage,
-          },
-        });
 
-        if (response.data.results) {
-          setMovies(response.data.results);
-          setTotalPages(response.data.total_pages);
+      try {
+        const url = searchMovieUrl(query);
+        const response = await axiosInstance.get<MoviesResponse>(url);
+
+        if (response.data) {
+          setMovies(response.data.items);
+          setMeta(response.data.meta);
         }
       } catch (error) {
         const errorMessage =
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (error as any).response?.data?.message ||
-          'Failed to search movies. Please try again!';
+          (error as any)?.response?.data?.message ||
+          'Failed to fetch movies. Please try again.';
         message.error(errorMessage);
       } finally {
         setLoading(false);
@@ -39,7 +62,11 @@ export const useSearchMovie = (query: string, initialPage: number) => {
     };
 
     searchMovies();
-  }, [query, currentPage]);
+  }, [query]);
 
-  return { movies, loading, totalPages, currentPage, setCurrentPage };
+  return {
+    movies,
+    meta,
+    loading,
+  };
 };
