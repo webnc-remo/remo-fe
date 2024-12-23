@@ -8,6 +8,13 @@ import {
   TMDB_ACCESS_TOKEN,
 } from '../config';
 
+export interface SearchParam {
+  page: number;
+  take: number;
+  q: string;
+  order: 'asc' | 'desc';
+}
+
 /* Auth URL */
 export const registerUrl = `${VITE_URL_API}/auth/register`;
 export const loginUrl = `${VITE_URL_API}/auth/login`;
@@ -18,7 +25,9 @@ export const refreshTokenUrl = `${VITE_URL_API}/auth/refresh-token`;
 export const getUserUrl = `${VITE_URL_API}/user/profile`;
 
 /* Movie URL */
-export const searchMovieUrl = `${TMDB_URL_API}/search/movie`;
+export const searchMovieUrl = (searchParam: SearchParam) =>
+  `${VITE_URL_API}/movies/search?page=${searchParam.page}&take=${searchParam.take}&q=${searchParam.q}&order=${searchParam.order}`;
+
 export const getMovieDetailUrl = (movieId: string) =>
   `${TMDB_URL_API}/movie/${movieId}`;
 export const getTrendingMovieUrl = (timeWindow: string) =>
@@ -32,7 +41,7 @@ export const noImageUrl = 'https://via.placeholder.com/500x750?text=No+Image';
 /* Axios Instance Remo */
 export const axiosInstance = axios.create({
   baseURL: VITE_URL_API,
-  timeout: 10000,
+  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
   },
