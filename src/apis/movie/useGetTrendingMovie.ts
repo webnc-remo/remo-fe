@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Movie } from '../../interface/movie.interface';
 import { message } from 'antd';
-import { axiosInstanceTMDB } from '../index';
-import { getTrendingMovieUrl } from '..';
+import { axiosInstance, getTrendingMovieUrl } from '..';
+
+export class GetTrendingMovie {
+  results!: Movie[];
+}
 
 export const useGetTrendingMovie = (timeWindow: 'day' | 'week') => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -13,9 +16,10 @@ export const useGetTrendingMovie = (timeWindow: 'day' | 'week') => {
       setLoading(true);
       try {
         const url = getTrendingMovieUrl(timeWindow);
-        const response = await axiosInstanceTMDB.get(url);
+        const response = await axiosInstance.get<GetTrendingMovie>(url);
 
-        if (response.data.results) {
+        console.log('res', response);
+        if (response.data) {
           setMovies(response.data.results);
         }
       } catch (err) {
