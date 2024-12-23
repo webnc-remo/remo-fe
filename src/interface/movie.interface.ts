@@ -5,6 +5,7 @@ export interface Genre {
 
 export interface Movie {
   id: number;
+  tmdb_id: number;
   title: string;
   original_title: string;
   poster_path: string | null;

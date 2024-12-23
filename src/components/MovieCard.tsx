@@ -12,7 +12,7 @@ export const MovieCard: React.FC<{ movie: Movie }> = ({ movie }) => {
     : noImageUrl;
 
   return (
-    <Link to={`/movie/${movie.id}`}>
+    <Link to={`/movie/${movie.tmdb_id}`}>
       <Card
         hoverable
         cover={

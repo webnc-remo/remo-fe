@@ -31,7 +31,7 @@ export const searchMovieUrl = (searchParam: SearchParam) =>
 export const getMovieDetailUrl = (movieId: string) =>
   `${TMDB_URL_API}/movie/${movieId}`;
 export const getTrendingMovieUrl = (timeWindow: string) =>
-  `${TMDB_URL_API}/trending/movie/${timeWindow}`;
+  `${VITE_URL_API}/movies/trending/${timeWindow}`;
 export const getMovieCardImageUrl = (path: string) =>
   `https://media.themoviedb.org/t/p/w220_and_h330_face/${path}`;
 export const getMovieDetailImageUrl = (path: string) =>
