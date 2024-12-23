@@ -76,6 +76,30 @@ jobs:
             TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}
             TMDB_ACCESS_TOKEN=${{ secrets.TMDB_ACCESS_TOKEN }}
             TMDB_URL_API=${{ secrets.TMDB_URL_API }}
+        env:
+          REACT_APP_PORT: ${{ secrets.REACT_APP_PORT }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_OAUTH_CLIENT_ID: ${{ secrets.VITE_OAUTH_CLIENT_ID }}
+          VITE_GOOGLE_AUTHORIZED_REDIRECT_URI: ${{ secrets.VITE_GOOGLE_AUTHORIZED_REDIRECT_URI }}
+          VITE_URL_API: ${{ secrets.VITE_URL_API }}
+          VITE_WEB_URL: ${{ secrets.VITE_WEB_URL }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          TMDB_ACCESS_TOKEN: ${{ secrets.TMDB_ACCESS_TOKEN }}
+          TMDB_URL_API: ${{ secrets.TMDB_URL_API }}
+
+      - name: Debug Environment Variables
+        run: |
+          echo "REACT_APP_PORT=${{ secrets.REACT_APP_PORT }}"
+          echo "API_BASE_URL=${{ secrets.API_BASE_URL }}"
+          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}"
+          echo "VITE_OAUTH_CLIENT_ID=${{ secrets.VITE_OAUTH_CLIENT_ID }}"
+          echo "VITE_GOOGLE_AUTHORIZED_REDIRECT_URI=${{ secrets.VITE_GOOGLE_AUTHORIZED_REDIRECT_URI }}"
+          echo "VITE_URL_API=${{ secrets.VITE_URL_API }}"
+          echo "VITE_WEB_URL=${{ secrets.VITE_WEB_URL }}"
+          echo "TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}"
+          echo "TMDB_ACCESS_TOKEN=${{ secrets.TMDB_ACCESS_TOKEN }}"
+          echo "TMDB_URL_API=${{ secrets.TMDB_URL_API }}"
 
       - name: Logout from Docker Hub
         run: docker logout
