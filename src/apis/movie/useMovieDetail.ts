@@ -1,8 +1,11 @@
 import { message } from 'antd';
 import { useState, useEffect } from 'react';
 import { Movie } from '../../interface/movie.interface';
-import { getMovieDetailUrl } from '..';
-import { axiosInstanceTMDB } from '../index';
+import { axiosInstance, getMovieDetailUrl } from '..';
+
+interface MovieDetailResponse {
+  item: Movie;
+}
 
 export const useMovieDetail = (movieId: string) => {
   const [loading, setLoading] = useState(false);
@@ -15,10 +18,10 @@ export const useMovieDetail = (movieId: string) => {
       setLoading(true);
       try {
         const url = getMovieDetailUrl(movieId);
-        const response = await axiosInstanceTMDB.get(url);
+        const response = await axiosInstance.get<MovieDetailResponse>(url);
 
         if (response.data) {
-          setMovie(response.data);
+          setMovie(response.data.item);
         }
       } catch (error) {
         const errorMessage =

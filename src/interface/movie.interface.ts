@@ -1,6 +1,16 @@
+
 export interface Genre {
   id: number;
   name: string;
+}
+
+export interface MoviePeople {
+  adult: boolean;
+  name: string;
+  profile_path: string;
+  character: string;
+  credit_id: string;
+  id: number;
 }
 
 export interface Movie {
@@ -21,4 +31,8 @@ export interface Movie {
   video: boolean;
   genres?: Genre[];
   tagline?: string;
+  credits?: {
+    cast: MoviePeople[];
+    crew: MoviePeople[];
+  };
 }
