@@ -9,6 +9,7 @@ interface MovieCardInListProps {
   movie: Movie;
   onRemove?: (tmdbId: number) => void;
   loading?: boolean;
+  showRemoveButton?: boolean;
   removeButtonText?: string;
   removeConfirmTitle?: string;
   removeConfirmDescription?: string;
@@ -18,6 +19,7 @@ const MovieCardInList: React.FC<MovieCardInListProps> = ({
   movie,
   onRemove,
   loading = false,
+  showRemoveButton = true,
   removeButtonText = 'Remove',
   removeConfirmTitle = 'Remove from list',
   removeConfirmDescription = 'Are you sure you want to remove this movie?',
@@ -57,7 +59,7 @@ const MovieCardInList: React.FC<MovieCardInListProps> = ({
                   : 'N/A'}
               </p>
             </div>
-            {onRemove && (
+            {showRemoveButton && onRemove && (
               <Popconfirm
                 title={removeConfirmTitle}
                 description={removeConfirmDescription}
