@@ -180,7 +180,8 @@ const MovieDetailPage = () => {
                       icon={
                         !isAuthenticated ? (
                           <HeartOutlined />
-                        ) : favoriteLoading || checkLoading ? null : isFavorite ? (
+                        ) : favoriteLoading ||
+                          checkLoading ? null : isFavorite ? (
                           <HeartFilled />
                         ) : (
                           <HeartOutlined />
@@ -208,7 +209,9 @@ const MovieDetailPage = () => {
                             : 'Add to favorites'
                       }
                       onClick={handleFavoriteClick}
-                      loading={isAuthenticated && (favoriteLoading || checkLoading)}
+                      loading={
+                        isAuthenticated && (favoriteLoading || checkLoading)
+                      }
                     />
                     <Button
                       type="default"

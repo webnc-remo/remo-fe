@@ -22,25 +22,27 @@ const MovieCardInList: React.FC<MovieCardInListProps> = ({
   onRemove,
   loading = false,
   showRemoveButton = true,
-  removeButtonText = "Remove",
-  removeConfirmTitle = "Remove from list",
-  removeConfirmDescription = "Are you sure you want to remove this movie?",
+  removeButtonText = 'Remove',
+  removeConfirmTitle = 'Remove from list',
+  removeConfirmDescription = 'Are you sure you want to remove this movie?',
 }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const shouldShowRemoveButton = isAuthenticated && showRemoveButton && onRemove;
+  const shouldShowRemoveButton =
+    isAuthenticated && showRemoveButton && onRemove;
 
   return (
-    <Card
-      hoverable
-      bodyStyle={{ padding: 0 }}
-    >
+    <Card hoverable bodyStyle={{ padding: 0 }}>
       <div className="flex flex-col sm:flex-row">
         {/* Poster Section */}
         <div className="w-full sm:w-48 flex-shrink-0">
           <Link to={`/movie/${movie.tmdb_id}`}>
             <img
               alt={movie.title}
-              src={movie.poster_path ? getMovieDetailImageUrl(movie.poster_path) : noImageUrl}
+              src={
+                movie.poster_path
+                  ? getMovieDetailImageUrl(movie.poster_path)
+                  : noImageUrl
+              }
               className="w-full h-[200px] sm:h-full object-cover"
             />
           </Link>
@@ -54,7 +56,9 @@ const MovieCardInList: React.FC<MovieCardInListProps> = ({
                 <h2 className="text-xl font-bold mb-2">{movie.title}</h2>
               </Link>
               <p className="text-gray-500">
-                {movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}
+                {movie.release_date
+                  ? new Date(movie.release_date).getFullYear()
+                  : 'N/A'}
               </p>
             </div>
             {shouldShowRemoveButton && (
@@ -93,9 +97,7 @@ const MovieCardInList: React.FC<MovieCardInListProps> = ({
                 Rating: {Math.round(movie.vote_average * 10)}%
               </Tag>
             )}
-            {movie.adult && (
-              <Tag color="red">Adult</Tag>
-            )}
+            {movie.adult && <Tag color="red">Adult</Tag>}
           </div>
         </div>
       </div>
