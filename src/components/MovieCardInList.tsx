@@ -1,9 +1,10 @@
 import React from 'react';
-import { Card, Button, Popconfirm } from 'antd';
+import { Card, Button, Popconfirm, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import { DeleteOutlined } from '@ant-design/icons';
 import { getMovieDetailImageUrl, noImageUrl } from '../apis';
 import { Movie } from '../interface/movie.interface';
+import { useAuthStore } from '../stores/authStore';
 
 interface MovieCardInListProps {
   movie: Movie;
@@ -13,6 +14,7 @@ interface MovieCardInListProps {
   removeButtonText?: string;
   removeConfirmTitle?: string;
   removeConfirmDescription?: string;
+  showFavoriteButton?: boolean;
 }
 
 const MovieCardInList: React.FC<MovieCardInListProps> = ({
@@ -20,27 +22,25 @@ const MovieCardInList: React.FC<MovieCardInListProps> = ({
   onRemove,
   loading = false,
   showRemoveButton = true,
-  removeButtonText = 'Remove',
-  removeConfirmTitle = 'Remove from list',
-  removeConfirmDescription = 'Are you sure you want to remove this movie?',
+  removeButtonText = "Remove",
+  removeConfirmTitle = "Remove from list",
+  removeConfirmDescription = "Are you sure you want to remove this movie?",
 }) => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const shouldShowRemoveButton = isAuthenticated && showRemoveButton && onRemove;
+
   return (
     <Card
       hoverable
-      className="overflow-hidden h-full"
       bodyStyle={{ padding: 0 }}
     >
-      <div className="flex flex-col sm:flex-row h-full">
+      <div className="flex flex-col sm:flex-row">
         {/* Poster Section */}
         <div className="w-full sm:w-48 flex-shrink-0">
           <Link to={`/movie/${movie.tmdb_id}`}>
             <img
               alt={movie.title}
-              src={
-                movie.poster_path
-                  ? getMovieDetailImageUrl(movie.poster_path)
-                  : noImageUrl
-              }
+              src={movie.poster_path ? getMovieDetailImageUrl(movie.poster_path) : noImageUrl}
               className="w-full h-[200px] sm:h-full object-cover"
             />
           </Link>
@@ -54,12 +54,10 @@ const MovieCardInList: React.FC<MovieCardInListProps> = ({
                 <h2 className="text-xl font-bold mb-2">{movie.title}</h2>
               </Link>
               <p className="text-gray-500">
-                {movie.release_date
-                  ? new Date(movie.release_date).getFullYear()
-                  : 'N/A'}
+                {movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}
               </p>
             </div>
-            {showRemoveButton && onRemove && (
+            {shouldShowRemoveButton && (
               <Popconfirm
                 title={removeConfirmTitle}
                 description={removeConfirmDescription}
@@ -88,17 +86,15 @@ const MovieCardInList: React.FC<MovieCardInListProps> = ({
             </p>
           </div>
 
-          {/* Additional Movie Info */}
-          <div className="mt-4 flex items-center space-x-4">
+          {/* Basic Movie Info */}
+          <div className="mt-4 flex flex-wrap gap-2">
             {movie.vote_average > 0 && (
-              <span className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">
+              <Tag color="blue">
                 Rating: {Math.round(movie.vote_average * 10)}%
-              </span>
+              </Tag>
             )}
             {movie.adult && (
-              <span className="text-sm bg-red-100 text-red-800 px-2 py-1 rounded">
-                Adult
-              </span>
+              <Tag color="red">Adult</Tag>
             )}
           </div>
         </div>

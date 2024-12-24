@@ -5,7 +5,10 @@ interface CheckFavoriteResponse {
   isFavorite: boolean;
 }
 
-export const useCheckUserFavMovie = (movieId: string | undefined) => {
+export const useCheckUserFavMovie = (
+  movieId: string | undefined,
+  options: { enabled: boolean }
+) => {
   const { data, isLoading, refetch } = useQuery<CheckFavoriteResponse>({
     queryKey: ['checkFavorite', movieId],
     queryFn: async () => {
@@ -13,7 +16,7 @@ export const useCheckUserFavMovie = (movieId: string | undefined) => {
       const response = await axiosInstance.get(checkUserFavMovieUrl(movieId));
       return response.data;
     },
-    enabled: !!movieId,
+    enabled: options.enabled,
     retry: false,
   });
 

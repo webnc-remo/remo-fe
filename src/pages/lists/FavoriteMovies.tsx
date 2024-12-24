@@ -62,7 +62,7 @@ const FavoriteMovies: React.FC = () => {
           onError: (error: any) => {
             message.error(
               error?.response?.data?.message ||
-              'Failed to remove from favorites'
+                'Failed to remove from favorites'
             );
           },
         }
