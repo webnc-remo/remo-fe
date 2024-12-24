@@ -11,6 +11,9 @@ import { Layout } from './components/layout';
 import { Profile } from './pages/profile/Profile';
 import PeopleDetailPage from './pages/people/detail/index';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import FavoriteMovies from './pages/lists/FavoriteMovies';
+import WishlistMovies from './pages/lists/WishlistMovies';
+import MovieLists from './pages/lists/MovieLists';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +41,9 @@ const App: React.FC = () => {
               {/* private routes */}
               <Route path="/" element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/favorites" element={<FavoriteMovies />} />
+                <Route path="/wishlist" element={<WishlistMovies />} />
+                <Route path="/lists" element={<MovieLists />} />
               </Route>
             </Route>
             {/* not found */}

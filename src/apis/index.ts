@@ -15,6 +15,11 @@ export interface SearchParam {
   order: 'asc' | 'desc';
 }
 
+export interface UserFavMovieParam {
+  page: number;
+  take: number;
+}
+
 /* Auth URL */
 export const registerUrl = `${VITE_URL_API}/auth/register`;
 export const loginUrl = `${VITE_URL_API}/auth/login`;
@@ -44,6 +49,8 @@ export const getPeopleDetailUrl = (peopleId: string) =>
 /* User Interaction URL */
 export const toggleFavoriteUrl = (movieId: string) =>
   `${VITE_URL_API}/user/fav/${movieId}`;
+export const getUserFavMovieUrl = (searchParam: UserFavMovieParam) =>
+  `${VITE_URL_API}/user/fav?page=${searchParam.page}&take=${searchParam.take}`;
 
 /* Axios Instance Remote */
 export const axiosInstance = axios.create({
