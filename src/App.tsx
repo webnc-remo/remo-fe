@@ -9,6 +9,7 @@ import { PrivateRoute } from './components/PrivateRoute';
 import { NotFound } from './pages/notfound';
 import { Layout } from './components/layout';
 import { Profile } from './pages/profile/Profile';
+import PeopleDetailPage from './pages/people/detail/index';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/search" element={<MovieSearchPage />} />
             <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+            <Route path="/people/:peopleId" element={<PeopleDetailPage />} />
             {/* private routes */}
             <Route path="/" element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
