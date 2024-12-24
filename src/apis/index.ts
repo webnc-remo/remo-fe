@@ -41,7 +41,11 @@ export const noImageUrl = 'https://via.placeholder.com/500x750?text=No+Image';
 export const getPeopleDetailUrl = (peopleId: string) =>
   `${VITE_URL_API}/people/${peopleId}`;
 
-/* Axios Instance Remo */
+/* User Interaction URL */
+export const toggleFavoriteUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/fav/${movieId}`;
+
+/* Axios Instance Remote */
 export const axiosInstance = axios.create({
   baseURL: VITE_URL_API,
   timeout: 20000,

@@ -1,19 +1,34 @@
 import { useMovieDetail } from '../../apis/movie/useMovieDetail';
-import { useParams } from 'react-router-dom';
-import { Button, Spin } from 'antd';
+import { useParams, Link } from 'react-router-dom';
+import { Button, Spin, message, Col, Row, Progress, Avatar } from 'antd';
 import { getMovieDetailImageUrl, noImageUrl } from '../../apis';
-import { Col, Row, Progress, Avatar } from 'antd';
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import './movie.css';
+import { HeartOutlined, PlusOutlined, BookOutlined } from '@ant-design/icons';
+import { useToggleFavorite } from '../../apis/user/useToggleFavorite';
 
 const MovieDetailPage = () => {
   const movieId = useParams().movieId;
   const { movie, loading } = useMovieDetail(movieId ?? '');
   const [showAllCast, setShowAllCast] = useState(false);
   const [showAllCrew, setShowAllCrew] = useState(false);
+  const { toggleFavorite, loading: favoriteLoading } = useToggleFavorite();
 
   const INITIAL_VISIBLE_ITEMS = 6;
+
+  const handleFavoriteClick = () => {
+    if (!movieId) return;
+
+    toggleFavorite(movieId, {
+      onSuccess: () => {
+        message.success('Successfully updated favorite status');
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onError: (error: any) => {
+        message.error(error?.response?.data?.message || 'Failed to update favorite status');
+      }
+    });
+  };
 
   return (
     <div>
@@ -95,19 +110,81 @@ const MovieDetailPage = () => {
                 >
                   RATING
                 </h1>
-                <Progress
-                  size={90}
-                  style={{ fontWeight: 'bold' }}
-                  strokeWidth={8}
-                  strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
-                  type="circle"
-                  percent={
-                    movie?.vote_average
-                      ? Math.floor(movie?.vote_average * 10)
-                      : 0
-                  }
-                />
-                <b style={{ marginLeft: '0.5em' }}>User score</b>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '2em' }}>
+                  <div>
+                    <Progress
+                      size={90}
+                      style={{ fontWeight: 'bold' }}
+                      strokeWidth={8}
+                      strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
+                      type="circle"
+                      percent={
+                        movie?.vote_average
+                          ? Math.floor(movie?.vote_average * 10)
+                          : 0
+                      }
+                    />
+                    <b style={{ marginLeft: '0.5em' }}>User score</b>
+                  </div>
+
+                  {/* User Interaction Buttons */}
+                  <div style={{ display: 'flex', gap: '1em' }}>
+                    <Button
+                      type="default"
+                      icon={<PlusOutlined />}
+                      size="large"
+                      style={{
+                        borderRadius: '50%',
+                        width: '45px',
+                        height: '45px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        borderColor: 'white',
+                        color: 'white'
+                      }}
+                      title="Add to list"
+                    />
+                    <Button
+                      type="default"
+                      icon={favoriteLoading ? null : <HeartOutlined />}
+                      size="large"
+                      style={{
+                        borderRadius: '50%',
+                        width: '45px',
+                        height: '45px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        borderColor: 'white',
+                        color: 'white'
+                      }}
+                      title="Like"
+                      onClick={handleFavoriteClick}
+                      loading={favoriteLoading}
+                      disabled={favoriteLoading}
+                    />
+                    <Button
+                      type="default"
+                      icon={<BookOutlined />}
+                      size="large"
+                      style={{
+                        borderRadius: '50%',
+                        width: '45px',
+                        height: '45px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        borderColor: 'white',
+                        color: 'white'
+                      }}
+                      title="Add to wishlist"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div>
