@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLogout } from '../apis/auth/useLogout';
 import { Avatar, Dropdown, Space, Spin, Input, Button } from 'antd';
-import { LogoutOutlined, UserOutlined, HeartOutlined, BookOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import {
+  LogoutOutlined,
+  UserOutlined,
+  HeartOutlined,
+  BookOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons';
 import { useGetUserProfile } from '../apis/user/useGetUserProfile';
 import { useAuthStore } from '../stores/authStore';
 
@@ -56,22 +62,34 @@ export const Header: React.FC = () => {
                 {
                   key: '1',
                   icon: <UserOutlined />,
-                  label: <span onClick={() => navigate('/profile')}>Edit Profile</span>,
+                  label: (
+                    <span onClick={() => navigate('/profile')}>
+                      Edit Profile
+                    </span>
+                  ),
                 },
                 {
                   key: '2',
                   icon: <HeartOutlined />,
-                  label: <span onClick={() => navigate('/favorites')}>Favorite Movies</span>,
+                  label: (
+                    <span onClick={() => navigate('/favorites')}>
+                      Favorite Movies
+                    </span>
+                  ),
                 },
                 {
                   key: '3',
                   icon: <BookOutlined />,
-                  label: <span onClick={() => navigate('/wishlist')}>Wishlist</span>,
+                  label: (
+                    <span onClick={() => navigate('/wishlist')}>Wishlist</span>
+                  ),
                 },
                 {
                   key: '4',
                   icon: <UnorderedListOutlined />,
-                  label: <span onClick={() => navigate('/lists')}>My Lists</span>,
+                  label: (
+                    <span onClick={() => navigate('/lists')}>My Lists</span>
+                  ),
                 },
                 {
                   key: '5',

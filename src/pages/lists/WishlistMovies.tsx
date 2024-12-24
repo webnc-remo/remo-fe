@@ -1,6 +1,5 @@
-
 const WishlistMovies: React.FC = () => {
-    return <div>WishlistMovies</div>;
+  return <div>WishlistMovies</div>;
 };
 
-export default WishlistMovies; 
+export default WishlistMovies;
