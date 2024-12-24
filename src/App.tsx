@@ -14,6 +14,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import FavoriteMovies from './pages/lists/FavoriteMovies';
 import WishlistMovies from './pages/lists/WishlistMovies';
 import MovieLists from './pages/lists/MovieLists';
+import ShareList from './pages/shareList';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +39,7 @@ const App: React.FC = () => {
               <Route path="/search" element={<MovieSearchPage />} />
               <Route path="/movie/:movieId" element={<MovieDetailPage />} />
               <Route path="/people/:peopleId" element={<PeopleDetailPage />} />
+              <Route path="/share/list/:id" element={<ShareList />} />
               {/* private routes */}
               <Route path="/" element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />

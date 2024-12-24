@@ -75,15 +75,16 @@ export const MovieSearch: React.FC<{
       )}
 
       {!loading && meta.pageCount > 1 && (
-        <Pagination
-          current={currentPage}
-          total={meta.pageCount * pageSize}
-          onChange={handlePageChange}
-          pageSize={pageSize}
-          showSizeChanger
-          onShowSizeChange={(_, newSize) => handlePageChange(1, newSize)}
-          style={{ marginTop: '20px', textAlign: 'center' }}
-        />
+        <div className="flex justify-center mt-5">
+          <Pagination
+            current={currentPage}
+            total={meta.pageCount * pageSize}
+            onChange={handlePageChange}
+            pageSize={pageSize}
+            showSizeChanger
+            onShowSizeChange={(_, newSize) => handlePageChange(1, newSize)}
+          />
+        </div>
       )}
     </div>
   );

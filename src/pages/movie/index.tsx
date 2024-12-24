@@ -1,5 +1,5 @@
 import { useMovieDetail } from '../../apis/movie/useMovieDetail';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button, Spin, message, Col, Row, Progress, Avatar } from 'antd';
 import { getMovieDetailImageUrl, noImageUrl } from '../../apis';
 import { useState } from 'react';
@@ -12,23 +12,38 @@ import {
 } from '@ant-design/icons';
 import { useToggleFavorite } from '../../apis/user/useToggleFavorite';
 import { useCheckUserFavMovie } from '../../apis/user/useCheckUserFavMovie';
+import { useAuthStore } from '../../stores/authStore';
 
 const MovieDetailPage = () => {
+  const navigate = useNavigate();
   const movieId = useParams().movieId;
   const { movie, loading } = useMovieDetail(movieId ?? '');
   const [showAllCast, setShowAllCast] = useState(false);
   const [showAllCrew, setShowAllCrew] = useState(false);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const { toggleFavorite, loading: favoriteLoading } = useToggleFavorite();
   const {
     isFavorite,
     loading: checkLoading,
     refetch,
-  } = useCheckUserFavMovie(movieId);
+  } = useCheckUserFavMovie(movieId, {
+    enabled: isAuthenticated,
+  });
 
   const INITIAL_VISIBLE_ITEMS = 6;
 
+  const handleUnauthorizedClick = () => {
+    navigate('/login');
+    message.info('Please login to use this feature');
+  };
+
   const handleFavoriteClick = () => {
+    if (!isAuthenticated) {
+      handleUnauthorizedClick();
+      return;
+    }
+
     if (!movieId) return;
 
     toggleFavorite(
@@ -38,7 +53,7 @@ const MovieDetailPage = () => {
       },
       {
         onSuccess: () => {
-          refetch(); // Refetch to update the favorite status
+          refetch();
           message.success(
             isFavorite ? 'Removed from favorites' : 'Added to favorites'
           );
@@ -169,12 +184,22 @@ const MovieDetailPage = () => {
                         borderColor: 'white',
                         color: 'white',
                       }}
-                      title="Add to list"
+                      title={
+                        isAuthenticated
+                          ? 'Add to list'
+                          : 'Please login to add to list'
+                      }
+                      onClick={
+                        isAuthenticated ? undefined : handleUnauthorizedClick
+                      }
                     />
                     <Button
                       type="default"
                       icon={
-                        favoriteLoading || checkLoading ? null : isFavorite ? (
+                        !isAuthenticated ? (
+                          <HeartOutlined />
+                        ) : favoriteLoading ||
+                          checkLoading ? null : isFavorite ? (
                           <HeartFilled />
                         ) : (
                           <HeartOutlined />
@@ -195,13 +220,16 @@ const MovieDetailPage = () => {
                         color: isFavorite ? '#ff4d4f' : 'white',
                       }}
                       title={
-                        isFavorite
-                          ? 'Remove from favorites'
-                          : 'Add to favorites'
+                        !isAuthenticated
+                          ? 'Please login to add to favorites'
+                          : isFavorite
+                            ? 'Remove from favorites'
+                            : 'Add to favorites'
                       }
                       onClick={handleFavoriteClick}
-                      loading={favoriteLoading || checkLoading}
-                      disabled={favoriteLoading || checkLoading}
+                      loading={
+                        isAuthenticated && (favoriteLoading || checkLoading)
+                      }
                     />
                     <Button
                       type="default"
@@ -218,7 +246,14 @@ const MovieDetailPage = () => {
                         borderColor: 'white',
                         color: 'white',
                       }}
-                      title="Add to wishlist"
+                      title={
+                        isAuthenticated
+                          ? 'Add to wishlist'
+                          : 'Please login to add to wishlist'
+                      }
+                      onClick={
+                        isAuthenticated ? undefined : handleUnauthorizedClick
+                      }
                     />
                   </div>
                 </div>
