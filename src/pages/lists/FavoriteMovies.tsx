@@ -44,27 +44,33 @@ const FavoriteMovies: React.FC = () => {
 
   const handleRemoveFromFavorites = async (tmdbId: number) => {
     try {
-      toggleFavorite({
-        movieId: tmdbId.toString(),
-        action: 'remove',
-      }, {
-        onSuccess: () => {
-          message.success('Movie removed from favorites');
-          if (movies.length === 1 && currentPage > 1) {
-            setCurrentPage((prev) => prev - 1);
-          } else {
-            refetch();
-          }
+      toggleFavorite(
+        {
+          movieId: tmdbId.toString(),
+          action: 'remove',
         },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onError: (error: any) => {
-          message.error(
-            error?.response?.data?.message || 'Failed to remove from favorites'
-          );
-        },
-      });
+        {
+          onSuccess: () => {
+            message.success('Movie removed from favorites');
+            if (movies.length === 1 && currentPage > 1) {
+              setCurrentPage((prev) => prev - 1);
+            } else {
+              refetch();
+            }
+          },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onError: (error: any) => {
+            message.error(
+              error?.response?.data?.message ||
+                'Failed to remove from favorites'
+            );
+          },
+        }
+      );
     } catch (error) {
-      message.error((error as Error).message || 'Failed to remove from favorites');
+      message.error(
+        (error as Error).message || 'Failed to remove from favorites'
+      );
     }
   };
 
