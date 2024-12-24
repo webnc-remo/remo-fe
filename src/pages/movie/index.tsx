@@ -184,8 +184,14 @@ const MovieDetailPage = () => {
                         borderColor: 'white',
                         color: 'white',
                       }}
-                      title={isAuthenticated ? "Add to list" : "Please login to add to list"}
-                      onClick={isAuthenticated ? undefined : handleUnauthorizedClick}
+                      title={
+                        isAuthenticated
+                          ? 'Add to list'
+                          : 'Please login to add to list'
+                      }
+                      onClick={
+                        isAuthenticated ? undefined : handleUnauthorizedClick
+                      }
                     />
                     <Button
                       type="default"
@@ -194,8 +200,8 @@ const MovieDetailPage = () => {
                           <HeartOutlined />
                         ) : favoriteLoading ||
                           checkLoading ? null : isFavorite ? (
-                            <HeartFilled />
-                          ) : (
+                          <HeartFilled />
+                        ) : (
                           <HeartOutlined />
                         )
                       }
@@ -240,8 +246,14 @@ const MovieDetailPage = () => {
                         borderColor: 'white',
                         color: 'white',
                       }}
-                      title={isAuthenticated ? "Add to wishlist" : "Please login to add to wishlist"}
-                      onClick={isAuthenticated ? undefined : handleUnauthorizedClick}
+                      title={
+                        isAuthenticated
+                          ? 'Add to wishlist'
+                          : 'Please login to add to wishlist'
+                      }
+                      onClick={
+                        isAuthenticated ? undefined : handleUnauthorizedClick
+                      }
                     />
                   </div>
                 </div>
