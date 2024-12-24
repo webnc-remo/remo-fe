@@ -25,8 +25,10 @@ const MovieDetailPage = () => {
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: any) => {
-        message.error(error?.response?.data?.message || 'Failed to update favorite status');
-      }
+        message.error(
+          error?.response?.data?.message || 'Failed to update favorite status'
+        );
+      },
     });
   };
 
@@ -110,7 +112,9 @@ const MovieDetailPage = () => {
                 >
                   RATING
                 </h1>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '2em' }}>
+                <div
+                  style={{ display: 'flex', alignItems: 'center', gap: '2em' }}
+                >
                   <div>
                     <Progress
                       size={90}
@@ -142,7 +146,7 @@ const MovieDetailPage = () => {
                         justifyContent: 'center',
                         background: 'rgba(255, 255, 255, 0.2)',
                         borderColor: 'white',
-                        color: 'white'
+                        color: 'white',
                       }}
                       title="Add to list"
                     />
@@ -159,7 +163,7 @@ const MovieDetailPage = () => {
                         justifyContent: 'center',
                         background: 'rgba(255, 255, 255, 0.2)',
                         borderColor: 'white',
-                        color: 'white'
+                        color: 'white',
                       }}
                       title="Like"
                       onClick={handleFavoriteClick}
@@ -179,7 +183,7 @@ const MovieDetailPage = () => {
                         justifyContent: 'center',
                         background: 'rgba(255, 255, 255, 0.2)',
                         borderColor: 'white',
-                        color: 'white'
+                        color: 'white',
                       }}
                       title="Add to wishlist"
                     />
