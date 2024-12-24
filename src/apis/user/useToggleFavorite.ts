@@ -1,12 +1,24 @@
 import { useMutation } from '@tanstack/react-query';
-import { axiosInstance, toggleFavoriteUrl } from '../index';
+import { axiosInstance, removeUserFavMovieUrl, toggleFavoriteUrl } from '..';
 
 export const useToggleFavorite = () => {
   const { mutate, isPending } = useMutation({
-    mutationKey: ['toggleFavorite'],
-    mutationFn: async (movieId: string) => {
-      const response = await axiosInstance.get(toggleFavoriteUrl(movieId));
-      return response.data;
+    mutationFn: async ({
+      movieId,
+      action,
+    }: {
+      movieId: string;
+      action: 'add' | 'remove';
+    }) => {
+      if (action === 'add') {
+        const response = await axiosInstance.get(toggleFavoriteUrl(movieId));
+        return response.data;
+      } else {
+        const response = await axiosInstance.delete(
+          removeUserFavMovieUrl(movieId)
+        );
+        return response.data;
+      }
     },
   });
 

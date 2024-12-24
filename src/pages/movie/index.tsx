@@ -4,32 +4,46 @@ import { Button, Spin, message, Col, Row, Progress, Avatar } from 'antd';
 import { getMovieDetailImageUrl, noImageUrl } from '../../apis';
 import { useState } from 'react';
 import './movie.css';
-import { HeartOutlined, PlusOutlined, BookOutlined } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled, PlusOutlined, BookOutlined } from '@ant-design/icons';
 import { useToggleFavorite } from '../../apis/user/useToggleFavorite';
+import { useCheckUserFavMovie } from '../../apis/user/useCheckUserFavMovie';
 
 const MovieDetailPage = () => {
   const movieId = useParams().movieId;
   const { movie, loading } = useMovieDetail(movieId ?? '');
   const [showAllCast, setShowAllCast] = useState(false);
   const [showAllCrew, setShowAllCrew] = useState(false);
+
   const { toggleFavorite, loading: favoriteLoading } = useToggleFavorite();
+  const { isFavorite, loading: checkLoading, refetch } = useCheckUserFavMovie(movieId);
 
   const INITIAL_VISIBLE_ITEMS = 6;
 
   const handleFavoriteClick = () => {
     if (!movieId) return;
 
-    toggleFavorite(movieId, {
-      onSuccess: () => {
-        message.success('Successfully updated favorite status');
+    toggleFavorite(
+      {
+        movieId,
+        action: isFavorite ? 'remove' : 'add'
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onError: (error: any) => {
-        message.error(
-          error?.response?.data?.message || 'Failed to update favorite status'
-        );
-      },
-    });
+      {
+        onSuccess: () => {
+          refetch(); // Refetch to update the favorite status
+          message.success(
+            isFavorite
+              ? 'Removed from favorites'
+              : 'Added to favorites'
+          );
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+          message.error(
+            error?.response?.data?.message || 'Failed to update favorite status'
+          );
+        },
+      }
+    );
   };
 
   return (
@@ -152,7 +166,9 @@ const MovieDetailPage = () => {
                     />
                     <Button
                       type="default"
-                      icon={favoriteLoading ? null : <HeartOutlined />}
+                      icon={favoriteLoading || checkLoading ? null : (
+                        isFavorite ? <HeartFilled /> : <HeartOutlined />
+                      )}
                       size="large"
                       style={{
                         borderRadius: '50%',
@@ -161,14 +177,14 @@ const MovieDetailPage = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        background: 'rgba(255, 255, 255, 0.2)',
-                        borderColor: 'white',
-                        color: 'white',
+                        background: isFavorite ? 'rgba(255, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)',
+                        borderColor: isFavorite ? '#ff4d4f' : 'white',
+                        color: isFavorite ? '#ff4d4f' : 'white',
                       }}
-                      title="Like"
+                      title={isFavorite ? "Remove from favorites" : "Add to favorites"}
                       onClick={handleFavoriteClick}
-                      loading={favoriteLoading}
-                      disabled={favoriteLoading}
+                      loading={favoriteLoading || checkLoading}
+                      disabled={favoriteLoading || checkLoading}
                     />
                     <Button
                       type="default"

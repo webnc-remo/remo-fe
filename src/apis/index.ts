@@ -53,6 +53,8 @@ export const getUserFavMovieUrl = (searchParam: UserFavMovieParam) =>
   `${VITE_URL_API}/user/fav?page=${searchParam.page}&take=${searchParam.take}`;
 export const removeUserFavMovieUrl = (movieId: string) =>
   `${VITE_URL_API}/user/fav/${movieId}`;
+export const checkUserFavMovieUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/fav/check/${movieId}`;
 
 /* Axios Instance Remote */
 export const axiosInstance = axios.create({
