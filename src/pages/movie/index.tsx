@@ -1,5 +1,5 @@
 import { useMovieDetail } from '../../apis/movie/useMovieDetail';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button, Spin, message, Col, Row, Progress, Avatar } from 'antd';
 import { getMovieDetailImageUrl, noImageUrl } from '../../apis';
 import { useState } from 'react';
@@ -15,6 +15,7 @@ import { useCheckUserFavMovie } from '../../apis/user/useCheckUserFavMovie';
 import { useAuthStore } from '../../stores/authStore';
 
 const MovieDetailPage = () => {
+  const navigate = useNavigate();
   const movieId = useParams().movieId;
   const { movie, loading } = useMovieDetail(movieId ?? '');
   const [showAllCast, setShowAllCast] = useState(false);
@@ -32,8 +33,18 @@ const MovieDetailPage = () => {
 
   const INITIAL_VISIBLE_ITEMS = 6;
 
+  const handleUnauthorizedClick = () => {
+    navigate('/login');
+    message.info('Please login to use this feature');
+  };
+
   const handleFavoriteClick = () => {
-    if (!movieId || !isAuthenticated) return;
+    if (!isAuthenticated) {
+      handleUnauthorizedClick();
+      return;
+    }
+
+    if (!movieId) return;
 
     toggleFavorite(
       {
@@ -173,7 +184,8 @@ const MovieDetailPage = () => {
                         borderColor: 'white',
                         color: 'white',
                       }}
-                      title="Add to list"
+                      title={isAuthenticated ? "Add to list" : "Please login to add to list"}
+                      onClick={isAuthenticated ? undefined : handleUnauthorizedClick}
                     />
                     <Button
                       type="default"
@@ -182,8 +194,8 @@ const MovieDetailPage = () => {
                           <HeartOutlined />
                         ) : favoriteLoading ||
                           checkLoading ? null : isFavorite ? (
-                          <HeartFilled />
-                        ) : (
+                            <HeartFilled />
+                          ) : (
                           <HeartOutlined />
                         )
                       }
@@ -228,7 +240,8 @@ const MovieDetailPage = () => {
                         borderColor: 'white',
                         color: 'white',
                       }}
-                      title="Add to wishlist"
+                      title={isAuthenticated ? "Add to wishlist" : "Please login to add to wishlist"}
+                      onClick={isAuthenticated ? undefined : handleUnauthorizedClick}
                     />
                   </div>
                 </div>
