@@ -1,11 +1,11 @@
-export interface MovieMinimum{
+export interface MovieMinimum {
   id: number;
   title: string;
   backdrop_path: string;
   character: string;
 }
 
-export interface PeopleMovie{
+export interface PeopleMovie {
   cast: MovieMinimum[];
   crew: MovieMinimum[];
 }
@@ -21,6 +21,6 @@ export interface People {
   gender: number;
   profile_path: string;
   popularity: number;
-  place_of_birth: string;  
+  place_of_birth: string;
   movie_credits: PeopleMovie;
 }

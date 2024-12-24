@@ -102,7 +102,9 @@ const MovieDetailPage = () => {
                   strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
                   type="circle"
                   percent={
-                    movie?.vote_average ? Math.floor(movie?.vote_average * 10) : 0
+                    movie?.vote_average
+                      ? Math.floor(movie?.vote_average * 10)
+                      : 0
                   }
                 />
                 <b style={{ marginLeft: '0.5em' }}>User score</b>
@@ -127,36 +129,60 @@ const MovieDetailPage = () => {
           {/* Cast Section */}
           {movie?.credits?.cast && movie.credits.cast.length > 0 && (
             <div style={{ padding: '2vw' }}>
-              <h2 style={{ fontSize: '1.5em', fontWeight: 'bold', marginBottom: '1em' }}>
+              <h2
+                style={{
+                  fontSize: '1.5em',
+                  fontWeight: 'bold',
+                  marginBottom: '1em',
+                }}
+              >
                 Cast
               </h2>
               <Row gutter={[16, 16]}>
                 {movie.credits.cast
                   .slice(0, showAllCast ? undefined : INITIAL_VISIBLE_ITEMS)
                   .map((person) => (
-                  <Col xs={12} sm={8} md={6} lg={4} key={person.id}>
-                    <Link to={`/people/${person.id}`}>
-                      <div style={{ textAlign: 'center' }}>
-                        <Avatar
-                          src={person.profile_path ? getMovieDetailImageUrl(person.profile_path) : noImageUrl}
-                          size={100}
-                          style={{ marginBottom: '8px' }}
-                        />
-                        <h3 style={{ margin: '0', fontSize: '1em', fontWeight: 'bold' }}>
-                          {person.name}
-                        </h3>
-                        <p style={{ margin: '4px 0', fontSize: '0.9em', color: '#666' }}>
-                          {person.character}
-                        </p>
-                      </div>
-                    </Link>
-                  </Col>
-                ))}
+                    <Col xs={12} sm={8} md={6} lg={4} key={person.id}>
+                      <Link to={`/people/${person.id}`}>
+                        <div style={{ textAlign: 'center' }}>
+                          <Avatar
+                            src={
+                              person.profile_path
+                                ? getMovieDetailImageUrl(person.profile_path)
+                                : noImageUrl
+                            }
+                            size={100}
+                            style={{ marginBottom: '8px' }}
+                          />
+                          <h3
+                            style={{
+                              margin: '0',
+                              fontSize: '1em',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            {person.name}
+                          </h3>
+                          <p
+                            style={{
+                              margin: '4px 0',
+                              fontSize: '0.9em',
+                              color: '#666',
+                            }}
+                          >
+                            {person.character}
+                          </p>
+                        </div>
+                      </Link>
+                    </Col>
+                  ))}
               </Row>
               {movie.credits.cast.length > INITIAL_VISIBLE_ITEMS && (
                 <div style={{ textAlign: 'center', marginTop: '20px' }}>
                   <Button onClick={() => setShowAllCast(!showAllCast)}>
-                    {showAllCast ? 'Show Less' : `View More (${movie.credits.cast.length - INITIAL_VISIBLE_ITEMS} more)`}
+                    {showAllCast
+                      ? 'Show Less'
+                      : `View More (${movie.credits.cast.length - INITIAL_VISIBLE_ITEMS} more)`}
                   </Button>
                 </div>
               )}
@@ -166,33 +192,51 @@ const MovieDetailPage = () => {
           {/* Crew Section */}
           {movie?.credits?.crew && movie.credits.crew.length > 0 && (
             <div style={{ padding: '2vw' }}>
-              <h2 style={{ fontSize: '1.5em', fontWeight: 'bold', marginBottom: '1em' }}>
+              <h2
+                style={{
+                  fontSize: '1.5em',
+                  fontWeight: 'bold',
+                  marginBottom: '1em',
+                }}
+              >
                 Crew
               </h2>
               <Row gutter={[16, 16]}>
                 {movie.credits.crew
                   .slice(0, showAllCrew ? undefined : INITIAL_VISIBLE_ITEMS)
                   .map((person) => (
-                  <Col xs={12} sm={8} md={6} lg={4} key={person.id}>
-                    <Link to={`/people/${person.id}`}>
-                      <div style={{ textAlign: 'center' }}>
-                        <Avatar
-                          src={person.profile_path ? getMovieDetailImageUrl(person.profile_path) : noImageUrl}
-                          size={100}
-                          style={{ marginBottom: '8px' }}
-                        />
-                        <h3 style={{ margin: '0', fontSize: '1em', fontWeight: 'bold' }}>
-                          {person.name}
-                        </h3>
-                      </div>
-                    </Link>
-                  </Col>
-                ))}
+                    <Col xs={12} sm={8} md={6} lg={4} key={person.id}>
+                      <Link to={`/people/${person.id}`}>
+                        <div style={{ textAlign: 'center' }}>
+                          <Avatar
+                            src={
+                              person.profile_path
+                                ? getMovieDetailImageUrl(person.profile_path)
+                                : noImageUrl
+                            }
+                            size={100}
+                            style={{ marginBottom: '8px' }}
+                          />
+                          <h3
+                            style={{
+                              margin: '0',
+                              fontSize: '1em',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            {person.name}
+                          </h3>
+                        </div>
+                      </Link>
+                    </Col>
+                  ))}
               </Row>
               {movie.credits.crew.length > INITIAL_VISIBLE_ITEMS && (
                 <div style={{ textAlign: 'center', marginTop: '20px' }}>
                   <Button onClick={() => setShowAllCrew(!showAllCrew)}>
-                    {showAllCrew ? 'Show Less' : `View More (${movie.credits.crew.length - INITIAL_VISIBLE_ITEMS} more)`}
+                    {showAllCrew
+                      ? 'Show Less'
+                      : `View More (${movie.credits.crew.length - INITIAL_VISIBLE_ITEMS} more)`}
                   </Button>
                 </div>
               )}
