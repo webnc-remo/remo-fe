@@ -18,7 +18,6 @@ export const useGetTrendingMovie = (timeWindow: 'day' | 'week') => {
         const url = getTrendingMovieUrl(timeWindow);
         const response = await axiosInstance.get<GetTrendingMovie>(url);
 
-        console.log('res', response);
         if (response.data) {
           setMovies(response.data.results);
         }
