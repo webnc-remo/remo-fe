@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>RemoAI - AI-Powered Movie Recommendations | Smart Film Suggestions</title>
-    <meta name="title" content="RemoAI - AI-Powered Movie Recommendations | Smart Film Suggestions" />
-    <meta name="description" content="Get personalized movie recommendations powered by AI. RemoAI helps you discover films based on your taste using artificial intelligence. The best AI movie recommendation platform." />
-    <meta name="keywords" content="remoai, recommend film ai, movie recommendations, AI film suggestions, movie AI, film recommendation system, smart movie picker, AI-powered recommendations, movie suggestion app" />
+    <title>RemoAI - Movie Database, Reviews & AI Recommendations | Film Information Platform</title>
+    <meta name="title" content="RemoAI - Movie Database, Reviews & AI Recommendations | Film Information Platform" />
+    <meta name="description" content="Comprehensive movie database with ratings, reviews, cast info, and AI-powered recommendations. Get latest film releases, movie details, actor information, and personalized suggestions. Your one-stop platform for all movie information." />
+    <meta name="keywords" content="movie database, film information, movie reviews, movie ratings, film cast, movie details, latest movies, upcoming films, movie trailers, actor information, movie plots, film synopsis, IMDB alternative, movie recommendations, cinema information, movie search engine, film database, movie info website, movie ratings platform, film reviews site, cinema guide, movie encyclopedia" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
     <meta name="author" content="RemoAI" />
@@ -18,9 +18,9 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://remoai.fun/" />
-    <meta property="og:site_name" content="RemoAI - AI Movie Recommendations" />
-    <meta property="og:title" content="RemoAI - Smart Movie Recommendations Using AI" />
-    <meta property="og:description" content="Discover your next favorite movie with RemoAI. Our artificial intelligence analyzes your preferences to recommend the perfect films for you. Get personalized movie suggestions now!" />
+    <meta property="og:site_name" content="RemoAI - Complete Movie Information Platform" />
+    <meta property="og:title" content="RemoAI - Movie Database & Information Platform" />
+    <meta property="og:description" content="Find complete movie information: ratings, reviews, cast details, trailers, and release dates. Get personalized recommendations and discover new films with our AI-powered platform." />
     <meta property="og:image" content="https://remoai.fun/assets/remo-preview.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -29,8 +29,8 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://remoai.fun/" />
-    <meta name="twitter:title" content="RemoAI - AI-Powered Film Recommendations" />
-    <meta name="twitter:description" content="Let AI help you find your next favorite movie. RemoAI provides smart, personalized film recommendations based on your preferences." />
+    <meta name="twitter:title" content="RemoAI - Complete Movie Information & Reviews" />
+    <meta name="twitter:description" content="Your ultimate movie information source. Find ratings, reviews, cast details, and get personalized film recommendations." />
     <meta name="twitter:image" content="https://remoai.fun/assets/remo-preview.jpg" />
 
     <!-- Structured Data / Schema.org -->
@@ -40,39 +40,44 @@
       "@type": "WebApplication",
       "name": "RemoAI",
       "url": "https://remoai.fun",
-      "description": "AI-powered movie recommendation platform",
+      "description": "Comprehensive movie information platform with AI-powered recommendations",
       "applicationCategory": "Entertainment",
       "genre": "Movies",
       "about": {
         "@type": "Thing",
-        "description": "RemoAI is an artificial intelligence powered platform that provides personalized movie recommendations based on user preferences and viewing history."
+        "description": "RemoAI is a complete movie information platform providing detailed film data, ratings, reviews, cast information, and personalized recommendations powered by AI."
       },
       "offers": {
         "@type": "Offer",
         "price": "0"
       },
-      "keywords": "remoai, recommend film ai, movie recommendations, AI suggestions",
-      "potentialAction": {
+      "keywords": "movie database, film information, movie reviews, cast info, ratings, movie details, film database, cinema guide",
+      "potentialAction": [{
         "@type": "SearchAction",
         "target": "https://remoai.fun/search?q={search_term_string}",
         "query-input": "required name=search_term_string"
-      }
+      }, {
+        "@type": "ViewAction",
+        "target": "https://remoai.fun/movie/{movie_id}",
+        "description": "View detailed movie information"
+      }]
     }
     </script>
 
-    <!-- Additional Schema for Organization -->
+    <!-- Additional Schema for Movie Database -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "RemoAI",
+      "@type": "Dataset",
+      "name": "RemoAI Movie Database",
+      "description": "Comprehensive collection of movie information including ratings, reviews, cast details, and release information",
+      "keywords": ["movies", "films", "ratings", "reviews", "cast", "cinema", "movie database"],
       "url": "https://remoai.fun",
-      "logo": "https://remoai.fun/assets/remo-logo.png",
-      "sameAs": [
-        "https://twitter.com/remoai",
-        "https://facebook.com/remoai"
-      ],
-      "description": "AI-powered movie recommendation platform helping users discover their next favorite films"
+      "creator": {
+        "@type": "Organization",
+        "name": "RemoAI"
+      },
+      "license": "https://remoai.fun/terms"
     }
     </script>
 
