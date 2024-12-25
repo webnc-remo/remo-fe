@@ -39,7 +39,7 @@ export const Header: React.FC = () => {
         onClick={() => navigate('/')}
         className="text-2xl font-bold text-center mb-2 md:mb-0"
       >
-        Movie App
+        ReMo
       </button>
 
       <div className="flex-grow"></div>
