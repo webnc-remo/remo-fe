@@ -63,7 +63,7 @@ const FavoriteMovies: React.FC = () => {
           onError: (error: any) => {
             message.error(
               error?.response?.data?.message ||
-              'Failed to remove from favorites'
+                'Failed to remove from favorites'
             );
           },
         }
@@ -78,7 +78,8 @@ const FavoriteMovies: React.FC = () => {
   const handleShare = () => {
     if (listInfo?.id) {
       const shareUrl = `${window.location.origin}/share/list/${listInfo.id}`;
-      navigator.clipboard.writeText(shareUrl)
+      navigator.clipboard
+        .writeText(shareUrl)
         .then(() => {
           message.success('Share link copied to clipboard!');
         })

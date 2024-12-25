@@ -86,12 +86,11 @@ const ShareList: React.FC = () => {
                 month: 'long',
                 day: 'numeric',
                 hour: '2-digit',
-                minute: '2-digit'
+                minute: '2-digit',
               })}
             </span>
           </div>
         </div>
-
       </div>
 
       {movies && movies.length === 0 ? (
