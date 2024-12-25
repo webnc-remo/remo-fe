@@ -1,7 +1,26 @@
 import { useMovieDetail } from '../../apis/movie/useMovieDetail';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Button, Spin, message, Col, Row, Progress, Avatar, Modal, Form, Input, Popover } from 'antd';
-import { addMovieToPlaylistUrl, axiosInstance, createPlaylistUrl, getMovieDetailImageUrl, noImageUrl, removeMovieFromPlaylistUrl } from '../../apis';
+import {
+  Button,
+  Spin,
+  message,
+  Col,
+  Row,
+  Progress,
+  Avatar,
+  Modal,
+  Form,
+  Input,
+  Popover,
+} from 'antd';
+import {
+  addMovieToPlaylistUrl,
+  axiosInstance,
+  createPlaylistUrl,
+  getMovieDetailImageUrl,
+  noImageUrl,
+  removeMovieFromPlaylistUrl,
+} from '../../apis';
 import { useState } from 'react';
 import './movie.css';
 import {
@@ -43,17 +62,17 @@ const MovieDetailPage = () => {
     enabled: isAuthenticated,
   });
 
-  const { data: moviePlaylists, refetch: refetchPlaylists } = usePlaylistsByMovie(
-    movieId,
-    {
+  const { data: moviePlaylists, refetch: refetchPlaylists } =
+    usePlaylistsByMovie(movieId, {
       enabled: isAuthenticated,
-    }
-  );
+    });
 
   const [showCreatePlaylistModal, setShowCreatePlaylistModal] = useState(false);
   const [form] = Form.useForm();
   const [creatingPlaylist, setCreatingPlaylist] = useState(false);
-  const [deletingPlaylistId, setDeletingPlaylistId] = useState<string | null>(null);
+  const [deletingPlaylistId, setDeletingPlaylistId] = useState<string | null>(
+    null
+  );
 
   const INITIAL_VISIBLE_ITEMS = 6;
 
@@ -116,14 +135,17 @@ const MovieDetailPage = () => {
         onError: (error: any) => {
           message.error(
             error?.response?.data?.message ||
-            'Failed to update watchlist status'
+              'Failed to update watchlist status'
           );
         },
       }
     );
   };
 
-  const handleCreatePlaylist = async (values: { name: string; description?: string }) => {
+  const handleCreatePlaylist = async (values: {
+    name: string;
+    description?: string;
+  }) => {
     if (!movieId || !isAuthenticated) {
       handleUnauthorizedClick();
       return;
@@ -131,19 +153,15 @@ const MovieDetailPage = () => {
 
     setCreatingPlaylist(true);
     try {
-      const response = await axiosInstance.post(
-        createPlaylistUrl(),
-        {
-          listName: values.name,
-          description: values.description,
-          imageUrl: '',
-        },
-      );
+      const response = await axiosInstance.post(createPlaylistUrl(), {
+        listName: values.name,
+        description: values.description,
+        imageUrl: '',
+      });
 
-      await axiosInstance.post(
-        addMovieToPlaylistUrl(response.data.id),
-        { tmdbId: movieId },
-      );
+      await axiosInstance.post(addMovieToPlaylistUrl(response.data.id), {
+        tmdbId: movieId,
+      });
 
       message.success('Movie added to new playlist!');
       setShowCreatePlaylistModal(false);
@@ -151,13 +169,18 @@ const MovieDetailPage = () => {
       refetchPlaylists();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      message.error(error?.response?.data?.message || 'Failed to create playlist');
+      message.error(
+        error?.response?.data?.message || 'Failed to create playlist'
+      );
     } finally {
       setCreatingPlaylist(false);
     }
   };
 
-  const handleRemoveFromPlaylist = async (playlistId: string, movieId: string) => {
+  const handleRemoveFromPlaylist = async (
+    playlistId: string,
+    movieId: string
+  ) => {
     if (!movieId || !isAuthenticated) {
       handleUnauthorizedClick();
       return;
@@ -170,7 +193,7 @@ const MovieDetailPage = () => {
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-          }
+          },
         }
       );
 
@@ -191,7 +214,7 @@ const MovieDetailPage = () => {
   const PlaylistContent = () => (
     <div style={{ maxWidth: 300 }}>
       {Array.isArray(moviePlaylists) && moviePlaylists.length > 0 ? (
-        moviePlaylists.map(playlist => (
+        moviePlaylists.map((playlist) => (
           <div
             key={playlist.id}
             style={{
@@ -199,7 +222,7 @@ const MovieDetailPage = () => {
               borderBottom: '1px solid #f0f0f0',
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <span style={{ fontSize: '14px' }}>{playlist.listName}</span>
@@ -219,14 +242,16 @@ const MovieDetailPage = () => {
           </div>
         ))
       ) : (
-        <div style={{
-          padding: '16px',
-          textAlign: 'center',
-          color: '#8c8c8c',
-          fontSize: '14px',
-          background: '#fafafa',
-          borderRadius: '6px'
-        }}>
+        <div
+          style={{
+            padding: '16px',
+            textAlign: 'center',
+            color: '#8c8c8c',
+            fontSize: '14px',
+            background: '#fafafa',
+            borderRadius: '6px',
+          }}
+        >
           Click the button to add this movie to a playlist
         </div>
       )}
@@ -353,15 +378,21 @@ const MovieDetailPage = () => {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            background: Array.isArray(moviePlaylists) && moviePlaylists.length > 0
-                              ? 'rgba(147, 51, 234, 0.2)'
-                              : 'rgba(255, 255, 255, 0.2)',
-                            borderColor: Array.isArray(moviePlaylists) && moviePlaylists.length > 0
-                              ? '#9333ea'
-                              : 'white',
-                            color: Array.isArray(moviePlaylists) && moviePlaylists.length > 0
-                              ? '#9333ea'
-                              : 'white',
+                            background:
+                              Array.isArray(moviePlaylists) &&
+                              moviePlaylists.length > 0
+                                ? 'rgba(147, 51, 234, 0.2)'
+                                : 'rgba(255, 255, 255, 0.2)',
+                            borderColor:
+                              Array.isArray(moviePlaylists) &&
+                              moviePlaylists.length > 0
+                                ? '#9333ea'
+                                : 'white',
+                            color:
+                              Array.isArray(moviePlaylists) &&
+                              moviePlaylists.length > 0
+                                ? '#9333ea'
+                                : 'white',
                           }}
                           onClick={() => setShowCreatePlaylistModal(true)}
                         />
@@ -396,11 +427,14 @@ const MovieDetailPage = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        background: isAuthenticated && isFavorite
-                          ? 'rgba(255, 0, 0, 0.2)'
-                          : 'rgba(255, 255, 255, 0.2)',
-                        borderColor: isAuthenticated && isFavorite ? '#ff4d4f' : 'white',
-                        color: isAuthenticated && isFavorite ? '#ff4d4f' : 'white',
+                        background:
+                          isAuthenticated && isFavorite
+                            ? 'rgba(255, 0, 0, 0.2)'
+                            : 'rgba(255, 255, 255, 0.2)',
+                        borderColor:
+                          isAuthenticated && isFavorite ? '#ff4d4f' : 'white',
+                        color:
+                          isAuthenticated && isFavorite ? '#ff4d4f' : 'white',
                       }}
                       title={
                         !isAuthenticated
@@ -410,7 +444,9 @@ const MovieDetailPage = () => {
                             : 'Add to favorites'
                       }
                       onClick={handleFavoriteClick}
-                      loading={isAuthenticated && (favoriteLoading || checkLoading)}
+                      loading={
+                        isAuthenticated && (favoriteLoading || checkLoading)
+                      }
                     />
                     <Button
                       type="default"
@@ -423,11 +459,14 @@ const MovieDetailPage = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        background: isAuthenticated && isWatchlist
-                          ? 'rgba(0, 128, 0, 0.2)'
-                          : 'rgba(255, 255, 255, 0.2)',
-                        borderColor: isAuthenticated && isWatchlist ? '#52c41a' : 'white',
-                        color: isAuthenticated && isWatchlist ? '#52c41a' : 'white',
+                        background:
+                          isAuthenticated && isWatchlist
+                            ? 'rgba(0, 128, 0, 0.2)'
+                            : 'rgba(255, 255, 255, 0.2)',
+                        borderColor:
+                          isAuthenticated && isWatchlist ? '#52c41a' : 'white',
+                        color:
+                          isAuthenticated && isWatchlist ? '#52c41a' : 'white',
                       }}
                       title={
                         !isAuthenticated
@@ -437,7 +476,10 @@ const MovieDetailPage = () => {
                             : 'Add to watchlist'
                       }
                       onClick={handleWatchlistClick}
-                      loading={isAuthenticated && (watchlistLoading || checkWatchlistLoading)}
+                      loading={
+                        isAuthenticated &&
+                        (watchlistLoading || checkWatchlistLoading)
+                      }
                     />
                   </div>
                 </div>
@@ -584,22 +626,32 @@ const MovieDetailPage = () => {
           >
             {Array.isArray(moviePlaylists) && moviePlaylists.length > 0 && (
               <div style={{ marginBottom: 24 }}>
-                <div style={{
-                  padding: '16px',
-                  background: '#fafafa',
-                  borderRadius: '8px',
-                }}>
-                  <div style={{
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    color: '#262626',
-                    marginBottom: '12px'
-                  }}>
+                <div
+                  style={{
+                    padding: '16px',
+                    background: '#fafafa',
+                    borderRadius: '8px',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: 500,
+                      color: '#262626',
+                      marginBottom: '12px',
+                    }}
+                  >
                     Current Playlists
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {moviePlaylists.map(playlist => (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '8px',
+                    }}
+                  >
+                    {moviePlaylists.map((playlist) => (
                       <div
                         key={playlist.id}
                         style={{
@@ -609,20 +661,24 @@ const MovieDetailPage = () => {
                           padding: '8px 12px',
                           background: '#fff',
                           border: '1px solid #f0f0f0',
-                          borderRadius: '6px'
+                          borderRadius: '6px',
                         }}
                       >
-                        <span style={{ fontSize: '14px' }}>{playlist.listName}</span>
+                        <span style={{ fontSize: '14px' }}>
+                          {playlist.listName}
+                        </span>
                         <Button
                           type="text"
                           danger
                           icon={<DeleteOutlined />}
-                          onClick={() => handleRemoveFromPlaylist(playlist.id, movieId ?? '')}
+                          onClick={() =>
+                            handleRemoveFromPlaylist(playlist.id, movieId ?? '')
+                          }
                           loading={deletingPlaylistId === playlist.id}
                           style={{
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
                           }}
                         />
                       </div>
@@ -632,15 +688,25 @@ const MovieDetailPage = () => {
               </div>
             )}
 
-            <div style={{
-              borderTop: Array.isArray(moviePlaylists) && moviePlaylists.length > 0 ? '1px solid #f0f0f0' : 'none',
-              paddingTop: Array.isArray(moviePlaylists) && moviePlaylists.length > 0 ? '24px' : 0
-            }}>
-              <h4 style={{
-                marginBottom: 16,
-                fontSize: '14px',
-                fontWeight: 500
-              }}>
+            <div
+              style={{
+                borderTop:
+                  Array.isArray(moviePlaylists) && moviePlaylists.length > 0
+                    ? '1px solid #f0f0f0'
+                    : 'none',
+                paddingTop:
+                  Array.isArray(moviePlaylists) && moviePlaylists.length > 0
+                    ? '24px'
+                    : 0,
+              }}
+            >
+              <h4
+                style={{
+                  marginBottom: 16,
+                  fontSize: '14px',
+                  fontWeight: 500,
+                }}
+              >
                 Create New Playlist
               </h4>
               <Form
@@ -651,15 +717,14 @@ const MovieDetailPage = () => {
                 <Form.Item
                   name="name"
                   label="Playlist Name"
-                  rules={[{ required: true, message: 'Please enter a playlist name' }]}
+                  rules={[
+                    { required: true, message: 'Please enter a playlist name' },
+                  ]}
                 >
                   <Input placeholder="Enter playlist name" />
                 </Form.Item>
 
-                <Form.Item
-                  name="description"
-                  label="Description"
-                >
+                <Form.Item name="description" label="Description">
                   <Input.TextArea
                     placeholder="Enter playlist description (optional)"
                     rows={3}
