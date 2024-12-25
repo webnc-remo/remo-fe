@@ -6,38 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>ReMo - Discover & Share Movies</title>
-    <meta name="title" content="ReMo - Discover & Share Movies" />
-    <meta name="description" content="Your personal movie collection. Discover trending movies, create watchlists, and share your favorites with friends." />
+    <title>ReMo - Best Movie Collection & Sharing Platform | Watch, Rate, Share Movies</title>
+    <meta name="title" content="ReMo - Best Movie Collection & Sharing Platform | Watch, Rate, Share Movies" />
+    <meta name="description" content="Discover the latest movies, create your personal watchlist, rate films, and share your movie collections with friends. Join ReMo - Your ultimate movie companion for tracking and sharing great films." />
+    <meta name="keywords" content="movie collection, watchlist, movie ratings, film sharing, movie tracking, movie recommendations, movie reviews, movie database, movie platform" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="author" content="ReMo" />
+    <link rel="canonical" href="https://remoai.fun/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://remoai.fun/" />
-    <meta property="og:site_name" content="ReMo" />
-    <meta property="og:title" content="ReMo - Discover & Share Movies" />
-    <meta property="og:description" content="Your personal movie collection. Discover trending movies, create watchlists, and share your favorites with friends." />
+    <meta property="og:site_name" content="ReMo - Movie Collection Platform" />
+    <meta property="og:title" content="ReMo - Best Movie Collection & Sharing Platform" />
+    <meta property="og:description" content="Discover the latest movies, create your personal watchlist, rate films, and share your movie collections with friends. Join ReMo - Your ultimate movie companion for tracking and sharing great films." />
     <meta property="og:image" content="https://remoai.fun/assets/remo-preview.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://remoai.fun/" />
-    <meta name="twitter:title" content="ReMo - Discover & Share Movies" />
-    <meta name="twitter:description" content="Your personal movie collection. Discover trending movies, create watchlists, and share your favorites with friends." />
+    <meta name="twitter:title" content="ReMo - Best Movie Collection & Sharing Platform" />
+    <meta name="twitter:description" content="Discover the latest movies, create your personal watchlist, rate films, and share your movie collections with friends. Join ReMo - Your ultimate movie companion." />
     <meta name="twitter:image" content="https://remoai.fun/assets/remo-preview.jpg" />
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "ReMo",
+      "url": "https://remoai.fun",
+      "description": "Your ultimate movie collection and sharing platform",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://remoai.fun/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Mobile App Meta -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="ReMo Movies" />
+    <meta name="theme-color" content="#1890ff" />
+
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://api.themoviedb.org" />
+    <link rel="dns-prefetch" href="https://api.themoviedb.org" />
+
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZVMCSLE1C9"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-ZVMCSLE1C9');
     </script>
   </head>
   <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
