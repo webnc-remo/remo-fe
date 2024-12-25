@@ -97,15 +97,14 @@ const MovieDetailPage = () => {
         onSuccess: () => {
           refetchWatchlist();
           message.success(
-            isWatchlist
-              ? 'Removed from watchlist'
-              : 'Added to watchlist'
+            isWatchlist ? 'Removed from watchlist' : 'Added to watchlist'
           );
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError: (error: any) => {
           message.error(
-            error?.response?.data?.message || 'Failed to update watchlist status'
+            error?.response?.data?.message ||
+              'Failed to update watchlist status'
           );
         },
       }
@@ -244,8 +243,8 @@ const MovieDetailPage = () => {
                           <HeartOutlined />
                         ) : favoriteLoading ||
                           checkLoading ? null : isFavorite ? (
-                            <HeartFilled />
-                          ) : (
+                          <HeartFilled />
+                        ) : (
                           <HeartOutlined />
                         )
                       }
@@ -282,8 +281,8 @@ const MovieDetailPage = () => {
                           <BookOutlined />
                         ) : watchlistLoading ||
                           checkWatchlistLoading ? null : isWatchlist ? (
-                            <BookFilled />
-                          ) : (
+                          <BookFilled />
+                        ) : (
                           <BookOutlined />
                         )
                       }
@@ -310,7 +309,8 @@ const MovieDetailPage = () => {
                       }
                       onClick={handleWatchlistClick}
                       loading={
-                        isAuthenticated && (watchlistLoading || checkWatchlistLoading)
+                        isAuthenticated &&
+                        (watchlistLoading || checkWatchlistLoading)
                       }
                     />
                   </div>
