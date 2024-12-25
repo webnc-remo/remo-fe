@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { axiosInstance, getUserPlaylistsUrl } from '../index';
+import { Movie } from '../../interface/movie.interface';
 
 interface Playlist {
   id: string;
   listName: string;
   description?: string;
   imageUrl?: string;
+  items?: Movie[];
 }
 
 export const useUserPlaylists = () => {
