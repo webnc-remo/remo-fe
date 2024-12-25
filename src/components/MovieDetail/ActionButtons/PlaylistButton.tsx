@@ -1,5 +1,5 @@
-import { Button, Popover, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, Popover, Badge } from 'antd';
+import { PlaySquareOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { usePlaylistsByMovie } from '../../../apis/lists/usePlaylistsByMovie';
 import { PlaylistContent } from './PlaylistContent';
@@ -20,16 +20,17 @@ export const PlaylistButton = ({
     enabled: isAuthenticated,
   });
 
+  const playlistCount = moviePlaylists?.length ?? 0;
+
   const handleUnauthorizedClick = () => {
     navigate('/login');
-    message.info('Please login to use this feature');
   };
 
   if (!isAuthenticated) {
     return (
       <Button
         type="default"
-        icon={<PlusOutlined />}
+        icon={<PlaySquareOutlined />}
         size="large"
         style={{
           borderRadius: '50%',
@@ -55,32 +56,37 @@ export const PlaylistButton = ({
       placement="right"
       arrow={true}
     >
-      <Button
-        type="default"
-        icon={<PlusOutlined />}
-        size="large"
-        style={{
-          borderRadius: '50%',
-          width: '45px',
-          height: '45px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background:
-            Array.isArray(moviePlaylists) && moviePlaylists.length > 0
-              ? 'rgba(147, 51, 234, 0.2)'
-              : 'rgba(255, 255, 255, 0.2)',
-          borderColor:
-            Array.isArray(moviePlaylists) && moviePlaylists.length > 0
-              ? '#9333ea'
-              : 'white',
-          color:
-            Array.isArray(moviePlaylists) && moviePlaylists.length > 0
-              ? '#9333ea'
-              : 'white',
-        }}
-        onClick={onOpenModal}
-      />
+      <Badge count={playlistCount} size="small">
+        <Button
+          type="default"
+          disabled={
+            !Array.isArray(moviePlaylists) || moviePlaylists.length === 0
+          }
+          icon={<PlaySquareOutlined />}
+          size="large"
+          style={{
+            borderRadius: '50%',
+            width: '45px',
+            height: '45px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background:
+              Array.isArray(moviePlaylists) && moviePlaylists.length > 0
+                ? 'rgba(147, 51, 234, 0.2)'
+                : 'rgba(255, 255, 255, 0.2)',
+            borderColor:
+              Array.isArray(moviePlaylists) && moviePlaylists.length > 0
+                ? '#9333ea'
+                : 'white',
+            color:
+              Array.isArray(moviePlaylists) && moviePlaylists.length > 0
+                ? '#9333ea'
+                : 'white',
+          }}
+          onClick={onOpenModal}
+        />
+      </Badge>
     </Popover>
   );
 };
