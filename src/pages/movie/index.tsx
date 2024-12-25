@@ -200,8 +200,8 @@ const MovieDetailPage = () => {
                           <HeartOutlined />
                         ) : favoriteLoading ||
                           checkLoading ? null : isFavorite ? (
-                          <HeartFilled />
-                        ) : (
+                            <HeartFilled />
+                          ) : (
                           <HeartOutlined />
                         )
                       }
@@ -248,8 +248,8 @@ const MovieDetailPage = () => {
                       }}
                       title={
                         isAuthenticated
-                          ? 'Add to wishlist'
-                          : 'Please login to add to wishlist'
+                          ? 'Add to watchlist'
+                          : 'Please login to add to watchlist'
                       }
                       onClick={
                         isAuthenticated ? undefined : handleUnauthorizedClick

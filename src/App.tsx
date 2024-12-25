@@ -12,7 +12,7 @@ import { Profile } from './pages/profile/Profile';
 import PeopleDetailPage from './pages/people/detail/index';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import FavoriteMovies from './pages/lists/FavoriteMovies';
-import WishlistMovies from './pages/lists/WishlistMovies';
+import WatchlistMovies from './pages/lists/WatchlistMovies';
 import MovieLists from './pages/lists/MovieLists';
 import ShareList from './pages/shareList';
 
@@ -44,7 +44,7 @@ const App: React.FC = () => {
               <Route path="/" element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/favorites" element={<FavoriteMovies />} />
-                <Route path="/wishlist" element={<WishlistMovies />} />
+                <Route path="/watchlist" element={<WatchlistMovies />} />
                 <Route path="/lists" element={<MovieLists />} />
               </Route>
             </Route>
