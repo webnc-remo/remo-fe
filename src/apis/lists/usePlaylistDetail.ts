@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { axiosInstance } from '../index';
+import { axiosInstance, getPlaylistDetailsUrl } from '../index';
 
 interface PlaylistDetailParams {
   page?: number;
@@ -14,11 +14,11 @@ export const usePlaylistDetail = (
     queryKey: ['playlist-detail', playlistId, params],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/playlists/${playlistId}/movies`,
+        getPlaylistDetailsUrl(playlistId),
         {
           params: {
-            page: params.page || 1,
-            take: params.take || 10,
+            page: params.page ?? 1,
+            take: params.take ?? 10,
           },
         }
       );
