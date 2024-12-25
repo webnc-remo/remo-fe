@@ -81,7 +81,9 @@ export const Header: React.FC = () => {
                   key: '3',
                   icon: <BookOutlined />,
                   label: (
-                    <span onClick={() => navigate('/watchlist')}>Watchlist</span>
+                    <span onClick={() => navigate('/watchlist')}>
+                      Watchlist
+                    </span>
                   ),
                 },
                 {

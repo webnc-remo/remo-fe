@@ -200,8 +200,8 @@ const MovieDetailPage = () => {
                           <HeartOutlined />
                         ) : favoriteLoading ||
                           checkLoading ? null : isFavorite ? (
-                            <HeartFilled />
-                          ) : (
+                          <HeartFilled />
+                        ) : (
                           <HeartOutlined />
                         )
                       }
