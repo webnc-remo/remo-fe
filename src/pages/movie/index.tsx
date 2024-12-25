@@ -1,5 +1,5 @@
 import { useMovieDetail } from '../../apis/movie/useMovieDetail';
-import { useParams, Link, } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Button, Spin, Col, Row, Progress, Avatar } from 'antd';
 import { getMovieDetailImageUrl, noImageUrl } from '../../apis';
 import { useState } from 'react';
