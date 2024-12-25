@@ -8,8 +8,8 @@ interface Playlist {
 }
 
 export const usePlaylistsByMovie = (
-  movieId?: string,
-  options: { enabled: boolean } = { enabled: true }
+  movieId: string | undefined,
+  options: { enabled: boolean }
 ) => {
   return useQuery({
     queryKey: ['playlists', 'movie', movieId],
@@ -21,5 +21,6 @@ export const usePlaylistsByMovie = (
       return response.data.playlists;
     },
     enabled: options.enabled,
+    retry: false,
   });
 };
