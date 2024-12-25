@@ -20,6 +20,11 @@ export interface UserFavMovieParam {
   take: number;
 }
 
+export interface UserWatchlistParam {
+  page: number;
+  take: number;
+}
+
 /* Auth URL */
 export const registerUrl = `${VITE_URL_API}/auth/register`;
 export const loginUrl = `${VITE_URL_API}/auth/login`;
@@ -57,6 +62,14 @@ export const checkUserFavMovieUrl = (movieId: string) =>
   `${VITE_URL_API}/user/fav/check/${movieId}`;
 export const getSharedListUrl = (listId: string) =>
   `${VITE_URL_API}/lists/share/${listId}`;
+export const toggleWatchlistUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/watchlist/${movieId}`;
+export const getUserWatchlistUrl = (searchParam: UserFavMovieParam) =>
+  `${VITE_URL_API}/user/watchlist?page=${searchParam.page}&take=${searchParam.take}`;
+export const removeUserWatchlistUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/watchlist/${movieId}`;
+export const checkUserWatchlistUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/watchlist/check/${movieId}`;
 
 /* Axios Instance Remote */
 export const axiosInstance = axios.create({

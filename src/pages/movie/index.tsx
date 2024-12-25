@@ -9,10 +9,13 @@ import {
   HeartFilled,
   PlusOutlined,
   BookOutlined,
+  BookFilled,
 } from '@ant-design/icons';
 import { useToggleFavorite } from '../../apis/user/useToggleFavorite';
 import { useCheckUserFavMovie } from '../../apis/user/useCheckUserFavMovie';
 import { useAuthStore } from '../../stores/authStore';
+import { useToggleWatchlist } from '../../apis/user/useToggleWatchlist';
+import { useCheckUserWatchlist } from '../../apis/user/useCheckUserWatchlist';
 
 const MovieDetailPage = () => {
   const navigate = useNavigate();
@@ -28,6 +31,15 @@ const MovieDetailPage = () => {
     loading: checkLoading,
     refetch,
   } = useCheckUserFavMovie(movieId, {
+    enabled: isAuthenticated,
+  });
+
+  const { toggleWatchlist, loading: watchlistLoading } = useToggleWatchlist();
+  const {
+    isWatchlist,
+    loading: checkWatchlistLoading,
+    refetch: refetchWatchlist,
+  } = useCheckUserWatchlist(movieId, {
     enabled: isAuthenticated,
   });
 
@@ -62,6 +74,38 @@ const MovieDetailPage = () => {
         onError: (error: any) => {
           message.error(
             error?.response?.data?.message || 'Failed to update favorite status'
+          );
+        },
+      }
+    );
+  };
+
+  const handleWatchlistClick = () => {
+    if (!isAuthenticated) {
+      handleUnauthorizedClick();
+      return;
+    }
+
+    if (!movieId) return;
+
+    toggleWatchlist(
+      {
+        movieId,
+        action: isWatchlist ? 'remove' : 'add',
+      },
+      {
+        onSuccess: () => {
+          refetchWatchlist();
+          message.success(
+            isWatchlist
+              ? 'Removed from watchlist'
+              : 'Added to watchlist'
+          );
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+          message.error(
+            error?.response?.data?.message || 'Failed to update watchlist status'
           );
         },
       }
@@ -200,8 +244,8 @@ const MovieDetailPage = () => {
                           <HeartOutlined />
                         ) : favoriteLoading ||
                           checkLoading ? null : isFavorite ? (
-                          <HeartFilled />
-                        ) : (
+                            <HeartFilled />
+                          ) : (
                           <HeartOutlined />
                         )
                       }
@@ -233,7 +277,16 @@ const MovieDetailPage = () => {
                     />
                     <Button
                       type="default"
-                      icon={<BookOutlined />}
+                      icon={
+                        !isAuthenticated ? (
+                          <BookOutlined />
+                        ) : watchlistLoading ||
+                          checkWatchlistLoading ? null : isWatchlist ? (
+                            <BookFilled />
+                          ) : (
+                          <BookOutlined />
+                        )
+                      }
                       size="large"
                       style={{
                         borderRadius: '50%',
@@ -242,17 +295,22 @@ const MovieDetailPage = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        background: 'rgba(255, 255, 255, 0.2)',
-                        borderColor: 'white',
-                        color: 'white',
+                        background: isWatchlist
+                          ? 'rgba(0, 128, 0, 0.2)'
+                          : 'rgba(255, 255, 255, 0.2)',
+                        borderColor: isWatchlist ? '#52c41a' : 'white',
+                        color: isWatchlist ? '#52c41a' : 'white',
                       }}
                       title={
-                        isAuthenticated
-                          ? 'Add to watchlist'
-                          : 'Please login to add to watchlist'
+                        !isAuthenticated
+                          ? 'Please login to add to watchlist'
+                          : isWatchlist
+                            ? 'Remove from watchlist'
+                            : 'Add to watchlist'
                       }
-                      onClick={
-                        isAuthenticated ? undefined : handleUnauthorizedClick
+                      onClick={handleWatchlistClick}
+                      loading={
+                        isAuthenticated && (watchlistLoading || checkWatchlistLoading)
                       }
                     />
                   </div>
