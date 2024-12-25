@@ -13,6 +13,14 @@ interface MoviesResponse {
     hasPreviousPage: boolean;
     hasNextPage: boolean;
   };
+  list: {
+    id: string;
+    listName: string;
+    createdAt: string;
+    user: {
+      fullname: string;
+    };
+  };
 }
 
 export const useGetUserFavMovie = (userFavMovieParam: UserFavMovieParam) => {
@@ -43,6 +51,7 @@ export const useGetUserFavMovie = (userFavMovieParam: UserFavMovieParam) => {
     movies: data?.items || [],
     loading: isLoading,
     meta: data?.meta,
+    listInfo: data?.list,
     refetch,
   };
 };

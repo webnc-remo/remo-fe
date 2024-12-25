@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { message } from 'antd';
-import { axiosInstance } from '..';
+import { axiosInstance, getSharedListUrl } from '..';
 import { Movie } from '../../interface/movie.interface';
 
 interface SharedListParams {
@@ -23,9 +23,9 @@ interface SharedListResponse {
   list: {
     id: string;
     listName: string;
+    createdAt: string;
     user: {
       fullname: string;
-      createdAt: string;
     };
   };
 }
@@ -40,7 +40,7 @@ export const useGetSharedList = ({
     queryKey: ['sharedList', listId, page, take, order],
     queryFn: async () => {
       try {
-        const response = await axiosInstance.get(`/lists/share/${listId}`, {
+        const response = await axiosInstance.get(getSharedListUrl(listId), {
           params: {
             page,
             take,
@@ -60,7 +60,6 @@ export const useGetSharedList = ({
     enabled: !!listId,
   });
 
-  console.log('hehe3', data);
   return {
     movies: data?.items,
     meta: data?.meta,

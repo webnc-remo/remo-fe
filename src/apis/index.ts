@@ -55,6 +55,8 @@ export const removeUserFavMovieUrl = (movieId: string) =>
   `${VITE_URL_API}/user/fav/${movieId}`;
 export const checkUserFavMovieUrl = (movieId: string) =>
   `${VITE_URL_API}/user/fav/check/${movieId}`;
+export const getSharedListUrl = (listId: string) =>
+  `${VITE_URL_API}/lists/share/${listId}`;
 
 /* Axios Instance Remote */
 export const axiosInstance = axios.create({

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Spin, Empty, Pagination, message } from 'antd';
+import { Row, Col, Spin, Empty, Pagination, message, Button } from 'antd';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { ShareAltOutlined } from '@ant-design/icons';
 import { useGetUserFavMovie } from '../../apis/user/useGetUserFavMovie';
 import { useToggleFavorite } from '../../apis/user/useToggleFavorite';
 import MovieCardInList from '../../components/MovieCardInList';
@@ -19,7 +20,7 @@ const FavoriteMovies: React.FC = () => {
     return size ? parseInt(size) : 10;
   });
 
-  const { movies, loading, meta, refetch } = useGetUserFavMovie({
+  const { movies, loading, meta, listInfo, refetch } = useGetUserFavMovie({
     page: currentPage,
     take: pageSize,
   });
@@ -62,7 +63,7 @@ const FavoriteMovies: React.FC = () => {
           onError: (error: any) => {
             message.error(
               error?.response?.data?.message ||
-                'Failed to remove from favorites'
+              'Failed to remove from favorites'
             );
           },
         }
@@ -71,6 +72,19 @@ const FavoriteMovies: React.FC = () => {
       message.error(
         (error as Error).message || 'Failed to remove from favorites'
       );
+    }
+  };
+
+  const handleShare = () => {
+    if (listInfo?.id) {
+      const shareUrl = `${window.location.origin}/share/list/${listInfo.id}`;
+      navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+          message.success('Share link copied to clipboard!');
+        })
+        .catch(() => {
+          message.error('Failed to copy share link');
+        });
     }
   };
 
@@ -88,7 +102,18 @@ const FavoriteMovies: React.FC = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">My Favorite Movies</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">My Favorite Movies</h1>
+        <Button
+          type="primary"
+          icon={<ShareAltOutlined />}
+          onClick={handleShare}
+          className="flex items-center"
+        >
+          Share List
+        </Button>
+      </div>
+
       <Row gutter={[16, 16]}>
         {movies.map((movie) => (
           <Col xs={24} md={12} key={movie.id}>
