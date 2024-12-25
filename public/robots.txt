@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://remoai.fun/sitemap.xml
+
+# Disallow crawling of auth pages
+Disallow: /login
+Disallow: /register
+
+# Rate limiting
+Crawl-delay: 10 
