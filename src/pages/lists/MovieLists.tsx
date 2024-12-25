@@ -1,11 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Spin, Empty, Pagination, Select, message, Button, Modal, Form, Input } from 'antd';
+import {
+  Row,
+  Col,
+  Spin,
+  Empty,
+  Pagination,
+  Select,
+  message,
+  Button,
+  Modal,
+  Form,
+  Input,
+} from 'antd';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ShareAltOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  ShareAltOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
 import { useUserPlaylists } from '../../apis/user/useUserPlaylists';
 import MovieCardInList from '../../components/MovieCardInList';
 import { Movie } from '../../interface/movie.interface';
-import { axiosInstance, deletePlaylistUrl, removeMovieFromPlaylistUrl, updatePlaylistUrl } from '../../apis';
+import {
+  axiosInstance,
+  deletePlaylistUrl,
+  removeMovieFromPlaylistUrl,
+  updatePlaylistUrl,
+} from '../../apis';
 import { usePlaylistDetail } from '../../apis/lists/usePlaylistDetail';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -40,7 +61,7 @@ const MovieLists: React.FC = () => {
   const {
     data: playlists,
     isLoading: playlistsLoading,
-    refetch: refetchPlaylists
+    refetch: refetchPlaylists,
   } = useUserPlaylists();
 
   const {
@@ -105,10 +126,7 @@ const MovieLists: React.FC = () => {
 
       message.success('Movie removed from playlist');
 
-      await Promise.all([
-        refetchPlaylist(),
-        refetchPlaylists()
-      ]);
+      await Promise.all([refetchPlaylist(), refetchPlaylists()]);
 
       // Update page if necessary
       if (playlistDetail?.items?.length === 1 && currentPage > 1) {
@@ -118,7 +136,7 @@ const MovieLists: React.FC = () => {
       }
 
       queryClient.invalidateQueries({
-        queryKey: ['playlists', 'movie']
+        queryKey: ['playlists', 'movie'],
       });
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -143,7 +161,10 @@ const MovieLists: React.FC = () => {
     }
   };
 
-  const handleEdit = async (values: { listName: string; description?: string }) => {
+  const handleEdit = async (values: {
+    listName: string;
+    description?: string;
+  }) => {
     if (!selectedPlaylistId) return;
 
     setIsUpdating(true);
@@ -151,10 +172,7 @@ const MovieLists: React.FC = () => {
       await axiosInstance.put(updatePlaylistUrl(selectedPlaylistId), values);
 
       message.success('Playlist updated successfully');
-      await Promise.all([
-        refetchPlaylists(),
-        refetchPlaylist()
-      ]);
+      await Promise.all([refetchPlaylists(), refetchPlaylist()]);
       setIsEditModalVisible(false);
       form.resetFields();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -177,7 +195,7 @@ const MovieLists: React.FC = () => {
 
       // Select first playlist after deletion if available
       if (playlists && playlists.length > 1) {
-        const nextPlaylist = playlists.find(p => p.id !== selectedPlaylistId);
+        const nextPlaylist = playlists.find((p) => p.id !== selectedPlaylistId);
         if (nextPlaylist) {
           setSelectedPlaylistId(nextPlaylist.id);
           updateUrl(1, pageSize, nextPlaylist.id);
@@ -196,7 +214,8 @@ const MovieLists: React.FC = () => {
   };
 
   const isInitialLoading = !playlists && playlistsLoading;
-  const isContentLoading = selectedPlaylistId && !playlistDetail && detailLoading;
+  const isContentLoading =
+    selectedPlaylistId && !playlistDetail && detailLoading;
 
   if (isInitialLoading) {
     return (
@@ -234,10 +253,12 @@ const MovieLists: React.FC = () => {
               <Button
                 icon={<EditOutlined />}
                 onClick={() => {
-                  const currentPlaylist = playlists?.find(p => p.id === selectedPlaylistId);
+                  const currentPlaylist = playlists?.find(
+                    (p) => p.id === selectedPlaylistId
+                  );
                   form.setFieldsValue({
                     listName: currentPlaylist?.listName,
-                    description: currentPlaylist?.description
+                    description: currentPlaylist?.description,
                   });
                   setIsEditModalVisible(true);
                 }}
@@ -335,16 +356,10 @@ const MovieLists: React.FC = () => {
             label="Playlist Name"
             rules={[{ required: true, message: 'Please enter playlist name' }]}
           >
-            <Input
-              placeholder="Enter playlist name"
-              size="large"
-            />
+            <Input placeholder="Enter playlist name" size="large" />
           </Form.Item>
 
-          <Form.Item
-            name="description"
-            label="Description"
-          >
+          <Form.Item name="description" label="Description">
             <Input.TextArea
               placeholder="Enter playlist description (optional)"
               rows={6}
@@ -385,7 +400,10 @@ const MovieLists: React.FC = () => {
         okButtonProps={{ danger: true }}
         onOk={handleDelete}
       >
-        <p>Are you sure you want to delete this playlist? This action cannot be undone.</p>
+        <p>
+          Are you sure you want to delete this playlist? This action cannot be
+          undone.
+        </p>
       </Modal>
     </div>
   );
