@@ -62,6 +62,8 @@ export const checkUserFavMovieUrl = (movieId: string) =>
   `${VITE_URL_API}/user/fav/check/${movieId}`;
 export const getSharedListUrl = (listId: string) =>
   `${VITE_URL_API}/lists/share/${listId}`;
+
+/* User Watchlist URL */
 export const toggleWatchlistUrl = (movieId: string) =>
   `${VITE_URL_API}/user/watchlist/${movieId}`;
 export const getUserWatchlistUrl = (searchParam: UserFavMovieParam) =>
@@ -70,6 +72,24 @@ export const removeUserWatchlistUrl = (movieId: string) =>
   `${VITE_URL_API}/user/watchlist/${movieId}`;
 export const checkUserWatchlistUrl = (movieId: string) =>
   `${VITE_URL_API}/user/watchlist/check/${movieId}`;
+
+/* My List URL */
+export const createPlaylistUrl = () => `${VITE_URL_API}/user/playlists`;
+export const addMovieToPlaylistUrl = (playlistId: string) =>
+  `${VITE_URL_API}/user/playlists/${playlistId}/movies`;
+export const updatePlaylistUrl = (playlistId: string) =>
+  `${VITE_URL_API}/user/playlists/${playlistId}`;
+export const deletePlaylistUrl = (playlistId: string) =>
+  `${VITE_URL_API}/user/playlists/${playlistId}`;
+export const removeMovieFromPlaylistUrl = (
+  playlistId: string,
+  movieId: string
+) => `${VITE_URL_API}/user/playlists/${playlistId}/movies/${movieId}`;
+export const getPlaylistDetailsUrl = (playlistId: string) =>
+  `${VITE_URL_API}/user/playlists/${playlistId}`;
+export const getUserPlaylistsUrl = () => `${VITE_URL_API}/user/playlists`;
+export const checkMovieInPlaylistsUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/playlists/movies/${movieId}/playlists`;
 
 /* Axios Instance Remote */
 export const axiosInstance = axios.create({

@@ -1,21 +1,21 @@
 import { useMovieDetail } from '../../apis/movie/useMovieDetail';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Button, Spin, message, Col, Row, Progress, Avatar } from 'antd';
-import { getMovieDetailImageUrl, noImageUrl } from '../../apis';
+import { Button, Spin, message, Col, Row, Progress, Avatar, Modal, Form, Input, Popover } from 'antd';
+import { addMovieToPlaylistUrl, axiosInstance, createPlaylistUrl, getMovieDetailImageUrl, noImageUrl, removeMovieFromPlaylistUrl } from '../../apis';
 import { useState } from 'react';
 import './movie.css';
 import {
   HeartOutlined,
-  HeartFilled,
   PlusOutlined,
   BookOutlined,
-  BookFilled,
+  DeleteOutlined,
 } from '@ant-design/icons';
 import { useToggleFavorite } from '../../apis/user/useToggleFavorite';
 import { useCheckUserFavMovie } from '../../apis/user/useCheckUserFavMovie';
 import { useAuthStore } from '../../stores/authStore';
 import { useToggleWatchlist } from '../../apis/user/useToggleWatchlist';
 import { useCheckUserWatchlist } from '../../apis/user/useCheckUserWatchlist';
+import { usePlaylistsByMovie } from '../../apis/lists/usePlaylistsByMovie';
 
 const MovieDetailPage = () => {
   const navigate = useNavigate();
@@ -42,6 +42,18 @@ const MovieDetailPage = () => {
   } = useCheckUserWatchlist(movieId, {
     enabled: isAuthenticated,
   });
+
+  const { data: moviePlaylists, refetch: refetchPlaylists } = usePlaylistsByMovie(
+    movieId,
+    {
+      enabled: isAuthenticated,
+    }
+  );
+
+  const [showCreatePlaylistModal, setShowCreatePlaylistModal] = useState(false);
+  const [form] = Form.useForm();
+  const [creatingPlaylist, setCreatingPlaylist] = useState(false);
+  const [deletingPlaylistId, setDeletingPlaylistId] = useState<string | null>(null);
 
   const INITIAL_VISIBLE_ITEMS = 6;
 
@@ -104,12 +116,122 @@ const MovieDetailPage = () => {
         onError: (error: any) => {
           message.error(
             error?.response?.data?.message ||
-              'Failed to update watchlist status'
+            'Failed to update watchlist status'
           );
         },
       }
     );
   };
+
+  const handleCreatePlaylist = async (values: { name: string; description?: string }) => {
+    if (!movieId || !isAuthenticated) {
+      handleUnauthorizedClick();
+      return;
+    }
+
+    setCreatingPlaylist(true);
+    try {
+      const response = await axiosInstance.post(
+        createPlaylistUrl(),
+        {
+          listName: values.name,
+          description: values.description,
+          imageUrl: '',
+        },
+      );
+
+      await axiosInstance.post(
+        addMovieToPlaylistUrl(response.data.id),
+        { tmdbId: movieId },
+      );
+
+      message.success('Movie added to new playlist!');
+      setShowCreatePlaylistModal(false);
+      form.resetFields();
+      refetchPlaylists();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      message.error(error?.response?.data?.message || 'Failed to create playlist');
+    } finally {
+      setCreatingPlaylist(false);
+    }
+  };
+
+  const handleRemoveFromPlaylist = async (playlistId: string, movieId: string) => {
+    if (!movieId || !isAuthenticated) {
+      handleUnauthorizedClick();
+      return;
+    }
+
+    setDeletingPlaylistId(playlistId);
+    try {
+      await axiosInstance.delete(
+        removeMovieFromPlaylistUrl(playlistId, movieId),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+          }
+        }
+      );
+
+      message.success('Movie removed from playlist!');
+      refetchPlaylists();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        message.error('Playlist or movie not found');
+      } else {
+        message.error('Failed to remove movie from playlist');
+      }
+    } finally {
+      setDeletingPlaylistId(null);
+    }
+  };
+
+  const PlaylistContent = () => (
+    <div style={{ maxWidth: 300 }}>
+      {Array.isArray(moviePlaylists) && moviePlaylists.length > 0 ? (
+        moviePlaylists.map(playlist => (
+          <div
+            key={playlist.id}
+            style={{
+              padding: '8px',
+              borderBottom: '1px solid #f0f0f0',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <span style={{ fontSize: '14px' }}>{playlist.listName}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Button
+                type="text"
+                danger
+                size="small"
+                icon={<DeleteOutlined />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemoveFromPlaylist(playlist.id, movieId ?? '');
+                }}
+                loading={deletingPlaylistId === playlist.id}
+              />
+            </div>
+          </div>
+        ))
+      ) : (
+        <div style={{
+          padding: '16px',
+          textAlign: 'center',
+          color: '#8c8c8c',
+          fontSize: '14px',
+          background: '#fafafa',
+          borderRadius: '6px'
+        }}>
+          Click the button to add this movie to a playlist
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div>
@@ -212,9 +334,60 @@ const MovieDetailPage = () => {
 
                   {/* User Interaction Buttons */}
                   <div style={{ display: 'flex', gap: '1em' }}>
+                    {isAuthenticated ? (
+                      <Popover
+                        content={<PlaylistContent />}
+                        title="Movie added to playlists:"
+                        trigger={['hover', 'click']}
+                        placement="right"
+                        arrow={true}
+                      >
+                        <Button
+                          type="default"
+                          icon={<PlusOutlined />}
+                          size="large"
+                          style={{
+                            borderRadius: '50%',
+                            width: '45px',
+                            height: '45px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: Array.isArray(moviePlaylists) && moviePlaylists.length > 0
+                              ? 'rgba(147, 51, 234, 0.2)'
+                              : 'rgba(255, 255, 255, 0.2)',
+                            borderColor: Array.isArray(moviePlaylists) && moviePlaylists.length > 0
+                              ? '#9333ea'
+                              : 'white',
+                            color: Array.isArray(moviePlaylists) && moviePlaylists.length > 0
+                              ? '#9333ea'
+                              : 'white',
+                          }}
+                          onClick={() => setShowCreatePlaylistModal(true)}
+                        />
+                      </Popover>
+                    ) : (
+                      <Button
+                        type="default"
+                        icon={<PlusOutlined />}
+                        size="large"
+                        style={{
+                          borderRadius: '50%',
+                          width: '45px',
+                          height: '45px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: 'rgba(255, 255, 255, 0.2)',
+                          borderColor: 'white',
+                          color: 'white',
+                        }}
+                        onClick={handleUnauthorizedClick}
+                      />
+                    )}
                     <Button
                       type="default"
-                      icon={<PlusOutlined />}
+                      icon={<HeartOutlined />}
                       size="large"
                       style={{
                         borderRadius: '50%',
@@ -223,44 +396,11 @@ const MovieDetailPage = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        background: 'rgba(255, 255, 255, 0.2)',
-                        borderColor: 'white',
-                        color: 'white',
-                      }}
-                      title={
-                        isAuthenticated
-                          ? 'Add to list'
-                          : 'Please login to add to list'
-                      }
-                      onClick={
-                        isAuthenticated ? undefined : handleUnauthorizedClick
-                      }
-                    />
-                    <Button
-                      type="default"
-                      icon={
-                        !isAuthenticated ? (
-                          <HeartOutlined />
-                        ) : favoriteLoading ||
-                          checkLoading ? null : isFavorite ? (
-                          <HeartFilled />
-                        ) : (
-                          <HeartOutlined />
-                        )
-                      }
-                      size="large"
-                      style={{
-                        borderRadius: '50%',
-                        width: '45px',
-                        height: '45px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        background: isFavorite
+                        background: isAuthenticated && isFavorite
                           ? 'rgba(255, 0, 0, 0.2)'
                           : 'rgba(255, 255, 255, 0.2)',
-                        borderColor: isFavorite ? '#ff4d4f' : 'white',
-                        color: isFavorite ? '#ff4d4f' : 'white',
+                        borderColor: isAuthenticated && isFavorite ? '#ff4d4f' : 'white',
+                        color: isAuthenticated && isFavorite ? '#ff4d4f' : 'white',
                       }}
                       title={
                         !isAuthenticated
@@ -270,22 +410,11 @@ const MovieDetailPage = () => {
                             : 'Add to favorites'
                       }
                       onClick={handleFavoriteClick}
-                      loading={
-                        isAuthenticated && (favoriteLoading || checkLoading)
-                      }
+                      loading={isAuthenticated && (favoriteLoading || checkLoading)}
                     />
                     <Button
                       type="default"
-                      icon={
-                        !isAuthenticated ? (
-                          <BookOutlined />
-                        ) : watchlistLoading ||
-                          checkWatchlistLoading ? null : isWatchlist ? (
-                          <BookFilled />
-                        ) : (
-                          <BookOutlined />
-                        )
-                      }
+                      icon={<BookOutlined />}
                       size="large"
                       style={{
                         borderRadius: '50%',
@@ -294,11 +423,11 @@ const MovieDetailPage = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        background: isWatchlist
+                        background: isAuthenticated && isWatchlist
                           ? 'rgba(0, 128, 0, 0.2)'
                           : 'rgba(255, 255, 255, 0.2)',
-                        borderColor: isWatchlist ? '#52c41a' : 'white',
-                        color: isWatchlist ? '#52c41a' : 'white',
+                        borderColor: isAuthenticated && isWatchlist ? '#52c41a' : 'white',
+                        color: isAuthenticated && isWatchlist ? '#52c41a' : 'white',
                       }}
                       title={
                         !isAuthenticated
@@ -308,10 +437,7 @@ const MovieDetailPage = () => {
                             : 'Add to watchlist'
                       }
                       onClick={handleWatchlistClick}
-                      loading={
-                        isAuthenticated &&
-                        (watchlistLoading || checkWatchlistLoading)
-                      }
+                      loading={isAuthenticated && (watchlistLoading || checkWatchlistLoading)}
                     />
                   </div>
                 </div>
@@ -449,6 +575,110 @@ const MovieDetailPage = () => {
               )}
             </div>
           )}
+
+          <Modal
+            title="Add to Playlist"
+            open={showCreatePlaylistModal && isAuthenticated}
+            onCancel={() => setShowCreatePlaylistModal(false)}
+            footer={null}
+          >
+            {Array.isArray(moviePlaylists) && moviePlaylists.length > 0 && (
+              <div style={{ marginBottom: 24 }}>
+                <div style={{
+                  padding: '16px',
+                  background: '#fafafa',
+                  borderRadius: '8px',
+                }}>
+                  <div style={{
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: '#262626',
+                    marginBottom: '12px'
+                  }}>
+                    Current Playlists
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {moviePlaylists.map(playlist => (
+                      <div
+                        key={playlist.id}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          padding: '8px 12px',
+                          background: '#fff',
+                          border: '1px solid #f0f0f0',
+                          borderRadius: '6px'
+                        }}
+                      >
+                        <span style={{ fontSize: '14px' }}>{playlist.listName}</span>
+                        <Button
+                          type="text"
+                          danger
+                          icon={<DeleteOutlined />}
+                          onClick={() => handleRemoveFromPlaylist(playlist.id, movieId ?? '')}
+                          loading={deletingPlaylistId === playlist.id}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div style={{
+              borderTop: Array.isArray(moviePlaylists) && moviePlaylists.length > 0 ? '1px solid #f0f0f0' : 'none',
+              paddingTop: Array.isArray(moviePlaylists) && moviePlaylists.length > 0 ? '24px' : 0
+            }}>
+              <h4 style={{
+                marginBottom: 16,
+                fontSize: '14px',
+                fontWeight: 500
+              }}>
+                Create New Playlist
+              </h4>
+              <Form
+                form={form}
+                onFinish={handleCreatePlaylist}
+                layout="vertical"
+              >
+                <Form.Item
+                  name="name"
+                  label="Playlist Name"
+                  rules={[{ required: true, message: 'Please enter a playlist name' }]}
+                >
+                  <Input placeholder="Enter playlist name" />
+                </Form.Item>
+
+                <Form.Item
+                  name="description"
+                  label="Description"
+                >
+                  <Input.TextArea
+                    placeholder="Enter playlist description (optional)"
+                    rows={3}
+                  />
+                </Form.Item>
+
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={creatingPlaylist}
+                    block
+                  >
+                    Create & Add Movie
+                  </Button>
+                </Form.Item>
+              </Form>
+            </div>
+          </Modal>
         </>
       )}
     </div>
