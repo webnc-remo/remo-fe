@@ -11,7 +11,7 @@ export const useToggleFavorite = () => {
       action: 'add' | 'remove';
     }) => {
       if (action === 'add') {
-        const response = await axiosInstance.get(toggleFavoriteUrl(movieId));
+        const response = await axiosInstance.post(toggleFavoriteUrl(movieId));
         return response.data;
       } else {
         const response = await axiosInstance.delete(
