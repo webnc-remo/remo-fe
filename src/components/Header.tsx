@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useLogout } from '../apis/auth/useLogout';
 import { Avatar, Dropdown, Space, Spin, Input, Button } from 'antd';
 import {
@@ -17,13 +17,16 @@ export const Header: React.FC = () => {
   const { logout, loading: logoutLoading } = useLogout();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const { profile, loading: profileLoading } = useGetUserProfile();
+  const location = useLocation();
 
   const [searchValue, setSearchValue] = useState<string>('');
 
   const handleLogout = async () => {
+    const currentPath = location.pathname + location.search;
+
     const result = await logout();
     if (result) {
-      navigate('/login');
+      navigate(currentPath || '/');
     }
   };
 

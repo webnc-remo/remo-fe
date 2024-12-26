@@ -235,20 +235,56 @@ const MovieLists: React.FC = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold">My Lists</h1>
+    <div className="p-4 md:p-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4 w-full md:w-auto">
+          <div className="flex justify-between items-center w-full md:w-auto">
+            <h1 className="text-2xl font-bold">My Lists</h1>
+            {selectedPlaylistId && (
+              <div className="flex md:hidden items-center gap-2">
+                <Button
+                  type="text"
+                  icon={<ShareAltOutlined />}
+                  onClick={handleShare}
+                  loading={shareLoading}
+                  size="middle"
+                />
+                <Button
+                  type="text"
+                  icon={<EditOutlined />}
+                  onClick={() => {
+                    const currentPlaylist = playlists?.find(
+                      (p) => p.id === selectedPlaylistId
+                    );
+                    form.setFieldsValue({
+                      listName: currentPlaylist?.listName,
+                      description: currentPlaylist?.description,
+                    });
+                    setIsEditModalVisible(true);
+                  }}
+                  size="middle"
+                />
+                <Button
+                  type="text"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={() => setIsDeleteModalVisible(true)}
+                  size="middle"
+                />
+              </div>
+            )}
+          </div>
           {selectedPlaylistId && (
-            <>
+            <div className="hidden md:flex flex-wrap gap-2">
               <Button
                 type="primary"
                 icon={<ShareAltOutlined />}
                 onClick={handleShare}
                 loading={shareLoading}
                 className="flex items-center"
+                size="middle"
               >
-                {shareLoading ? 'Copying...' : 'Share List'}
+                {shareLoading ? 'Copying...' : 'Share'}
               </Button>
               <Button
                 icon={<EditOutlined />}
@@ -262,6 +298,7 @@ const MovieLists: React.FC = () => {
                   });
                   setIsEditModalVisible(true);
                 }}
+                size="middle"
               >
                 Edit
               </Button>
@@ -269,14 +306,15 @@ const MovieLists: React.FC = () => {
                 danger
                 icon={<DeleteOutlined />}
                 onClick={() => setIsDeleteModalVisible(true)}
+                size="middle"
               >
                 Delete
               </Button>
-            </>
+            </div>
           )}
         </div>
         <Select
-          style={{ width: 300 }}
+          className="w-full md:w-[300px]"
           value={selectedPlaylistId}
           onChange={handlePlaylistChange}
           loading={playlistsLoading}
@@ -302,7 +340,7 @@ const MovieLists: React.FC = () => {
               <>
                 <Row gutter={[16, 16]}>
                   {playlistDetail.items.map((movie: Movie) => (
-                    <Col xs={24} md={12} key={movie.id}>
+                    <Col xs={24} sm={12} lg={12} xl={12} key={movie.id}>
                       <MovieCardInList
                         movie={movie}
                         onRemove={() => handleRemoveFromPlaylist(movie.tmdb_id)}
@@ -323,6 +361,7 @@ const MovieLists: React.FC = () => {
                     showSizeChanger
                     showTotal={(total) => `Total ${total} movies`}
                     pageSizeOptions={['10', '20', '30', '40']}
+                    className="responsive-pagination"
                   />
                 </div>
               </>
