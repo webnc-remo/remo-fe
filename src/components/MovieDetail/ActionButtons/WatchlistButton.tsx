@@ -1,6 +1,6 @@
 import { Button, message } from 'antd';
 import { BookOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useToggleWatchlist } from '../../../apis/user/useToggleWatchlist';
 import { useCheckUserWatchlist } from '../../../apis/user/useCheckUserWatchlist';
 
@@ -14,6 +14,7 @@ export const WatchlistButton = ({
   isAuthenticated,
 }: WatchlistButtonProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toggleWatchlist, loading: watchlistLoading } = useToggleWatchlist();
   const {
     isWatchlist,
@@ -24,7 +25,7 @@ export const WatchlistButton = ({
   });
 
   const handleUnauthorizedClick = () => {
-    navigate('/login');
+    navigate('/login', { state: { from: location.pathname } });
     message.info('Please login to use this feature');
   };
 

@@ -5,6 +5,7 @@ import { getOauthGoogleUrl } from '../../utils/utils';
 import { useLogin } from '../../apis/auth/useLogin';
 import { useAuthStore } from '../../stores/authStore';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export const Login: React.FC = () => {
   const [form] = Form.useForm();
@@ -13,6 +14,7 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const setTokens = useAuthStore((state) => state.setTokens);
+  const location = useLocation();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -24,7 +26,7 @@ export const Login: React.FC = () => {
     const { email, password } = values;
     try {
       await login({ email, password });
-      navigate('/');
+      navigate(location.state?.from || '/');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);

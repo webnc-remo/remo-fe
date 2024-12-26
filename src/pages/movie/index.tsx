@@ -260,11 +260,13 @@ const MovieDetailPage = () => {
         </>
       )}
 
-      <CreatePlaylistModal
-        isOpen={showCreatePlaylistModal}
-        onClose={() => setShowCreatePlaylistModal(false)}
-        movieId={movieId ?? ''}
-      />
+      {isAuthenticated && (
+        <CreatePlaylistModal
+          isOpen={showCreatePlaylistModal}
+          onClose={() => setShowCreatePlaylistModal(false)}
+          movieId={movieId ?? ''}
+        />
+      )}
     </div>
   );
 };

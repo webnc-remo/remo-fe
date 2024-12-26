@@ -1,6 +1,6 @@
 import { Button, message } from 'antd';
 import { HeartOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useToggleFavorite } from '../../../apis/user/useToggleFavorite';
 import { useCheckUserFavMovie } from '../../../apis/user/useCheckUserFavMovie';
 
@@ -14,6 +14,7 @@ export const FavoriteButton = ({
   isAuthenticated,
 }: FavoriteButtonProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toggleFavorite, loading: favoriteLoading } = useToggleFavorite();
   const {
     isFavorite,
@@ -24,7 +25,7 @@ export const FavoriteButton = ({
   });
 
   const handleUnauthorizedClick = () => {
-    navigate('/login');
+    navigate('/login', { state: { from: location.pathname } });
     message.info('Please login to use this feature');
   };
 

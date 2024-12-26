@@ -1,8 +1,9 @@
 import { Button, Popover, Badge } from 'antd';
 import { PlaySquareOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { usePlaylistsByMovie } from '../../../apis/lists/usePlaylistsByMovie';
 import { PlaylistContent } from './PlaylistContent';
+import { message } from 'antd';
 
 interface PlaylistButtonProps {
   movieId: string;
@@ -16,6 +17,7 @@ export const PlaylistButton = ({
   onOpenModal,
 }: PlaylistButtonProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { data: moviePlaylists } = usePlaylistsByMovie(movieId, {
     enabled: isAuthenticated,
   });
@@ -42,7 +44,8 @@ export const PlaylistButton = ({
   };
 
   const handleUnauthorizedClick = () => {
-    navigate('/login');
+    navigate('/login', { state: { from: location.pathname } });
+    message.info('Please login to use this feature');
   };
 
   if (!isAuthenticated) {
