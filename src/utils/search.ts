@@ -1,4 +1,6 @@
-export const addSearchParamToUrl = (searchParam: Array<{ key: string; value: string | number | null }>) => {
+export const addSearchParamToUrl = (
+  searchParam: Array<{ key: string; value: string | number | null }>
+) => {
   const url = new URL(location.href);
   searchParam.forEach((param) => {
     if (param.value && param.value !== '') {
@@ -7,6 +9,6 @@ export const addSearchParamToUrl = (searchParam: Array<{ key: string; value: str
       url.searchParams.delete(param.key);
     }
   });
-  
+
   return url.pathname + '?' + url.searchParams.toString();
 };

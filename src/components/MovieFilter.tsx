@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 
-const MovieFilterBar: React.FC<{query: SearchParam}> = ({query}) => {
+const MovieFilterBar: React.FC<{ query: SearchParam }> = ({ query }) => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
     q: query.q,
@@ -16,7 +16,9 @@ const MovieFilterBar: React.FC<{query: SearchParam}> = ({query}) => {
     rating: query.rating,
   });
   const { genres } = useMovieGenres();
-  const releaseYears = Array.from({ length: 10 }, (_, index) => (new Date().getFullYear() - index).toString());
+  const releaseYears = Array.from({ length: 10 }, (_, index) =>
+    (new Date().getFullYear() - index).toString()
+  );
 
   const handleChange = (key: string, value: string | number | null) => {
     const val = value ? value.toString() : value;
@@ -37,7 +39,15 @@ const MovieFilterBar: React.FC<{query: SearchParam}> = ({query}) => {
   };
 
   return (
-    <div style={{display: 'flex', justifyContent: 'flex-end', gap: '10px', flexWrap: 'wrap', minWidth: '450px'}}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'flex-end',
+        gap: '10px',
+        flexWrap: 'wrap',
+        minWidth: '450px',
+      }}
+    >
       <Space size="small" wrap>
         {/* Genre */}
         <Select
