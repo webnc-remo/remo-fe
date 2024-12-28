@@ -13,6 +13,9 @@ export interface SearchParam {
   take: number;
   q: string;
   order: 'asc' | 'desc';
+  releaseYear: string;
+  genre: string;
+  rating: number | null;
 }
 
 export interface UserFavMovieParam {
@@ -35,8 +38,30 @@ export const refreshTokenUrl = `${VITE_URL_API}/auth/refresh-token`;
 export const getUserUrl = `${VITE_URL_API}/user/profile`;
 
 /* Movie URL */
-export const searchMovieUrl = (searchParam: SearchParam) =>
-  `${VITE_URL_API}/movies/search?page=${searchParam.page}&take=${searchParam.take}&q=${searchParam.q}&order=${searchParam.order}`;
+export const searchMovieUrl = (searchParam: SearchParam) => {
+  const url = new URL(`${VITE_URL_API}/movies/search`);
+
+  // Set the mandatory query parameters
+  url.searchParams.set('page', searchParam.page.toString());
+  url.searchParams.set('take', searchParam.take.toString());
+  url.searchParams.set('q', searchParam.q);
+  url.searchParams.set('order', searchParam.order);
+
+  // Conditionally add releaseYear and genre if they are not empty
+  if (searchParam.releaseYear) {
+    url.searchParams.set('year', searchParam.releaseYear);
+  }
+
+  if (searchParam.genre) {
+    url.searchParams.set('genre', searchParam.genre);
+  }
+
+  if (searchParam.rating) {
+    url.searchParams.set('rating', searchParam.rating.toString());
+  }
+
+  return url.toString();
+};
 
 export const getMovieDetailUrl = (movieId: string) =>
   `${VITE_URL_API}/movies/${movieId}`;
@@ -50,6 +75,8 @@ export const noImageUrl = 'https://via.placeholder.com/500x750?text=No+Image';
 
 export const getPeopleDetailUrl = (peopleId: string) =>
   `${VITE_URL_API}/people/${peopleId}`;
+
+export const movieGenresUrl = `${VITE_URL_API}/movies/genres`;
 
 /* User Interaction URL */
 export const toggleFavoriteUrl = (movieId: string) =>

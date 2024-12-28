@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
   const { profile, loading: profileLoading } = useGetUserProfile();
   const location = useLocation();
 
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>(new URLSearchParams(location.search).get('query') ?? '');
 
   const handleLogout = async () => {
     const currentPath = location.pathname + location.search;

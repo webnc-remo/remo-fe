@@ -1,0 +1,13 @@
+.searchfilter-wrapper--responsive {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 800px) {
+    .searchfilter-wrapper--responsive {
+        justify-content: center;
+    }
+  }
