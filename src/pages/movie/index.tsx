@@ -26,7 +26,7 @@ const MovieDetailPage = () => {
 
   const { mutate: rateMovie, isPending: ratingLoading } = useRateMovie();
   const { data: userRating, isLoading: userRatingLoading } = useGetUserRating(
-    movieId ?? ''
+    isAuthenticated ? (movieId ?? '') : ''
   );
 
   const [refetchReviews, setRefetchReviews] = useState<(() => void) | null>(
