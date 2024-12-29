@@ -43,7 +43,10 @@ const App: React.FC = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/search" element={<MovieSearchPage />} />
                 <Route path="/movie/:movieId" element={<MovieDetailPage />} />
-                <Route path="/people/:peopleId" element={<PeopleDetailPage />} />
+                <Route
+                  path="/people/:peopleId"
+                  element={<PeopleDetailPage />}
+                />
                 <Route path="/share/list/:id" element={<ShareList />} />
 
                 <Route element={<PrivateRoute />}>
