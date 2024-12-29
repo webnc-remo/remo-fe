@@ -24,7 +24,9 @@ const MovieDetailPage = () => {
   const INITIAL_VISIBLE_ITEMS = 6;
 
   const { mutate: rateMovie, isPending: ratingLoading } = useRateMovie();
-  const { data: userRating, isLoading: userRatingLoading } = useGetUserRating(movieId ?? '');
+  const { data: userRating, isLoading: userRatingLoading } = useGetUserRating(
+    movieId ?? ''
+  );
 
   const handleRating = async (rating: number, review: string) => {
     rateMovie(
@@ -32,7 +34,7 @@ const MovieDetailPage = () => {
         movieId: movieId ?? '',
         rating,
         review,
-        isUpdate: !!userRating
+        isUpdate: !!userRating,
       },
       {
         onSuccess: () => {
@@ -145,22 +147,28 @@ const MovieDetailPage = () => {
                     <Tooltip
                       title={
                         userRatingLoading
-                          ? "Loading..."
+                          ? 'Loading...'
                           : userRating
                             ? `Your rating: ${userRating.rating}/100${userRating.review ? ` - "${userRating.review}"` : ''}`
-                            : "Rate this movie"
+                            : 'Rate this movie'
                       }
                     >
                       <Button
-                        icon={<StarOutlined style={{
-                          color: userRating ? '#fadb14' : undefined
-                        }} />}
+                        icon={
+                          <StarOutlined
+                            style={{
+                              color: userRating ? '#fadb14' : undefined,
+                            }}
+                          />
+                        }
                         onClick={() => setShowRatingModal(true)}
-                        type={userRating ? "default" : "primary"}
+                        type={userRating ? 'default' : 'primary'}
                         ghost={!userRating}
                         loading={userRatingLoading}
                         style={{
-                          backgroundColor: userRating ? 'rgba(250, 219, 20, 0.1)' : undefined,
+                          backgroundColor: userRating
+                            ? 'rgba(250, 219, 20, 0.1)'
+                            : undefined,
                           borderColor: userRating ? '#fadb14' : undefined,
                           color: userRating ? '#fadb14' : undefined,
                         }}
