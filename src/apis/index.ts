@@ -177,7 +177,7 @@ axiosInstance.interceptors.response.use(
         }
 
         const response = await axios.post(
-          `${VITE_URL_API}/v1/auth/refresh-token`,
+          `${VITE_URL_API}/auth/refresh-token`,
           {
             refreshToken,
           }
