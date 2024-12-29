@@ -1,12 +1,16 @@
 import { useMovieDetail } from '../../apis/movie/useMovieDetail';
 import { useParams, Link } from 'react-router-dom';
-import { Button, Spin, Col, Row, Progress, Avatar } from 'antd';
+import { Button, Spin, Col, Row, Progress, Avatar, Tooltip } from 'antd';
 import { getMovieDetailImageUrl, noImageUrl } from '../../apis';
 import { useState } from 'react';
 import './movie.css';
 import { useAuthStore } from '../../stores/authStore';
 import { ActionButtons } from '../../components/MovieDetail/ActionButtons';
 import { CreatePlaylistModal } from '../../components/MovieDetail/CreatePlaylistModal';
+import { RatingModal } from '../../components/MovieDetail/RatingModal';
+import { StarOutlined } from '@ant-design/icons';
+import { useRateMovie } from '../../apis/movie/useRateMovie';
+import { useGetUserRating } from '../../apis/movie/useGetUserRating';
 
 const MovieDetailPage = () => {
   const movieId = useParams().movieId;
@@ -14,9 +18,29 @@ const MovieDetailPage = () => {
   const [showAllCast, setShowAllCast] = useState(false);
   const [showAllCrew, setShowAllCrew] = useState(false);
   const [showCreatePlaylistModal, setShowCreatePlaylistModal] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const INITIAL_VISIBLE_ITEMS = 6;
+
+  const { mutate: rateMovie, isPending: ratingLoading } = useRateMovie();
+  const { data: userRating, isLoading: userRatingLoading } = useGetUserRating(movieId ?? '');
+
+  const handleRating = async (rating: number, review: string) => {
+    rateMovie(
+      {
+        movieId: movieId ?? '',
+        rating,
+        review,
+        isUpdate: !!userRating
+      },
+      {
+        onSuccess: () => {
+          setShowRatingModal(false);
+        },
+      }
+    );
+  };
 
   return (
     <div>
@@ -116,6 +140,35 @@ const MovieDetailPage = () => {
                     />
                     <b style={{ marginLeft: '0.5em' }}>User score</b>
                   </div>
+
+                  {isAuthenticated && (
+                    <Tooltip
+                      title={
+                        userRatingLoading
+                          ? "Loading..."
+                          : userRating
+                            ? `Your rating: ${userRating.rating}/100${userRating.review ? ` - "${userRating.review}"` : ''}`
+                            : "Rate this movie"
+                      }
+                    >
+                      <Button
+                        icon={<StarOutlined style={{
+                          color: userRating ? '#fadb14' : undefined
+                        }} />}
+                        onClick={() => setShowRatingModal(true)}
+                        type={userRating ? "default" : "primary"}
+                        ghost={!userRating}
+                        loading={userRatingLoading}
+                        style={{
+                          backgroundColor: userRating ? 'rgba(250, 219, 20, 0.1)' : undefined,
+                          borderColor: userRating ? '#fadb14' : undefined,
+                          color: userRating ? '#fadb14' : undefined,
+                        }}
+                      >
+                        {userRating ? 'Update Rating' : 'Rate This Movie'}
+                      </Button>
+                    </Tooltip>
+                  )}
 
                   <ActionButtons
                     movieId={movieId ?? ''}
@@ -261,11 +314,21 @@ const MovieDetailPage = () => {
       )}
 
       {isAuthenticated && (
-        <CreatePlaylistModal
-          isOpen={showCreatePlaylistModal}
-          onClose={() => setShowCreatePlaylistModal(false)}
-          movieId={movieId ?? ''}
-        />
+        <>
+          <CreatePlaylistModal
+            isOpen={showCreatePlaylistModal}
+            onClose={() => setShowCreatePlaylistModal(false)}
+            movieId={movieId ?? ''}
+          />
+          <RatingModal
+            isOpen={showRatingModal}
+            onClose={() => setShowRatingModal(false)}
+            onSubmit={handleRating}
+            loading={ratingLoading}
+            initialRating={userRating?.rating}
+            initialReview={userRating?.review}
+          />
+        </>
       )}
     </div>
   );

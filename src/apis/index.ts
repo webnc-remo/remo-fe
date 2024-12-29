@@ -118,6 +118,17 @@ export const getUserPlaylistsUrl = () => `${VITE_URL_API}/user/playlists`;
 export const checkMovieInPlaylistsUrl = (movieId: string) =>
   `${VITE_URL_API}/user/playlists/movies/${movieId}/playlists`;
 
+/* Rate Movie URL */
+export const rateMovieUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/ratings/${movieId}`;
+export const getUserRatingsUrl = () => `${VITE_URL_API}/user/ratings`;
+export const getUserMovieRatingUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/ratings/movie/${movieId}`;
+export const updateRatingUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/ratings/${movieId}`;
+export const deleteRatingUrl = (movieId: string) =>
+  `${VITE_URL_API}/user/ratings/${movieId}`;
+
 /* Axios Instance Remote */
 export const axiosInstance = axios.create({
   baseURL: VITE_URL_API,
