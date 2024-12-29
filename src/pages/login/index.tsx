@@ -71,6 +71,7 @@ export const Login: React.FC = () => {
               label="Password"
               rules={[
                 { required: true, message: 'Please input your password!' },
+                { min: 6, message: 'Password must be at least 6 characters!' },
               ]}
             >
               <Input.Password
