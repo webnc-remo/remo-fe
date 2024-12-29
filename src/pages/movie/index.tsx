@@ -29,7 +29,9 @@ const MovieDetailPage = () => {
     movieId ?? ''
   );
 
-  const [refetchReviews, setRefetchReviews] = useState<(() => void) | null>(null);
+  const [refetchReviews, setRefetchReviews] = useState<(() => void) | null>(
+    null
+  );
 
   const handleRating = async (rating: number, review: string) => {
     rateMovie(
