@@ -11,6 +11,7 @@ import { RatingModal } from '../../components/MovieDetail/RatingModal';
 import { StarOutlined } from '@ant-design/icons';
 import { useRateMovie } from '../../apis/movie/useRateMovie';
 import { useGetUserRating } from '../../apis/movie/useGetUserRating';
+import { MovieReviews } from '../../components/MovieDetail/MovieReviews';
 
 const MovieDetailPage = () => {
   const movieId = useParams().movieId;
@@ -28,6 +29,8 @@ const MovieDetailPage = () => {
     movieId ?? ''
   );
 
+  const [refetchReviews, setRefetchReviews] = useState<(() => void) | null>(null);
+
   const handleRating = async (rating: number, review: string) => {
     rateMovie(
       {
@@ -39,9 +42,16 @@ const MovieDetailPage = () => {
       {
         onSuccess: () => {
           setShowRatingModal(false);
+          if (refetchReviews) {
+            refetchReviews();
+          }
         },
       }
     );
+  };
+
+  const handleRefetchReviews = (refetch: () => void) => {
+    setRefetchReviews(() => refetch);
   };
 
   return (
@@ -318,6 +328,11 @@ const MovieDetailPage = () => {
               )}
             </div>
           )}
+
+          <MovieReviews
+            movieId={movieId ?? ''}
+            onRefetchReviews={handleRefetchReviews}
+          />
         </>
       )}
 

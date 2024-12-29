@@ -123,11 +123,13 @@ export const rateMovieUrl = (movieId: string) =>
   `${VITE_URL_API}/user/ratings/${movieId}`;
 export const getUserRatingsUrl = () => `${VITE_URL_API}/user/ratings`;
 export const getUserMovieRatingUrl = (movieId: string) =>
-  `${VITE_URL_API}/user/ratings/movie/${movieId}`;
+  `${VITE_URL_API}/user/ratings/${movieId}`;
 export const updateRatingUrl = (movieId: string) =>
   `${VITE_URL_API}/user/ratings/${movieId}`;
 export const deleteRatingUrl = (movieId: string) =>
   `${VITE_URL_API}/user/ratings/${movieId}`;
+export const getMovieRatingReviewUrl = (movieId: string) =>
+  `${VITE_URL_API}/${movieId}/reviews`;
 
 /* Axios Instance Remote */
 export const axiosInstance = axios.create({
