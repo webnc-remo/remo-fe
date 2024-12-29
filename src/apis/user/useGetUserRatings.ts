@@ -3,12 +3,16 @@ import { axiosInstance, getUserRatingsUrl } from '..';
 import { Movie } from '../../interface/movie.interface';
 
 interface RatingItem {
-  id: string;
-  rating: number;
-  review: string;
-  tmdb_id: string;
-  createdAt: string;
-  movie: Movie;
+  movie: {
+    item: Movie;
+  };
+  rating: {
+    id: string;
+    rating: number;
+    review: string;
+    tmdb_id: string;
+    createdAt: string;
+  };
 }
 
 interface RatingsResponse {
