@@ -1,26 +1,25 @@
-import { Button, Form, Input } from 'antd';
-import { useState, useEffect } from 'react';
+import { Button, Form, Input, message } from 'antd';
+import { useEffect } from 'react';
 import { Icons } from '../../components/Icons';
 import { getOauthGoogleUrl } from '../../utils/utils';
 import { useLogin } from '../../apis/auth/useLogin';
 import { useAuthStore } from '../../stores/authStore';
-import { Link, useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export const Login: React.FC = () => {
   const [form] = Form.useForm();
-  const [error, setError] = useState('');
   const { login, loading } = useLogin();
   const navigate = useNavigate();
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const setTokens = useAuthStore((state) => state.setTokens);
   const location = useLocation();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isVerified = useAuthStore((state) => state.isVerified);
+  const setTokens = useAuthStore((state) => state.setTokens);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && isVerified) {
       navigate('/');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, isVerified, navigate]);
 
   const handleLogin = async (values: { email: string; password: string }) => {
     const { email, password } = values;
@@ -29,7 +28,7 @@ export const Login: React.FC = () => {
       navigate(location.state?.from || '/');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setError(err.message);
+      message.error(err.message);
     }
   };
 
@@ -49,7 +48,6 @@ export const Login: React.FC = () => {
       <div className="flex min-h-screen items-center justify-center">
         <div className="w-full max-w-md p-8 space-y-6 bg-gradient-to-r from-[#FCF5CA] to-[#FBFAF4] rounded-lg shadow-lg">
           <h1 className="text-2xl font-bold text-center">Login</h1>
-          {error && <div className="text-red-500">{error}</div>}
           <Form
             form={form}
             layout="vertical"
@@ -71,14 +69,9 @@ export const Login: React.FC = () => {
               label="Password"
               rules={[
                 { required: true, message: 'Please input your password!' },
-                { min: 6, message: 'Password must be at least 6 characters!' },
               ]}
             >
-              <Input.Password
-                placeholder="Enter your password"
-                className="w-full"
-                style={{ width: '100%' }}
-              />
+              <Input.Password placeholder="Enter your password" />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={loading} block>

@@ -19,6 +19,7 @@ interface LoginResponse {
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const setTokens = useAuthStore((state) => state.setTokens);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const login = async (params: LoginParams) => {
     try {
@@ -27,11 +28,20 @@ export const useLogin = () => {
         loginUrl,
         params
       );
-      const { accessToken, refreshToken } = response.data;
+
+      const { accessToken, refreshToken, user } = response.data;
 
       if (accessToken && refreshToken) {
-        setTokens(accessToken, refreshToken);
-        message.success('Login successful!');
+        setTokens(accessToken, refreshToken, user.isVerified);
+        setUser(user);
+
+        if (!user.isVerified) {
+          message.info('Please verify your email to continue.');
+
+          return false;
+        } else {
+          message.success('Login successful!');
+        }
         return true;
       }
       return false;

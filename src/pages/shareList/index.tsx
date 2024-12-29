@@ -29,8 +29,6 @@ const ShareList: React.FC = () => {
     order: 'asc',
   });
 
-  console.log('hehe2', movies);
-
   const handlePageChange = (page: number, size?: number) => {
     if (size && size !== pageSize) {
       setPageSize(size);

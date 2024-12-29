@@ -17,6 +17,7 @@ import MovieLists from './pages/lists/MovieLists';
 import ShareList from './pages/shareList';
 import { RatingList } from './pages/ratings/RatingList';
 import { VerifyEmail } from './pages/verify-email/index';
+import { VerifyWrapper } from './components/VerifyWrapper';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,26 +35,28 @@ const App: React.FC = () => {
         <ConfigProvider>
           <Routes>
             <Route element={<Layout />}>
-              {/* public routes */}
-              <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
-              <Route path="/search" element={<MovieSearchPage />} />
-              <Route path="/movie/:movieId" element={<MovieDetailPage />} />
-              <Route path="/people/:peopleId" element={<PeopleDetailPage />} />
-              <Route path="/share/list/:id" element={<ShareList />} />
-              {/* private routes */}
-              <Route path="/" element={<PrivateRoute />}>
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/favorites" element={<FavoriteMovies />} />
-                <Route path="/watchlist" element={<WatchlistMovies />} />
-                <Route path="/lists" element={<MovieLists />} />
-                <Route path="/ratings" element={<RatingList />} />
+
+              <Route element={<VerifyWrapper />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/search" element={<MovieSearchPage />} />
+                <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+                <Route path="/people/:peopleId" element={<PeopleDetailPage />} />
+                <Route path="/share/list/:id" element={<ShareList />} />
+
+                <Route element={<PrivateRoute />}>
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/favorites" element={<FavoriteMovies />} />
+                  <Route path="/watchlist" element={<WatchlistMovies />} />
+                  <Route path="/lists" element={<MovieLists />} />
+                  <Route path="/ratings" element={<RatingList />} />
+                </Route>
               </Route>
+
+              <Route path="*" element={<NotFound />} />
             </Route>
-            {/* not found */}
-            <Route path="*" element={<NotFound />} />
           </Routes>
         </ConfigProvider>
       </BrowserRouter>
