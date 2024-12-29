@@ -14,10 +14,11 @@ export const useGetUserProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<UserProfileResponse | null>(null);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isVerified = useAuthStore((state) => state.isVerified);
 
   useEffect(() => {
     const getUserProfile = async () => {
-      if (!isAuthenticated) {
+      if (!isAuthenticated || !isVerified) {
         return null;
       }
 
@@ -39,7 +40,7 @@ export const useGetUserProfile = () => {
     };
 
     getUserProfile();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isVerified]);
 
   return { profile, loading };
 };

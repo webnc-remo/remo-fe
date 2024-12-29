@@ -16,6 +16,7 @@ import WatchlistMovies from './pages/lists/WatchlistMovies';
 import MovieLists from './pages/lists/MovieLists';
 import ShareList from './pages/shareList';
 import { RatingList } from './pages/ratings/RatingList';
+import { VerifyEmail } from './pages/verify-email/index';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
               <Route path="/search" element={<MovieSearchPage />} />
               <Route path="/movie/:movieId" element={<MovieDetailPage />} />
               <Route path="/people/:peopleId" element={<PeopleDetailPage />} />

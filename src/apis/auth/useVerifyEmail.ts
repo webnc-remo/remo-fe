@@ -1,15 +1,13 @@
 import { message } from 'antd';
 import { useState } from 'react';
 import { useAuthStore } from '../../stores/authStore';
-import { axiosInstance } from '../index';
-import { registerUrl } from '..';
+import { axiosInstance, verifyEmailUrl } from '../index';
 
-interface RegisterParams {
-  email: string;
-  password: string;
+interface VerifyEmailParams {
+  code: string;
 }
 
-interface RegisterResponse {
+interface VerifyEmailResponse {
   accessToken: string;
   refreshToken: string;
   user: {
@@ -19,15 +17,15 @@ interface RegisterResponse {
   };
 }
 
-export const useRegister = () => {
+export const useVerifyEmail = () => {
   const [loading, setLoading] = useState(false);
   const setTokens = useAuthStore((state) => state.setTokens);
 
-  const register = async (params: RegisterParams) => {
+  const verifyEmail = async (params: VerifyEmailParams) => {
     try {
       setLoading(true);
-      const response = await axiosInstance.post<RegisterResponse>(
-        registerUrl,
+      const response = await axiosInstance.post<VerifyEmailResponse>(
+        verifyEmailUrl,
         params
       );
 
@@ -35,7 +33,7 @@ export const useRegister = () => {
 
       if (accessToken && refreshToken) {
         setTokens(accessToken, refreshToken, user.isVerified);
-        message.success('Registration successful! Please verify your email.');
+        message.success('Email verified successfully!');
         return true;
       }
       return false;
@@ -43,7 +41,7 @@ export const useRegister = () => {
       const errorMessage =
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (error as any).response?.data?.message ||
-        'Registration failed. Please try again!';
+        'Verification failed. Please try again!';
       message.error(errorMessage);
       return false;
     } finally {
@@ -51,5 +49,5 @@ export const useRegister = () => {
     }
   };
 
-  return { register, loading };
+  return { verifyEmail, loading };
 };

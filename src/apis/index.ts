@@ -38,7 +38,7 @@ export const registerUrl = `${VITE_URL_API}/auth/register`;
 export const loginUrl = `${VITE_URL_API}/auth/login`;
 export const logoutUrl = `${VITE_URL_API}/auth/logout`;
 export const refreshTokenUrl = `${VITE_URL_API}/auth/refresh-token`;
-
+export const verifyEmailUrl = `${VITE_URL_API}/auth/verify-email`;
 /* User URL */
 export const getUserUrl = `${VITE_URL_API}/user/profile`;
 

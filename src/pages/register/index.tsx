@@ -25,8 +25,10 @@ export const Register: React.FC = () => {
   }) => {
     const { email, password } = values;
     try {
-      await register({ email, password });
-      navigate('/');
+      const success = await register({ email, password });
+      if (success) {
+        navigate('/verify-email');
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
