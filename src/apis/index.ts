@@ -28,6 +28,11 @@ export interface UserWatchlistParam {
   take: number;
 }
 
+export interface UserRatingParam {
+  page: number;
+  take: number;
+}
+
 /* Auth URL */
 export const registerUrl = `${VITE_URL_API}/auth/register`;
 export const loginUrl = `${VITE_URL_API}/auth/login`;
@@ -121,7 +126,8 @@ export const checkMovieInPlaylistsUrl = (movieId: string) =>
 /* Rate Movie URL */
 export const rateMovieUrl = (movieId: string) =>
   `${VITE_URL_API}/user/ratings/${movieId}`;
-export const getUserRatingsUrl = () => `${VITE_URL_API}/user/ratings`;
+export const getUserRatingsUrl = (params: UserRatingParam) =>
+  `${VITE_URL_API}/user/ratings?page=${params.page}&take=${params.take}`;
 export const getUserMovieRatingUrl = (movieId: string) =>
   `${VITE_URL_API}/user/ratings/${movieId}`;
 export const updateRatingUrl = (movieId: string) =>

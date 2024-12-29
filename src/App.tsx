@@ -15,6 +15,7 @@ import FavoriteMovies from './pages/lists/FavoriteMovies';
 import WatchlistMovies from './pages/lists/WatchlistMovies';
 import MovieLists from './pages/lists/MovieLists';
 import ShareList from './pages/shareList';
+import { RatingList } from './pages/ratings/RatingList';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +47,7 @@ const App: React.FC = () => {
                 <Route path="/favorites" element={<FavoriteMovies />} />
                 <Route path="/watchlist" element={<WatchlistMovies />} />
                 <Route path="/lists" element={<MovieLists />} />
+                <Route path="/ratings" element={<RatingList />} />
               </Route>
             </Route>
             {/* not found */}

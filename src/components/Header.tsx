@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useLogout } from '../apis/auth/useLogout';
 import { Avatar, Dropdown, Space, Spin, Input, Button } from 'antd';
 import {
@@ -8,6 +8,7 @@ import {
   HeartOutlined,
   BookOutlined,
   UnorderedListOutlined,
+  StarOutlined,
 } from '@ant-design/icons';
 import { useGetUserProfile } from '../apis/user/useGetUserProfile';
 import { useAuthStore } from '../stores/authStore';
@@ -97,6 +98,11 @@ export const Header: React.FC = () => {
                   label: (
                     <span onClick={() => navigate('/lists')}>My Lists</span>
                   ),
+                },
+                {
+                  key: '/ratings',
+                  label: <Link to="/ratings">My Ratings</Link>,
+                  icon: <StarOutlined />,
                 },
                 {
                   key: '5',
