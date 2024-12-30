@@ -58,4 +58,4 @@ export const TrendingMovies: React.FC = () => {
       </Row>
     </>
   );
-}; 
+};

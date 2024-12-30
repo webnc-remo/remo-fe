@@ -10,7 +10,10 @@ export const PopularMovies: React.FC = () => {
 
   return (
     <>
-      <div className="flex items-center space-x-4" style={{ position: 'relative' }}>
+      <div
+        className="flex items-center space-x-4"
+        style={{ position: 'relative' }}
+      >
         <Title level={2} className="popular-title" style={{ marginBottom: 0 }}>
           What's Popular
         </Title>
@@ -44,4 +47,4 @@ export const PopularMovies: React.FC = () => {
       </Row>
     </>
   );
-}; 
+};
