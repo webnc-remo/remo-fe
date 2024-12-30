@@ -18,6 +18,8 @@ import ShareList from './pages/shareList';
 import { RatingList } from './pages/ratings/RatingList';
 import { VerifyEmail } from './pages/verify-email/index';
 import { VerifyWrapper } from './components/VerifyWrapper';
+import { ForgotPassword } from './pages/forgot-password/index';
+import { ResetPassword } from './pages/reset-password/index';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +40,8 @@ const App: React.FC = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
 
               <Route element={<VerifyWrapper />}>
                 <Route path="/" element={<Home />} />

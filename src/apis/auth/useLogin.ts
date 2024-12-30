@@ -4,6 +4,7 @@ import { loginUrl } from '..';
 import { useAuthStore } from '../../stores/authStore';
 import { axiosInstance } from '../index';
 import { User } from '../../interface/user.interface';
+import { ErrorResponse } from '../../interface/error-response.interface';
 
 interface LoginParams {
   email: string;
@@ -37,7 +38,6 @@ export const useLogin = () => {
 
         if (!user.isVerified) {
           message.info('Please verify your email to continue.');
-
           return false;
         } else {
           message.success('Login successful!');
@@ -45,12 +45,12 @@ export const useLogin = () => {
         return true;
       }
       return false;
-    } catch (error) {
-      const errorMessage =
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (error as any).response?.data?.message ||
-        'Login failed. Please try again!';
-      message.error(errorMessage);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const errorResponse = error.response?.data as ErrorResponse;
+      message.error(
+        errorResponse?.message || 'Login failed. Please try again!'
+      );
       return false;
     } finally {
       setLoading(false);

@@ -84,6 +84,13 @@ export const Login: React.FC = () => {
                 Register
               </Link>
             </div>
+            <Form.Item>
+              <div className="text-right">
+                <Link to="/forgot-password" className="text-blue-500">
+                  Forgot Password?
+                </Link>
+              </div>
+            </Form.Item>
           </Form>
           <div className="w-full flex items-center justify-center">
             <a

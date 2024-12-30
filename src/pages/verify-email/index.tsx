@@ -1,7 +1,8 @@
 import { Button, Form, Input, Typography } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useVerifyEmail } from '../../apis/auth/useVerifyEmail';
+import { useResendVerification } from '../../apis/auth/useResendVerification';
 import { useAuthStore } from '../../stores/authStore';
 
 const { Title, Text } = Typography;
@@ -9,9 +10,11 @@ const { Title, Text } = Typography;
 export const VerifyEmail: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { verifyEmail, loading } = useVerifyEmail();
+  const { verifyEmail, loading: verifyLoading } = useVerifyEmail();
+  const { resendVerification, loading: resendLoading } = useResendVerification();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isVerified = useAuthStore((state) => state.isVerified);
+  const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -21,10 +24,26 @@ export const VerifyEmail: React.FC = () => {
     }
   }, [isAuthenticated, isVerified, navigate]);
 
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
+
   const handleVerify = async (values: { code: string }) => {
     const success = await verifyEmail({ code: values.code });
     if (success) {
       navigate('/');
+    }
+  };
+
+  const handleResend = async () => {
+    if (countdown > 0) return;
+
+    const success = await resendVerification();
+    if (success) {
+      setCountdown(60); // Start 60 second countdown
     }
   };
 
@@ -65,7 +84,7 @@ export const VerifyEmail: React.FC = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                loading={loading}
+                loading={verifyLoading}
                 block
                 size="large"
               >
@@ -73,6 +92,18 @@ export const VerifyEmail: React.FC = () => {
               </Button>
             </Form.Item>
           </Form>
+
+          <div className="text-center">
+            <Text type="secondary">Didn't receive the code? </Text>
+            <Button
+              type="link"
+              onClick={handleResend}
+              loading={resendLoading}
+              disabled={countdown > 0}
+            >
+              {countdown > 0 ? `Resend in ${countdown}s` : 'Resend Code'}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

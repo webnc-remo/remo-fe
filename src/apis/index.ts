@@ -39,6 +39,12 @@ export const loginUrl = `${VITE_URL_API}/auth/login`;
 export const logoutUrl = `${VITE_URL_API}/auth/logout`;
 export const refreshTokenUrl = `${VITE_URL_API}/auth/refresh-token`;
 export const verifyEmailUrl = `${VITE_URL_API}/auth/verify-email`;
+export const resendVerifyEmailUrl = `${VITE_URL_API}/auth/resend-verification`;
+export const forgotPasswordUrl = `${VITE_URL_API}/auth/forgot-password`;
+export const resetPasswordUrl = (token: string) =>
+  `${VITE_URL_API}/auth/reset-password?token=${token}`;
+export const verifyResetPasswordUrl = (token: string) =>
+  `${VITE_URL_API}/auth/reset-password?token=${token}`;
 /* User URL */
 export const getUserUrl = `${VITE_URL_API}/user/profile`;
 
