@@ -9,6 +9,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 export const Login: React.FC = () => {
   const [form] = Form.useForm();
   const { login, loading } = useLogin();
+
   const navigate = useNavigate();
   const location = useLocation();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -24,8 +25,10 @@ export const Login: React.FC = () => {
   const handleLogin = async (values: { email: string; password: string }) => {
     const { email, password } = values;
     try {
-      await login({ email, password });
-      navigate(location.state?.from || '/');
+      const success = await login({ email, password });
+      if (success) {
+        navigate(location.state?.from || '/');
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       message.error(err.message);
