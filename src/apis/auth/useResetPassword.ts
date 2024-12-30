@@ -38,7 +38,10 @@ export const useResetPassword = () => {
   const verifyToken = async (token: string) => {
     try {
       const response = await axiosInstance.get(verifyResetPasswordUrl(token));
-      return response.data.valid;
+      if (response.data) {
+        return true;
+      }
+      return false;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const errorResponse = error.response?.data as ErrorResponse;
