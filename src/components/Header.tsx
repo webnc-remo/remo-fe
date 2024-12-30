@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useLogout } from '../apis/auth/useLogout';
-import { Avatar, Dropdown, Space, Spin, Input, Button, message } from 'antd';
+import { Avatar, Dropdown, Space, Spin, Input, Button, message, Switch } from 'antd';
 import {
   LogoutOutlined,
   UserOutlined,
@@ -23,6 +23,7 @@ export const Header: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>(
     new URLSearchParams(location.search).get('query') ?? ''
   );
+  const [isLLMSearch, setIsLLMSearch] = useState(false);
 
   const handleLogout = async () => {
     const currentPath = location.pathname + location.search;
@@ -53,8 +54,15 @@ export const Header: React.FC = () => {
         <div className="flex-grow"></div>
 
         <div className="flex items-center space-x-4 w-full md:w-auto">
+          <Switch
+              checked={isLLMSearch}
+              onChange={setIsLLMSearch}
+              className={`${isLLMSearch ? 'bg-blue-500' : 'bg-gray-400'}`}
+              checkedChildren='AI'
+              unCheckedChildren='Normal'
+            />
           <Input.Search
-            placeholder="Search..."
+            placeholder={isLLMSearch ? "Ask anything..." : "Search..."}
             allowClear
             enterButton
             size="large"

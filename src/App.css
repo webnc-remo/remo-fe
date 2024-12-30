@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0px;
 }
@@ -109,7 +119,7 @@ td:last-child {
 .footer {
   margin-top: auto;
   padding: 1.5rem 0;
-  background: linear-gradient(to right, #FCF5CA, #FBFAF4);
+  background: linear-gradient(to right, #fcf5ca, #fbfaf4);
   border-top: 1px solid #e9ecef;
 }
 
@@ -123,4 +133,10 @@ td:last-child {
 
 .footer p {
   font-size: 0.9rem;
+}
+
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
