@@ -11,7 +11,8 @@ export const VerifyEmail: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { verifyEmail, loading: verifyLoading } = useVerifyEmail();
-  const { resendVerification, loading: resendLoading } = useResendVerification();
+  const { resendVerification, loading: resendLoading } =
+    useResendVerification();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isVerified = useAuthStore((state) => state.isVerified);
   const [countdown, setCountdown] = useState(0);
