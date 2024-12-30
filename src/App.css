@@ -109,7 +109,7 @@ td:last-child {
 .footer {
   margin-top: auto;
   padding: 1.5rem 0;
-  background-color: #f8f9fa;
+  background: linear-gradient(to right, #FCF5CA, #FBFAF4);
   border-top: 1px solid #e9ecef;
 }
 
@@ -118,4 +118,9 @@ td:last-child {
   margin: 0 auto;
   padding: 0 1rem;
   text-align: center;
+  color: #4a4a4a;
+}
+
+.footer p {
+  font-size: 0.9rem;
 }
