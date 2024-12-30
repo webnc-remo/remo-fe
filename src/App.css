@@ -105,3 +105,17 @@ td:last-child {
     max-width: 960px;
   }
 }
+
+.footer {
+  margin-top: auto;
+  padding: 1.5rem 0;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  text-align: center;
+}
