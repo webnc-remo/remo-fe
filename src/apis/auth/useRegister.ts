@@ -42,8 +42,7 @@ export const useRegister = () => {
     } catch (error) {
       const errorMessage =
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (error as any).response?.data?.message ||
-        'Registration failed. Please try again!';
+        (error as any).message || 'Registration failed. Please try again!';
       message.error(errorMessage);
       return false;
     } finally {

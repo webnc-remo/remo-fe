@@ -39,8 +39,8 @@ export const useGetUserFavMovie = (userFavMovieParam: UserFavMovieParam) => {
       } catch (error) {
         const errorMessage =
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (error as any)?.response?.data?.message ||
-          'Failed to fetch movies. Please try again.';
+          (error as any).message ||
+          'Failed to fetch favorite movies. Please try again.';
         message.error(errorMessage);
         throw error;
       }

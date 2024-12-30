@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useLogout } from '../apis/auth/useLogout';
-import { Avatar, Dropdown, Space, Spin, Input, Button } from 'antd';
+import { Avatar, Dropdown, Space, Spin, Input, Button, message } from 'antd';
 import {
   LogoutOutlined,
   UserOutlined,
@@ -29,6 +29,7 @@ export const Header: React.FC = () => {
 
     const result = await logout();
     if (result) {
+      message.success('Logged out successfully');
       navigate(currentPath || '/');
     }
   };

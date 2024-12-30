@@ -1,7 +1,6 @@
 import { message } from 'antd';
 import { useState } from 'react';
 import { axiosInstance, forgotPasswordUrl } from '../index';
-import { ErrorResponse } from '../../interface/error-response.interface';
 
 interface ForgotPasswordParams {
   email: string;
@@ -19,11 +18,11 @@ export const useForgotPassword = () => {
       );
       return true;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const errorResponse = error.response?.data as ErrorResponse;
-      message.error(
-        errorResponse?.message || 'Failed to process request. Please try again!'
-      );
+    } catch (error) {
+      const errorMessage =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (error as any).message || 'Registration failed. Please try again!';
+      message.error(errorMessage);
       return false;
     } finally {
       setLoading(false);

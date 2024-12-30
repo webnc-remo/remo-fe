@@ -206,7 +206,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(
-      new Error(error.message || 'An unknown error occurred')
+      new Error(error.response?.data?.message || 'An unknown error occurred')
     );
   }
 );

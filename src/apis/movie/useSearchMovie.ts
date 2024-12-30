@@ -53,8 +53,7 @@ export const useSearchMovie = (query: SearchParam) => {
       } catch (error) {
         const errorMessage =
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (error as any)?.response?.data?.message ||
-          'Failed to fetch movies. Please try again.';
+          (error as any).message || 'Failed to fetch movies. Please try again.';
         message.error(errorMessage);
       } finally {
         setLoading(false);

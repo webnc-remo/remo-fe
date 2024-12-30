@@ -51,8 +51,7 @@ export const useGetSharedList = ({
       } catch (error) {
         const errorMessage =
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (error as any)?.response?.data?.message ||
-          'Failed to fetch shared list';
+          (error as any).message || 'Failed to fetch shared list';
         message.error(errorMessage);
         throw error;
       }

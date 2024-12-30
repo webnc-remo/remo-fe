@@ -42,10 +42,11 @@ export const useResetPassword = () => {
         return true;
       }
       return false;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const errorResponse = error.response?.data as ErrorResponse;
-      message.error(errorResponse?.message || 'Invalid or expired reset token');
+    } catch (error) {
+      const errorMessage =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (error as any).message || 'Invalid or expired reset token';
+      message.error(errorMessage);
       return false;
     }
   };

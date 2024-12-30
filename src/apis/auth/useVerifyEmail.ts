@@ -2,7 +2,6 @@ import { message } from 'antd';
 import { useState } from 'react';
 import { useAuthStore } from '../../stores/authStore';
 import { axiosInstance, verifyEmailUrl } from '../index';
-import { ErrorResponse } from '../../interface/error-response.interface';
 
 interface VerifyEmailParams {
   code: string;
@@ -39,11 +38,11 @@ export const useVerifyEmail = () => {
       }
       return false;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const errorResponse = error.response?.data as ErrorResponse;
-      message.error(
-        errorResponse?.message || 'Verification failed. Please try again!'
-      );
+    } catch (error) {
+      const errorMessage =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (error as any).message || 'Verification failed. Please try again!';
+      message.error(errorMessage);
       return false;
     } finally {
       setLoading(false);

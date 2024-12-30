@@ -4,7 +4,6 @@ import { loginUrl } from '..';
 import { useAuthStore } from '../../stores/authStore';
 import { axiosInstance } from '../index';
 import { User } from '../../interface/user.interface';
-import { ErrorResponse } from '../../interface/error-response.interface';
 
 interface LoginParams {
   email: string;
@@ -45,12 +44,11 @@ export const useLogin = () => {
         return true;
       }
       return false;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const errorResponse = error.response?.data as ErrorResponse;
-      message.error(
-        errorResponse?.message || 'Login failed. Please try again!'
-      );
+    } catch (error) {
+      const errorMessage =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (error as any).message || 'Registration failed. Please try again!';
+      message.error(errorMessage);
       return false;
     } finally {
       setLoading(false);

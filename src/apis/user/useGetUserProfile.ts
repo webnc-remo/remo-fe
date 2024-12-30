@@ -31,7 +31,7 @@ export const useGetUserProfile = () => {
       } catch (error) {
         message.error(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (error as any).response?.data?.message ||
+          (error as any).message ||
             'Failed to get user profile. Please try again!'
         );
       } finally {

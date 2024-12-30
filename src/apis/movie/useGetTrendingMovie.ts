@@ -24,8 +24,7 @@ export const useGetTrendingMovie = (timeWindow: 'day' | 'week') => {
       } catch (err) {
         const errorMessage =
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (err as any).response?.data?.message ||
-          'Failed to fetch trending movies.';
+          (err as any).message || 'Failed to fetch trending movies.';
         message.error(errorMessage);
       } finally {
         setLoading(false);
