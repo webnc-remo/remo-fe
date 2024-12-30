@@ -83,6 +83,7 @@ export const getMovieCardImageUrl = (path: string) =>
 export const getMovieDetailImageUrl = (path: string) =>
   `https://media.themoviedb.org/t/p/w600_and_h900_bestv2/${path}`;
 export const noImageUrl = 'https://via.placeholder.com/500x750?text=No+Image';
+export const getMoviePopularUrl = `${VITE_URL_API}/movies/popular`;
 
 export const getPeopleDetailUrl = (peopleId: string) =>
   `${VITE_URL_API}/people/${peopleId}`;
