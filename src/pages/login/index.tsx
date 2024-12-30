@@ -41,7 +41,7 @@ export const Login: React.FC = () => {
     const refreshToken = params.get('refresh_token');
 
     if (accessToken && refreshToken) {
-      setTokens(accessToken, refreshToken);
+      setTokens(accessToken, refreshToken, true);
       navigate('/');
     }
   }, [navigate, setTokens]);
@@ -81,29 +81,40 @@ export const Login: React.FC = () => {
                 Login
               </Button>
             </Form.Item>
-            <div className="text-center">
-              <span>Don't have an account? </span>
-              <Link className="text-blue-500" to="/register">
-                Register
+
+            <div className="flex justify-between items-center mb-4">
+              <Link to="/forgot-password" className="text-blue-500 hover:text-blue-700">
+                Forgot Password?
               </Link>
-            </div>
-            <Form.Item>
-              <div className="text-right">
-                <Link to="/forgot-password" className="text-blue-500">
-                  Forgot Password?
+              <div>
+                <span className="text-gray-600">Don't have an account? </span>
+                <Link className="text-blue-500 hover:text-blue-700" to="/register">
+                  Register
                 </Link>
               </div>
-            </Form.Item>
+            </div>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 text-gray-500 bg-gradient-to-r from-[#FCF5CA] to-[#FBFAF4]">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <div className="w-full flex items-center justify-center">
+              <a
+                href={getOauthGoogleUrl()}
+                className="w-full flex items-center justify-center bg-white rounded-full shadow-md py-4 border-transparent border text-sm font-medium text-neutral-7 transition-all hover:text-tertiary-5 hover:border-tertiary-5 focus:border-transparent focus:text-neutral-7"
+              >
+                <Icons.GoogleIcon />
+                <span className="ml-2">Continue with Google</span>
+              </a>
+            </div>
           </Form>
-          <div className="w-full flex items-center justify-center">
-            <a
-              href={getOauthGoogleUrl()}
-              className="w-full flex items-center justify-center bg-white rounded-full shadow-md py-4 border-transparent border text-sm font-medium text-neutral-7 transition-all hover:text-tertiary-5 hover:border-tertiary-5 focus:border-transparent focus:text-neutral-7"
-            >
-              <Icons.GoogleIcon />
-              <span className="">Continue with Google</span>
-            </a>
-          </div>
         </div>
       </div>
     </div>
