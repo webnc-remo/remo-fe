@@ -41,120 +41,122 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="flex flex-col md:flex-row justify-between items-center p-4 bg-gradient-to-r from-[#FCF5CA] to-[#FBFAF4] shadow-md">
-      <button
-        onClick={() => navigate('/')}
-        className="text-2xl font-bold text-center mb-2 md:mb-0"
-      >
-        ReMo
-      </button>
+    <header className="w-full bg-gradient-to-r from-[#FCF5CA] to-[#FBFAF4] shadow-md">
+      <div className="responsive-container flex flex-col md:flex-row justify-between items-center p-4">
+        <button
+          onClick={() => navigate('/')}
+          className="text-2xl font-bold text-center mb-2 md:mb-0"
+        >
+          ReMo
+        </button>
 
-      <div className="flex-grow"></div>
+        <div className="flex-grow"></div>
 
-      <div className="flex items-center space-x-4 w-full md:w-auto">
-        <Input.Search
-          placeholder="Search..."
-          allowClear
-          enterButton
-          size="large"
-          value={searchValue}
-          onSearch={handleSearch}
-          onChange={(e) => setSearchValue(e.target.value)}
-          style={{ maxWidth: '300px', flex: 1 }}
-        />
-        {isAuthenticated ? (
-          <Dropdown
-            menu={{
-              items: [
-                {
-                  key: '1',
-                  icon: <UserOutlined />,
-                  label: (
-                    <span onClick={() => navigate('/profile')}>
-                      Edit Profile
-                    </span>
-                  ),
-                },
-                {
-                  key: '2',
-                  icon: <HeartOutlined />,
-                  label: (
-                    <span onClick={() => navigate('/favorites')}>
-                      Favorite Movies
-                    </span>
-                  ),
-                },
-                {
-                  key: '3',
-                  icon: <BookOutlined />,
-                  label: (
-                    <span onClick={() => navigate('/watchlist')}>
-                      Watchlist
-                    </span>
-                  ),
-                },
-                {
-                  key: '4',
-                  icon: <UnorderedListOutlined />,
-                  label: (
-                    <span onClick={() => navigate('/lists')}>My Lists</span>
-                  ),
-                },
-                {
-                  key: '/ratings',
-                  label: <Link to="/ratings">My Ratings</Link>,
-                  icon: <StarOutlined />,
-                },
-                {
-                  key: '5',
-                  icon: <LogoutOutlined />,
-                  label: logoutLoading ? <Spin /> : 'Logout',
-                  onClick: handleLogout,
-                },
-              ],
-            }}
-            trigger={['click']}
-          >
-            <button
-              onClick={(e) => e.preventDefault()}
-              className="flex items-center space-x-4"
+        <div className="flex items-center space-x-4 w-full md:w-auto">
+          <Input.Search
+            placeholder="Search..."
+            allowClear
+            enterButton
+            size="large"
+            value={searchValue}
+            onSearch={handleSearch}
+            onChange={(e) => setSearchValue(e.target.value)}
+            style={{ maxWidth: '300px', flex: 1 }}
+          />
+          {isAuthenticated ? (
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    key: '1',
+                    icon: <UserOutlined />,
+                    label: (
+                      <span onClick={() => navigate('/profile')}>
+                        Edit Profile
+                      </span>
+                    ),
+                  },
+                  {
+                    key: '2',
+                    icon: <HeartOutlined />,
+                    label: (
+                      <span onClick={() => navigate('/favorites')}>
+                        Favorite Movies
+                      </span>
+                    ),
+                  },
+                  {
+                    key: '3',
+                    icon: <BookOutlined />,
+                    label: (
+                      <span onClick={() => navigate('/watchlist')}>
+                        Watchlist
+                      </span>
+                    ),
+                  },
+                  {
+                    key: '4',
+                    icon: <UnorderedListOutlined />,
+                    label: (
+                      <span onClick={() => navigate('/lists')}>My Lists</span>
+                    ),
+                  },
+                  {
+                    key: '/ratings',
+                    label: <Link to="/ratings">My Ratings</Link>,
+                    icon: <StarOutlined />,
+                  },
+                  {
+                    key: '5',
+                    icon: <LogoutOutlined />,
+                    label: logoutLoading ? <Spin /> : 'Logout',
+                    onClick: handleLogout,
+                  },
+                ],
+              }}
+              trigger={['click']}
             >
-              {profileLoading ? (
-                <Spin size="small" />
-              ) : (
-                <>
-                  {profile?.email && (
-                    <span className="hidden md:block">{profile?.email}</span>
-                  )}
-                  <Space>
-                    {profile?.avatar ? (
-                      <Avatar src={profile?.avatar} alt="Avatar" />
-                    ) : (
-                      <Avatar icon={<UserOutlined />} />
+              <button
+                onClick={(e) => e.preventDefault()}
+                className="flex items-center space-x-4"
+              >
+                {profileLoading ? (
+                  <Spin size="small" />
+                ) : (
+                  <>
+                    {profile?.email && (
+                      <span className="hidden md:block">{profile?.email}</span>
                     )}
-                  </Space>
-                </>
-              )}
-            </button>
-          </Dropdown>
-        ) : (
-          <div className="flex space-x-2">
-            <Button
-              type="primary"
-              onClick={() => navigate('/login')}
-              size="large"
-            >
-              Login
-            </Button>
-            <Button
-              type="dashed"
-              onClick={() => navigate('/register')}
-              size="large"
-            >
-              Register
-            </Button>
-          </div>
-        )}
+                    <Space>
+                      {profile?.avatar ? (
+                        <Avatar src={profile?.avatar} alt="Avatar" />
+                      ) : (
+                        <Avatar icon={<UserOutlined />} />
+                      )}
+                    </Space>
+                  </>
+                )}
+              </button>
+            </Dropdown>
+          ) : (
+            <div className="flex space-x-2">
+              <Button
+                type="primary"
+                onClick={() => navigate('/login')}
+                size="large"
+              >
+                Login
+              </Button>
+              <Button
+                type="dashed"
+                onClick={() => navigate('/register')}
+                size="large"
+              >
+                Register
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
