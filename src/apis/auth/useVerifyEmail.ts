@@ -37,7 +37,6 @@ export const useVerifyEmail = () => {
         return true;
       }
       return false;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error) {
       const errorMessage =
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -18,6 +18,7 @@ export const MovieSearch: React.FC<{
   initialYear?: string;
   initialGenre?: string;
   initialRating?: number | null;
+  isLLM?: string;
 }> = ({
   initialQuery = '',
   initialPage = 1,
@@ -26,6 +27,7 @@ export const MovieSearch: React.FC<{
   initialYear = '',
   initialGenre = '',
   initialRating = null,
+  isLLM = '',
 }) => {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [pageSize, setPageSize] = useState(initialPageSize);
@@ -39,6 +41,7 @@ export const MovieSearch: React.FC<{
     releaseYear: initialYear,
     genre: initialGenre,
     rating: initialRating,
+    isLLM,
   };
 
   const { movies, loading, meta } = useSearchMovie(query);
@@ -50,6 +53,7 @@ export const MovieSearch: React.FC<{
     }
 
     const searchParam = [
+      { key: 'isLLM', value: isLLM },
       { key: 'query', value: initialQuery },
       { key: 'genre', value: initialGenre },
       { key: 'year', value: initialYear },

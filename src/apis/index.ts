@@ -16,6 +16,7 @@ export interface SearchParam {
   releaseYear: string;
   genre: string;
   rating: number | null;
+  isLLM: string;
 }
 
 export interface UserFavMovieParam {
@@ -69,6 +70,10 @@ export const searchMovieUrl = (searchParam: SearchParam) => {
 
   if (searchParam.rating) {
     url.searchParams.set('rating', searchParam.rating.toString());
+  }
+
+  if (searchParam.isLLM) {
+    url.searchParams.set('isLLM', searchParam.isLLM);
   }
 
   return url.toString();

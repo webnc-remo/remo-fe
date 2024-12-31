@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useLogout } from '../apis/auth/useLogout';
-import { Avatar, Dropdown, Space, Spin, Input, Button, message, Switch } from 'antd';
+import {
+  Avatar,
+  Dropdown,
+  Space,
+  Spin,
+  Input,
+  Button,
+  message,
+  Switch,
+} from 'antd';
 import {
   LogoutOutlined,
   UserOutlined,
@@ -35,9 +44,14 @@ export const Header: React.FC = () => {
     }
   };
 
+  const handleSwitchSearchMode = async () => {
+    setIsLLMSearch((prev) => !prev);
+  }
+
   const handleSearch = (value: string) => {
     if (value) {
-      navigate(`/search?query=${encodeURIComponent(value)}`);
+      const isLLMParam = isLLMSearch ? '&isLLM=true' : '';
+      navigate(`/search?query=${encodeURIComponent(value)}` + isLLMParam);
     }
   };
 
@@ -55,14 +69,14 @@ export const Header: React.FC = () => {
 
         <div className="flex items-center space-x-4 w-full md:w-auto">
           <Switch
-              checked={isLLMSearch}
-              onChange={setIsLLMSearch}
-              className={`${isLLMSearch ? 'bg-blue-500' : 'bg-gray-400'}`}
-              checkedChildren='AI'
-              unCheckedChildren='Normal'
-            />
+            checked={isLLMSearch}
+            onChange={handleSwitchSearchMode}
+            className={`${isLLMSearch ? 'bg-blue-500' : 'bg-gray-400'}`}
+            checkedChildren="AI"
+            unCheckedChildren="Normal"
+          />
           <Input.Search
-            placeholder={isLLMSearch ? "Ask anything..." : "Search..."}
+            placeholder={isLLMSearch ? 'Ask anything...' : 'Search...'}
             allowClear
             enterButton
             size="large"

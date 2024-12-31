@@ -17,7 +17,6 @@ export const useForgotPassword = () => {
         'Password reset instructions have been sent to your email.'
       );
       return true;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error) {
       const errorMessage =
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

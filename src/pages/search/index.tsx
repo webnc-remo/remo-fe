@@ -11,6 +11,7 @@ const SearchPage: React.FC = () => {
   const releaseYear = new URLSearchParams(location.search).get('year');
   const genre = new URLSearchParams(location.search).get('genre');
   const rating = new URLSearchParams(location.search).get('rating');
+  const isLLM = new URLSearchParams(location.search).get('isLLM');
   const validOrder = order === 'desc' || order === 'asc' ? order : 'asc';
 
   return (
@@ -23,6 +24,7 @@ const SearchPage: React.FC = () => {
         initialYear={releaseYear ?? ''}
         initialGenre={genre ?? ''}
         initialRating={rating ? parseInt(rating, 10) : null}
+        isLLM={isLLM ?? ''}
       />
     </div>
   );
