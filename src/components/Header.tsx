@@ -32,7 +32,9 @@ export const Header: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>(
     new URLSearchParams(location.search).get('query') ?? ''
   );
-  const [isLLMSearch, setIsLLMSearch] = useState(false);
+  const [isLLMSearch, setIsLLMSearch] = useState<boolean>(
+    new URLSearchParams(location.search).get('isLLM') ? true : false
+  );
 
   const handleLogout = async () => {
     const currentPath = location.pathname + location.search;
@@ -46,7 +48,7 @@ export const Header: React.FC = () => {
 
   const handleSwitchSearchMode = async () => {
     setIsLLMSearch((prev) => !prev);
-  }
+  };
 
   const handleSearch = (value: string) => {
     if (value) {
