@@ -12,6 +12,8 @@ import { StarOutlined } from '@ant-design/icons';
 import { useRateMovie } from '../../apis/movie/useRateMovie';
 import { useGetUserRating } from '../../apis/movie/useGetUserRating';
 import { MovieReviews } from '../../components/MovieDetail/MovieReviews';
+import { useSimilarMovies } from '../../apis/movie/useSimilarMovies';
+import { RecommendationCard } from '../../components/RecommendationCard';
 
 const MovieDetailPage = () => {
   const movieId = useParams().movieId;
@@ -20,6 +22,7 @@ const MovieDetailPage = () => {
   const [showAllCrew, setShowAllCrew] = useState(false);
   const [showCreatePlaylistModal, setShowCreatePlaylistModal] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
+  const { similarMovies } = useSimilarMovies(movieId ?? '');
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const INITIAL_VISIBLE_ITEMS = 6;
@@ -328,6 +331,35 @@ const MovieDetailPage = () => {
                   </Button>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Similar Movies Section */}
+          {similarMovies && similarMovies.length > 0 && (
+            <div style={{ padding: '2vw' }}>
+              <h2
+                style={{
+                  fontSize: '1.5em',
+                  fontWeight: 'bold',
+                  marginBottom: '1em',
+                }}
+              >
+                Similar Movies
+              </h2>
+              <Row
+                gutter={[16, 16]}
+                style={{
+                  flexWrap: 'wrap',
+                  justifyContent: 'flex-start',
+                  margin: '0 auto',
+                }}
+              >
+                {similarMovies.map((movie) => (
+                  <Col xs={24} sm={12} md={8} lg={8} xl={6} key={movie.id}>
+                    <RecommendationCard movie={movie} />
+                  </Col>
+                ))}
+              </Row>
             </div>
           )}
 

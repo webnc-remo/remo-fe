@@ -67,7 +67,7 @@ export const MovieSearch: React.FC<{
   return (
     <div style={{ padding: '20px', margin: '0 auto' }}>
       <div className="searchfilter-wrapper--responsive">
-        <Title level={3} style={{ textAlign: 'center' }}>
+        <Title level={3} style={{ textAlign: 'left' }}>
           Keyword: "{initialQuery}"
         </Title>
         <MovieFilterBar query={query} />

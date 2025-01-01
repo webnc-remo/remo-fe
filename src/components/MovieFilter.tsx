@@ -67,7 +67,7 @@ const MovieFilterBar: React.FC<{ query: SearchParam }> = ({ query }) => {
 
         {/* Release year */}
         <Select
-          placeholder="Release Year"
+          placeholder="Year"
           style={{ width: 100 }}
           onChange={(value) => handleChange('releaseYear', value)}
           allowClear
