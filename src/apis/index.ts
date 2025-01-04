@@ -81,7 +81,7 @@ export const searchMovieUrl = (searchParam: SearchParam) => {
 
 export const getMovieDetailUrl = (movieId: string) =>
   `${VITE_URL_API}/movies/${movieId}`;
-export const getSimilarMoviesUrl = (movieId: string) => 
+export const getSimilarMoviesUrl = (movieId: string) =>
   `${VITE_URL_API}/movies/similar/${movieId}`;
 export const getTrendingMovieUrl = (timeWindow: string) =>
   `${VITE_URL_API}/movies/trending/${timeWindow}`;

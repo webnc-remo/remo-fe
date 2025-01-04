@@ -4,7 +4,7 @@ import { Movie } from '../../interface/movie.interface';
 import { axiosInstance, getSimilarMoviesUrl } from '..';
 
 export class SimilarMoviesResponse {
-    results!: Movie[];
+  results!: Movie[];
 }
 
 export const useSimilarMovies = (movieId: string) => {
@@ -38,4 +38,4 @@ export const useSimilarMovies = (movieId: string) => {
   }, [movieId]);
 
   return { similarMovies, loading };
-}; 
+};

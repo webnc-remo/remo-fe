@@ -26,7 +26,13 @@ export const RecommendationCard: React.FC<{ movie: Movie }> = ({ movie }) => {
           />
         }
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <div
             style={{
               fontSize: '14px',
@@ -51,4 +57,4 @@ export const RecommendationCard: React.FC<{ movie: Movie }> = ({ movie }) => {
       </Card>
     </Link>
   );
-}; 
+};

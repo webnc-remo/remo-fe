@@ -6,7 +6,7 @@ import { Footer } from '../Footer';
 
 export const Layout: React.FC = () => {
   return (
-    <div className='layout-wrapper'>
+    <div className="layout-wrapper">
       <div>
         <Header />
       </div>
