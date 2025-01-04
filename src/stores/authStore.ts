@@ -15,6 +15,7 @@ interface AuthState {
     refreshToken: string,
     isVerified?: boolean
   ) => void;
+  setIsVerified: (value: boolean) => void;
   clearTokens: () => void;
 }
 
@@ -23,6 +24,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   accessToken: localStorage.getItem(TOKEN_KEY),
   refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
   isVerified: false,
+  setIsVerified: (value) => set({ isVerified: value }),
   user: null,
 
   setIsAuthenticated: (value) => set({ isAuthenticated: value }),
