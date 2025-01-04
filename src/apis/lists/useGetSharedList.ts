@@ -26,6 +26,7 @@ interface SharedListResponse {
     createdAt: string;
     user: {
       fullname: string;
+      email?: string;
     };
   };
 }

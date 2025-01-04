@@ -70,8 +70,8 @@ const ShareList: React.FC = () => {
         <div className="flex flex-col gap-2 mt-4 text-gray-600">
           <div className="flex items-center gap-2">
             <UserOutlined className="text-blue-500" />
-            <span className="font-medium">Curator:</span>
-            <span className="text-gray-800">{listInfo.user.fullname}</span>
+            <span className="font-medium">Creator:</span>
+            <span className="text-gray-800">{listInfo.user.fullname || listInfo.user.email || ''}</span>
           </div>
 
           <div className="flex items-center gap-2">
