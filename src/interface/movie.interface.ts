@@ -12,6 +12,14 @@ export interface MoviePeople {
   id: number;
 }
 
+export interface Trailers {
+  name: string;
+  key: string;
+  site: string;
+  offical: string;
+  published_at: string;
+}
+
 export interface Movie {
   id: number;
   tmdb_id: number;
@@ -34,4 +42,5 @@ export interface Movie {
     cast: MoviePeople[];
     crew: MoviePeople[];
   };
+  trailers?: Trailers[];
 }
