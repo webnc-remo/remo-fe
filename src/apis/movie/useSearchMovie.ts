@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { message } from 'antd';
 import { axiosInstance, searchMovieUrl, SearchParam } from '..';
 import { Movie } from '../../interface/movie.interface';
+import { useNavigate } from 'react-router-dom';
 
 interface MoviesResponse {
   items: Movie[];
@@ -16,6 +17,7 @@ interface MoviesResponse {
 }
 
 export const useSearchMovie = (query: SearchParam) => {
+  const navigate = useNavigate();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
   const [meta, setMeta] = useState({
@@ -47,6 +49,11 @@ export const useSearchMovie = (query: SearchParam) => {
         const response = await axiosInstance.get<MoviesResponse>(url);
 
         if (response.data) {
+          if (response.data.items.length === 1 && response.data.items[0].id) {
+            navigate(`/movie/${response.data.items[0].id}`);
+            return;
+          }
+
           setMovies(response.data.items);
           setMeta(response.data.meta);
         }
@@ -61,7 +68,7 @@ export const useSearchMovie = (query: SearchParam) => {
     };
 
     searchMovies();
-  }, [query]);
+  }, [query, navigate]);
 
   return {
     movies,
