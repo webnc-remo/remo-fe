@@ -33,7 +33,8 @@ const ShareList: React.FC = () => {
   const getMetaDescription = () => {
     if (!listInfo) return '';
     const movieCount = meta?.itemCount || 0;
-    const creatorName = listInfo.user.fullname || listInfo.user.email || 'Anonymous';
+    const creatorName =
+      listInfo.user.fullname || listInfo.user.email || 'Anonymous';
     return `A movie collection "${listInfo.listName}" created by ${creatorName}. Contains ${movieCount} movies.`;
   };
 
@@ -81,16 +82,26 @@ const ShareList: React.FC = () => {
 
         <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={`${listInfo.listName} - Movie List`} />
+        <meta
+          property="og:title"
+          content={`${listInfo.listName} - Movie List`}
+        />
         <meta property="og:description" content={getMetaDescription()} />
-        {getMetaImage() && <meta property="og:image" content={getMetaImage()} />}
+        {getMetaImage() && (
+          <meta property="og:image" content={getMetaImage()} />
+        )}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content={window.location.hostname} />
         <meta property="twitter:url" content={window.location.href} />
-        <meta name="twitter:title" content={`${listInfo.listName} - Movie List`} />
+        <meta
+          name="twitter:title"
+          content={`${listInfo.listName} - Movie List`}
+        />
         <meta name="twitter:description" content={getMetaDescription()} />
-        {getMetaImage() && <meta name="twitter:image" content={getMetaImage()} />}
+        {getMetaImage() && (
+          <meta name="twitter:image" content={getMetaImage()} />
+        )}
       </Helmet>
 
       <div className="p-6">
