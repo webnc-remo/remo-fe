@@ -20,6 +20,7 @@ import { VerifyEmail } from './pages/verify-email/index';
 import { VerifyWrapper } from './components/VerifyWrapper';
 import { ForgotPassword } from './pages/forgot-password/index';
 import { ResetPassword } from './pages/reset-password/index';
+import { HelmetProvider } from 'react-helmet-async';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,42 +33,44 @@ const queryClient = new QueryClient({
 
 const App: React.FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ConfigProvider>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/verify-email" element={<VerifyEmail />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <ConfigProvider>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/verify-email" element={<VerifyEmail />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
 
-              <Route element={<VerifyWrapper />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/search" element={<MovieSearchPage />} />
-                <Route path="/movie/:movieId" element={<MovieDetailPage />} />
-                <Route
-                  path="/people/:peopleId"
-                  element={<PeopleDetailPage />}
-                />
-                <Route path="/share/list/:id" element={<ShareList />} />
+                <Route element={<VerifyWrapper />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/search" element={<MovieSearchPage />} />
+                  <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+                  <Route
+                    path="/people/:peopleId"
+                    element={<PeopleDetailPage />}
+                  />
+                  <Route path="/share/list/:id" element={<ShareList />} />
 
-                <Route element={<PrivateRoute />}>
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/favorites" element={<FavoriteMovies />} />
-                  <Route path="/watchlist" element={<WatchlistMovies />} />
-                  <Route path="/lists" element={<MovieLists />} />
-                  <Route path="/ratings" element={<RatingList />} />
+                  <Route element={<PrivateRoute />}>
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/favorites" element={<FavoriteMovies />} />
+                    <Route path="/watchlist" element={<WatchlistMovies />} />
+                    <Route path="/lists" element={<MovieLists />} />
+                    <Route path="/ratings" element={<RatingList />} />
+                  </Route>
                 </Route>
-              </Route>
 
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </ConfigProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </ConfigProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 

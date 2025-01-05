@@ -4,6 +4,7 @@ import { Row, Col, Spin, Empty, Typography, Pagination } from 'antd';
 import { useGetSharedList } from '../../apis/lists/useGetSharedList';
 import MovieCardInList from '../../components/MovieCardInList';
 import { UserOutlined, CalendarOutlined } from '@ant-design/icons';
+import { Helmet } from 'react-helmet-async';
 
 const { Title } = Typography;
 
@@ -28,6 +29,18 @@ const ShareList: React.FC = () => {
     take: pageSize,
     order: 'asc',
   });
+
+  const getMetaDescription = () => {
+    if (!listInfo) return '';
+    const movieCount = meta?.itemCount || 0;
+    const creatorName = listInfo.user.fullname || listInfo.user.email || 'Anonymous';
+    return `A movie collection "${listInfo.listName}" created by ${creatorName}. Contains ${movieCount} movies.`;
+  };
+
+  const getMetaImage = () => {
+    if (!movies?.length) return '';
+    return movies[0].poster_path || '';
+  };
 
   const handlePageChange = (page: number, size?: number) => {
     if (size && size !== pageSize) {
@@ -61,66 +74,86 @@ const ShareList: React.FC = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-8">
-        <Title level={2} className="text-3xl font-bold mb-2">
-          {listInfo.listName} List
-        </Title>
+    <>
+      <Helmet>
+        <title>{`${listInfo.listName} - Movie List`}</title>
+        <meta name="description" content={getMetaDescription()} />
 
-        <div className="flex flex-col gap-2 mt-4 text-gray-600">
-          <div className="flex items-center gap-2">
-            <UserOutlined className="text-blue-500" />
-            <span className="font-medium">Creator:</span>
-            <span className="text-gray-800">
-              {listInfo.user.fullname || listInfo.user.email || ''}
-            </span>
-          </div>
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`${listInfo.listName} - Movie List`} />
+        <meta property="og:description" content={getMetaDescription()} />
+        {getMetaImage() && <meta property="og:image" content={getMetaImage()} />}
 
-          <div className="flex items-center gap-2">
-            <CalendarOutlined className="text-green-500" />
-            <span className="font-medium">Created:</span>
-            <span className="text-gray-800">
-              {new Date(listInfo.createdAt).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </span>
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content={window.location.hostname} />
+        <meta property="twitter:url" content={window.location.href} />
+        <meta name="twitter:title" content={`${listInfo.listName} - Movie List`} />
+        <meta name="twitter:description" content={getMetaDescription()} />
+        {getMetaImage() && <meta name="twitter:image" content={getMetaImage()} />}
+      </Helmet>
+
+      <div className="p-6">
+        <div className="mb-8">
+          <Title level={2} className="text-3xl font-bold mb-2">
+            {listInfo.listName} List
+          </Title>
+
+          <div className="flex flex-col gap-2 mt-4 text-gray-600">
+            <div className="flex items-center gap-2">
+              <UserOutlined className="text-blue-500" />
+              <span className="font-medium">Creator:</span>
+              <span className="text-gray-800">
+                {listInfo.user.fullname || listInfo.user.email || ''}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <CalendarOutlined className="text-green-500" />
+              <span className="font-medium">Created:</span>
+              <span className="text-gray-800">
+                {new Date(listInfo.createdAt).toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </span>
+            </div>
           </div>
         </div>
+
+        {movies && movies.length === 0 ? (
+          <Empty description="No movies in this list" />
+        ) : (
+          <>
+            <Row gutter={[16, 16]}>
+              {movies?.map((movie) => (
+                <Col xs={24} md={12} key={movie.id}>
+                  <MovieCardInList movie={movie} showRemoveButton={false} />
+                </Col>
+              ))}
+            </Row>
+
+            {meta && (
+              <div className="mt-6 flex justify-center">
+                <Pagination
+                  current={currentPage}
+                  pageSize={pageSize}
+                  total={meta.itemCount}
+                  onChange={handlePageChange}
+                  showSizeChanger
+                  showTotal={(total) => `Total ${total} movies`}
+                  pageSizeOptions={['10', '20', '30', '40']}
+                />
+              </div>
+            )}
+          </>
+        )}
       </div>
-
-      {movies && movies.length === 0 ? (
-        <Empty description="No movies in this list" />
-      ) : (
-        <>
-          <Row gutter={[16, 16]}>
-            {movies?.map((movie) => (
-              <Col xs={24} md={12} key={movie.id}>
-                <MovieCardInList movie={movie} showRemoveButton={false} />
-              </Col>
-            ))}
-          </Row>
-
-          {meta && (
-            <div className="mt-6 flex justify-center">
-              <Pagination
-                current={currentPage}
-                pageSize={pageSize}
-                total={meta.itemCount}
-                onChange={handlePageChange}
-                showSizeChanger
-                showTotal={(total) => `Total ${total} movies`}
-                pageSizeOptions={['10', '20', '30', '40']}
-              />
-            </div>
-          )}
-        </>
-      )}
-    </div>
+    </>
   );
 };
 
