@@ -73,9 +73,7 @@ export const Header: React.FC = () => {
               key: '1',
               icon: <UserOutlined />,
               label: (
-                <span onClick={() => navigate('/profile')}>
-                  Edit Profile
-                </span>
+                <span onClick={() => navigate('/profile')}>Edit Profile</span>
               ),
             },
             {
@@ -91,17 +89,13 @@ export const Header: React.FC = () => {
               key: '3',
               icon: <BookOutlined />,
               label: (
-                <span onClick={() => navigate('/watchlist')}>
-                  Watchlist
-                </span>
+                <span onClick={() => navigate('/watchlist')}>Watchlist</span>
               ),
             },
             {
               key: '4',
               icon: <UnorderedListOutlined />,
-              label: (
-                <span onClick={() => navigate('/lists')}>My Lists</span>
-              ),
+              label: <span onClick={() => navigate('/lists')}>My Lists</span>,
             },
             {
               key: '/ratings',

@@ -46,8 +46,10 @@ export const resetPasswordUrl = (token: string) =>
   `${VITE_URL_API}/auth/reset-password?token=${token}`;
 export const verifyResetPasswordUrl = (token: string) =>
   `${VITE_URL_API}/auth/reset-password?token=${token}`;
+
 /* User URL */
 export const getUserUrl = `${VITE_URL_API}/user/profile`;
+export const updateUserUrl = `${VITE_URL_API}/user/profile`;
 
 /* Movie URL */
 export const searchMovieUrl = (searchParam: SearchParam) => {
