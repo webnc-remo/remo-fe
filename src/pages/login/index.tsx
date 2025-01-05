@@ -15,7 +15,6 @@ export const Login: React.FC = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isVerified = useAuthStore((state) => state.isVerified);
   const setTokens = useAuthStore((state) => state.setTokens);
-  const setIsVerified = useAuthStore((state) => state.setIsVerified);
 
   useEffect(() => {
     if (isAuthenticated && isVerified) {
@@ -43,10 +42,9 @@ export const Login: React.FC = () => {
 
     if (accessToken && refreshToken) {
       setTokens(accessToken, refreshToken, true);
-      setIsVerified(true);
       navigate('/');
     }
-  }, [navigate, setTokens, setIsVerified]);
+  }, [navigate, setTokens]);
 
   return (
     <div className="flex flex-col h-screen">

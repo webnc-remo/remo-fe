@@ -23,15 +23,20 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: !!localStorage.getItem(TOKEN_KEY),
   accessToken: localStorage.getItem(TOKEN_KEY),
   refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
-  isVerified: false,
-  setIsVerified: (value) => set({ isVerified: value }),
+  isVerified: localStorage.getItem('isVerified') === 'true',
   user: null,
 
   setIsAuthenticated: (value) => set({ isAuthenticated: value }),
 
+  setIsVerified: (value) => {
+    localStorage.setItem('isVerified', value.toString());
+    set({ isVerified: value });
+  },
+
   setTokens: (accessToken, refreshToken, isVerified = false) => {
     localStorage.setItem(TOKEN_KEY, accessToken);
     localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    localStorage.setItem('isVerified', isVerified.toString());
     set({
       accessToken,
       refreshToken,
@@ -45,6 +50,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   clearTokens: () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
+    localStorage.removeItem('isVerified');
     set({
       accessToken: null,
       refreshToken: null,

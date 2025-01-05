@@ -12,7 +12,10 @@ export const useLogout = () => {
       const refreshToken = localStorage.getItem('refreshToken');
       await axiosInstance.post(logoutUrl, { refreshToken });
 
-      useAuthStore.getState().clearTokens();
+      // Clear tokens and reset isVerified state
+      const authStore = useAuthStore.getState();
+      authStore.clearTokens();
+      authStore.setIsVerified(false);
 
       return true;
     } catch (error) {

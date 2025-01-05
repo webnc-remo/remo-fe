@@ -26,6 +26,7 @@ export const Header: React.FC = () => {
   const navigate = useNavigate();
   const { logout, loading: logoutLoading } = useLogout();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isVerified = useAuthStore((state) => state.isVerified);
   const { profile, loading: profileLoading } = useGetUserProfile();
   const location = useLocation();
 
@@ -37,12 +38,10 @@ export const Header: React.FC = () => {
   );
 
   const handleLogout = async () => {
-    const currentPath = location.pathname + location.search;
-
     const result = await logout();
     if (result) {
       message.success('Logged out successfully');
-      navigate(currentPath || '/');
+      navigate('/');
     }
   };
 
@@ -55,6 +54,93 @@ export const Header: React.FC = () => {
       const isLLMParam = isLLMSearch ? '&isLLM=true' : '';
       navigate(`/search?query=${encodeURIComponent(value)}` + isLLMParam);
     }
+  };
+
+  const renderUserMenu = () => {
+    if (!isVerified) {
+      return (
+        <button className="flex items-center space-x-4">
+          <Avatar icon={<UserOutlined />} />
+        </button>
+      );
+    }
+
+    return (
+      <Dropdown
+        menu={{
+          items: [
+            {
+              key: '1',
+              icon: <UserOutlined />,
+              label: (
+                <span onClick={() => navigate('/profile')}>
+                  Edit Profile
+                </span>
+              ),
+            },
+            {
+              key: '2',
+              icon: <HeartOutlined />,
+              label: (
+                <span onClick={() => navigate('/favorites')}>
+                  Favorite Movies
+                </span>
+              ),
+            },
+            {
+              key: '3',
+              icon: <BookOutlined />,
+              label: (
+                <span onClick={() => navigate('/watchlist')}>
+                  Watchlist
+                </span>
+              ),
+            },
+            {
+              key: '4',
+              icon: <UnorderedListOutlined />,
+              label: (
+                <span onClick={() => navigate('/lists')}>My Lists</span>
+              ),
+            },
+            {
+              key: '/ratings',
+              label: <Link to="/ratings">My Ratings</Link>,
+              icon: <StarOutlined />,
+            },
+            {
+              key: '5',
+              icon: <LogoutOutlined />,
+              label: logoutLoading ? <Spin /> : 'Logout',
+              onClick: handleLogout,
+            },
+          ],
+        }}
+        trigger={['click']}
+      >
+        <button
+          onClick={(e) => e.preventDefault()}
+          className="flex items-center space-x-4"
+        >
+          {profileLoading ? (
+            <Spin size="small" />
+          ) : (
+            <>
+              {profile?.email && (
+                <span className="hidden md:block">{profile?.email}</span>
+              )}
+              <Space>
+                {profile?.avatar ? (
+                  <Avatar src={profile?.avatar} alt="Avatar" />
+                ) : (
+                  <Avatar icon={<UserOutlined />} />
+                )}
+              </Space>
+            </>
+          )}
+        </button>
+      </Dropdown>
+    );
   };
 
   return (
@@ -88,80 +174,7 @@ export const Header: React.FC = () => {
             style={{ maxWidth: '300px', flex: 1 }}
           />
           {isAuthenticated ? (
-            <Dropdown
-              menu={{
-                items: [
-                  {
-                    key: '1',
-                    icon: <UserOutlined />,
-                    label: (
-                      <span onClick={() => navigate('/profile')}>
-                        Edit Profile
-                      </span>
-                    ),
-                  },
-                  {
-                    key: '2',
-                    icon: <HeartOutlined />,
-                    label: (
-                      <span onClick={() => navigate('/favorites')}>
-                        Favorite Movies
-                      </span>
-                    ),
-                  },
-                  {
-                    key: '3',
-                    icon: <BookOutlined />,
-                    label: (
-                      <span onClick={() => navigate('/watchlist')}>
-                        Watchlist
-                      </span>
-                    ),
-                  },
-                  {
-                    key: '4',
-                    icon: <UnorderedListOutlined />,
-                    label: (
-                      <span onClick={() => navigate('/lists')}>My Lists</span>
-                    ),
-                  },
-                  {
-                    key: '/ratings',
-                    label: <Link to="/ratings">My Ratings</Link>,
-                    icon: <StarOutlined />,
-                  },
-                  {
-                    key: '5',
-                    icon: <LogoutOutlined />,
-                    label: logoutLoading ? <Spin /> : 'Logout',
-                    onClick: handleLogout,
-                  },
-                ],
-              }}
-              trigger={['click']}
-            >
-              <button
-                onClick={(e) => e.preventDefault()}
-                className="flex items-center space-x-4"
-              >
-                {profileLoading ? (
-                  <Spin size="small" />
-                ) : (
-                  <>
-                    {profile?.email && (
-                      <span className="hidden md:block">{profile?.email}</span>
-                    )}
-                    <Space>
-                      {profile?.avatar ? (
-                        <Avatar src={profile?.avatar} alt="Avatar" />
-                      ) : (
-                        <Avatar icon={<UserOutlined />} />
-                      )}
-                    </Space>
-                  </>
-                )}
-              </button>
-            </Dropdown>
+            renderUserMenu()
           ) : (
             <div className="flex space-x-2">
               <Button
