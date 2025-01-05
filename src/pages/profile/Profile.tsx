@@ -54,7 +54,11 @@ export const Profile: React.FC = () => {
           }}
         >
           <div
-            style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px' }}
+            style={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+              marginBottom: '16px',
+            }}
           >
             User Profile
           </div>
@@ -91,7 +95,12 @@ export const Profile: React.FC = () => {
               />
             </Form.Item>
           </Form>
-          <Button type="primary" block onClick={handleEdit} style={{ marginTop: '16px' }}>
+          <Button
+            type="primary"
+            block
+            onClick={handleEdit}
+            style={{ marginTop: '16px' }}
+          >
             Edit Profile
           </Button>
         </Card>
@@ -103,24 +112,26 @@ export const Profile: React.FC = () => {
         onCancel={handleCancel}
         footer={null}
       >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleSubmit}
-        >
+        <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
             name="fullName"
             label="Full Name"
             rules={[
               { required: true, message: 'Please input your full name!' },
               { min: 2, message: 'Full name must be at least 2 characters!' },
-              { max: 50, message: 'Full name cannot exceed 50 characters!' }
+              { max: 50, message: 'Full name cannot exceed 50 characters!' },
             ]}
           >
             <Input placeholder="Enter your full name" />
           </Form.Item>
           <Form.Item>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                gap: '8px',
+              }}
+            >
               <Button onClick={handleCancel}>Cancel</Button>
               <Button type="primary" htmlType="submit" loading={updateLoading}>
                 Save Changes
