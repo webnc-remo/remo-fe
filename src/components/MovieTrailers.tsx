@@ -46,4 +46,4 @@ export const MovieTrailers: React.FC = () => {
       </Row>
     </>
   );
-}; 
+};

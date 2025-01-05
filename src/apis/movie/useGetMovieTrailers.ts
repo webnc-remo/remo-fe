@@ -15,14 +15,15 @@ export const useGetMovieTrailers = () => {
     const fetchMovieTrailers = async () => {
       setLoading(true);
       try {
-        const response = await axiosInstance.get<GetMovieTrailers>(getNowPlayingMovie);
+        const response =
+          await axiosInstance.get<GetMovieTrailers>(getNowPlayingMovie);
 
         if (response.data) {
           setMovies(response.data.results);
         }
       } catch (err) {
-        const errorMessage = 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const errorMessage =
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (err as any).message || 'Failed to fetch movie trailers.';
         message.error(errorMessage);
       } finally {
@@ -34,4 +35,4 @@ export const useGetMovieTrailers = () => {
   }, []);
 
   return { movies, loading };
-}; 
+};
