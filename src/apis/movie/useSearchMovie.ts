@@ -46,17 +46,15 @@ export const useSearchMovie = (query: SearchParam) => {
 
       try {
         const url = searchMovieUrl(query);
-        const response = await axiosInstance.get<MoviesResponse>(url);
+        const response = await axiosInstance.get<MoviesResponse | number>(url);
 
-        if (response.data) {
-          if (response.data.items.length === 1 && response.data.items[0].id) {
-            navigate(`/movie/${response.data.items[0].id}`);
-            return;
-          }
-
-          setMovies(response.data.items);
-          setMeta(response.data.meta);
+        if (typeof response.data === 'number') {
+          navigate(`/movie/${response.data}`);
+          return;
         }
+
+        setMovies(response.data.items);
+        setMeta(response.data.meta);
       } catch (error) {
         const errorMessage =
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
