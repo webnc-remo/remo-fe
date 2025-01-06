@@ -6,8 +6,8 @@ import { useUpdateProfile } from '../../apis/user/useUpdateProfile';
 
 export const Profile: React.FC = () => {
   const [form] = Form.useForm();
-  const { profile, loading, refetch } = useGetUserProfile();
-  const { updateProfile, loading: updateLoading } = useUpdateProfile();
+  const { data: profile, isLoading } = useGetUserProfile();
+  const updateProfileMutation = useUpdateProfile();
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
   const handleEdit = () => {
@@ -23,14 +23,11 @@ export const Profile: React.FC = () => {
   };
 
   const handleSubmit = async (values: { fullName: string }) => {
-    const success = await updateProfile(values);
-    if (success) {
-      await refetch();
-      setIsEditModalVisible(false);
-    }
+    await updateProfileMutation.mutateAsync(values);
+    setIsEditModalVisible(false);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Spin
         size="large"
@@ -133,7 +130,11 @@ export const Profile: React.FC = () => {
               }}
             >
               <Button onClick={handleCancel}>Cancel</Button>
-              <Button type="primary" htmlType="submit" loading={updateLoading}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={updateProfileMutation.isPending}
+              >
                 Save Changes
               </Button>
             </div>

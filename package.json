@@ -14,7 +14,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@ant-design/plots": "2.2.5",
-    "@tanstack/react-query": "^5.62.9",
+    "@tanstack/react-query": "^5.62.15",
     "@types/supertest": "^6.0.2",
     "antd": "^5.16.4",
     "antd-img-crop": "^4.22.0",

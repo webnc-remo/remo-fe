@@ -1,30 +1,29 @@
-import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { message } from 'antd';
 import { axiosInstance, updateUserUrl } from '..';
+import { USER_PROFILE_QUERY_KEY } from './useGetUserProfile';
 
 interface UpdateProfileParams {
   fullName: string;
 }
 
 export const useUpdateProfile = () => {
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const updateProfile = async (params: UpdateProfileParams) => {
-    try {
-      setLoading(true);
-      await axiosInstance.patch(updateUserUrl, params);
+  return useMutation({
+    mutationFn: async (params: UpdateProfileParams) => {
+      const response = await axiosInstance.patch(updateUserUrl, params);
+      return response.data;
+    },
+    onSuccess: () => {
       message.success('Profile updated successfully');
-      return true;
-    } catch (error) {
+      queryClient.invalidateQueries({ queryKey: USER_PROFILE_QUERY_KEY });
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
       const errorMessage =
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (error as any)?.response?.data?.message || 'Failed to update profile';
+        error?.response?.data?.message || 'Failed to update profile';
       message.error(errorMessage);
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { updateProfile, loading };
+    },
+  });
 };

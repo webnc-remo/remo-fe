@@ -27,7 +27,7 @@ export const Header: React.FC = () => {
   const { logout, loading: logoutLoading } = useLogout();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isVerified = useAuthStore((state) => state.isVerified);
-  const { profile, loading: profileLoading } = useGetUserProfile();
+  const { data: profile, isLoading: profileLoading } = useGetUserProfile();
   const location = useLocation();
 
   const [searchValue, setSearchValue] = useState<string>(

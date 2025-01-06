@@ -4,12 +4,15 @@ import { User } from '../../interface/user.interface';
 import { useAuthStore } from '../../stores/authStore';
 import { useNavigate } from 'react-router-dom';
 
+export const USER_PROFILE_QUERY_KEY = ['userProfile'] as const;
+
 export const useGetUserProfile = () => {
   const navigate = useNavigate();
   const { clearTokens } = useAuthStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['userProfile'],
+    queryKey: USER_PROFILE_QUERY_KEY,
     queryFn: async () => {
       try {
         const response = await axiosInstance.get<User>(getUserUrl);
@@ -25,12 +28,13 @@ export const useGetUserProfile = () => {
     },
     retry: false,
     refetchOnWindowFocus: false,
-    enabled: !!localStorage.getItem('accessToken'),
+    enabled: isAuthenticated,
+    staleTime: 30000,
   });
 
   return {
-    profile: data,
-    loading: isLoading,
+    data,
+    isLoading,
     refetch,
   };
 };
