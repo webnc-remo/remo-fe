@@ -87,7 +87,10 @@ const ShareList: React.FC = () => {
         <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="ReMo" />
-        <meta property="og:title" content={`${listInfo.listName} - Movie List`} />
+        <meta
+          property="og:title"
+          content={`${listInfo.listName} - Movie List`}
+        />
         <meta property="og:description" content={getMetaDescription()} />
         {getMetaImage() && (
           <>
@@ -100,9 +103,14 @@ const ShareList: React.FC = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:domain" content={window.location.hostname} />
         <meta name="twitter:url" content={window.location.href} />
-        <meta name="twitter:title" content={`${listInfo.listName} - Movie List`} />
+        <meta
+          name="twitter:title"
+          content={`${listInfo.listName} - Movie List`}
+        />
         <meta name="twitter:description" content={getMetaDescription()} />
-        {getMetaImage() && <meta name="twitter:image" content={getMetaImage()} />}
+        {getMetaImage() && (
+          <meta name="twitter:image" content={getMetaImage()} />
+        )}
       </Helmet>
 
       <div className="p-6">
