@@ -40,7 +40,11 @@ const ShareList: React.FC = () => {
 
   const getMetaImage = () => {
     if (!movies?.length) return '';
-    return movies[0].poster_path || '';
+    const posterPath = movies[0].poster_path;
+    if (!posterPath) return '';
+    return posterPath.startsWith('http')
+      ? posterPath
+      : `${window.location.origin}${posterPath}`;
   };
 
   const handlePageChange = (page: number, size?: number) => {
@@ -82,26 +86,23 @@ const ShareList: React.FC = () => {
 
         <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="website" />
-        <meta
-          property="og:title"
-          content={`${listInfo.listName} - Movie List`}
-        />
+        <meta property="og:site_name" content="ReMo" />
+        <meta property="og:title" content={`${listInfo.listName} - Movie List`} />
         <meta property="og:description" content={getMetaDescription()} />
         {getMetaImage() && (
-          <meta property="og:image" content={getMetaImage()} />
+          <>
+            <meta property="og:image" content={getMetaImage()} />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+          </>
         )}
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content={window.location.hostname} />
-        <meta property="twitter:url" content={window.location.href} />
-        <meta
-          name="twitter:title"
-          content={`${listInfo.listName} - Movie List`}
-        />
+        <meta name="twitter:domain" content={window.location.hostname} />
+        <meta name="twitter:url" content={window.location.href} />
+        <meta name="twitter:title" content={`${listInfo.listName} - Movie List`} />
         <meta name="twitter:description" content={getMetaDescription()} />
-        {getMetaImage() && (
-          <meta name="twitter:image" content={getMetaImage()} />
-        )}
+        {getMetaImage() && <meta name="twitter:image" content={getMetaImage()} />}
       </Helmet>
 
       <div className="p-6">
