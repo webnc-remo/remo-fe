@@ -17,7 +17,7 @@ import { RecommendationCard } from '../../components/RecommendationCard';
 
 const MovieDetailPage = () => {
   const movieId = useParams().movieId;
-  const { movie, loading } = useMovieDetail(movieId ?? '');
+  const { movie, loading, refetch: refetchMovie } = useMovieDetail(movieId ?? '');
   const [showAllCast, setShowAllCast] = useState(false);
   const [showAllCrew, setShowAllCrew] = useState(false);
   const [showCreatePlaylistModal, setShowCreatePlaylistModal] = useState(false);
@@ -28,7 +28,7 @@ const MovieDetailPage = () => {
   const INITIAL_VISIBLE_ITEMS = 6;
 
   const { mutate: rateMovie, isPending: ratingLoading } = useRateMovie();
-  const { data: userRating, isLoading: userRatingLoading } = useGetUserRating(
+  const { data: userRating, isLoading: userRatingLoading, refetch: refetchUserRating } = useGetUserRating(
     isAuthenticated ? (movieId ?? '') : ''
   );
 
@@ -47,6 +47,8 @@ const MovieDetailPage = () => {
       {
         onSuccess: () => {
           setShowRatingModal(false);
+          refetchMovie();
+          refetchUserRating();
           if (refetchReviews) {
             refetchReviews();
           }
