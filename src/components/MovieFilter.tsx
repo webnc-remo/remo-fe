@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select, Button, Space, InputNumber } from 'antd';
 import { useMovieGenres } from '../apis/movie/useMovieGenres';
 import { SearchParam } from '../apis';
@@ -19,6 +19,15 @@ const MovieFilterBar: React.FC<{ query: SearchParam }> = ({ query }) => {
   const releaseYears = Array.from({ length: 10 }, (_, index) =>
     (new Date().getFullYear() - index).toString()
   );
+
+  useEffect(() => {
+    setFilters({
+      q: query.q,
+      genre: query.genre,
+      releaseYear: query.releaseYear,
+      rating: query.rating,
+    });
+  }, [query]);
 
   const handleChange = (key: string, value: string | number | null) => {
     const val = value ? value.toString() : value;
